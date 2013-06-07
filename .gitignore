@@ -1,0 +1,44 @@
+*.py[cod]
+
+# C extensions
+*.so
+
+# SQLite Databases
+*.db
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+venv
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+# Local env settings
+local_settings.py
+.sass-cache
+
+# OSX garbage
+.DS_Store
+
+# Require.js build tools
+node_modules
