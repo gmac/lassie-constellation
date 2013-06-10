@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+{{ json }}
+
+<div class="toolbar">
+	<ul>
+		<li></li>
+	</ul>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>require(['scene/main']);</script>
+{% endblock %}
