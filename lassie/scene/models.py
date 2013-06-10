@@ -17,7 +17,7 @@ class SceneObject(models.Model):
     Describes an individual interactive object within a scene.
     """
     scene = models.ForeignKey('scene.Scene')
-    uid = models.CharField('Reference id', max_length=40, unique=True)
+    uid = models.CharField('Reference id', max_length=40)
     title = models.CharField(max_length=255, blank=True)
     notes = models.CharField(max_length=255, blank=True)
     depth = models.SmallIntegerField(default=0)

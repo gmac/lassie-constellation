@@ -36,6 +36,8 @@ nosetests.xml
 # Local env settings
 local_settings.py
 .sass-cache
+CACHE
+bourbon
 
 # OSX garbage
 .DS_Store

@@ -1,8 +1,8 @@
 define([
-    'jquery',
-    'backbone'
-], function($, Backbone) {
+    './objects-v',
+	'./objects-m'
+], function(objectsView, objectsModel) {
     
-   console.log('hello world!'); 
+	objectsModel.fetch();
    
 });

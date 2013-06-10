@@ -1,0 +1,61 @@
+@import "bourbon/bourbon";
+
+.toolbar {
+	background-color: #eee;
+	height: 100%;
+	width: 200px;
+}
+
+#objects-list {
+	
+	.layers {
+		border-bottom: 2px solid #ccc;
+		position: relative;
+		
+		&.hilite {
+			border-bottom: 2px solid #f00;
+		}
+	}
+
+
+	li {
+		background-color: #fff;
+		border-top: 2px solid #ccc;
+		height: 25px;
+		line-height: 25px;
+		padding-left: 25px;
+		position: relative;
+		
+		&.hilite {
+			border-top: 2px solid #f00;
+		}
+		
+		&.dragging input {
+			color: #ccc;
+		}
+		
+		input {
+			background-color: #fff;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			@include inline-block;
+			height: 23px;
+			vertical-align: middle;
+			
+			&[readonly] {
+				background-color: transparent;
+				border-color:  transparent;
+			}
+		}
+		
+		.drag {
+			background-color: #eee;
+			display: block;
+			height: 25px;
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 25px;
+		}
+	}
+}

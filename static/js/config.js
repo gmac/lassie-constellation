@@ -1,8 +1,9 @@
 requirejs.config({
     baseUrl: '/static/js/',
+	urlArgs: 'bust='+ (new Date().getTime()),
     paths: {
-        backbone: 'lib/backbone',
-        jquery: 'lib/jquery',
-        underscore: 'lib/underscore'
+        backbone: 'libs/backbone',
+        jquery: 'libs/jquery',
+        underscore: 'libs/underscore'
     }
 });

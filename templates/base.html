@@ -1,14 +1,20 @@
-{% load static %}
+{% load static compress %}
 <DOCTYPE html>
 <html lang="en">
 	<head>
 		<title></title>
-		{% block css %}{% endblock %}
+		{% compress css %}
+		<link rel="stylesheet" href="{% static 'css/global.scss' %}" type="text/x-scss">
+		{% endcompress %}
+		
+		{% compress css %}
+			{% block css %}{% endblock %}
+		{% endcompress %}
 	</head>
 	<body>
 	{% block main %}{% endblock %}
 	
-	<script src="{% static 'js/lib/require.js' %}"></script>
+	<script src="{% static 'js/libs/require.js' %}"></script>
 	<script src="{% static 'js/config.js' %}"></script>
 	{% block js %}{% endblock %}
 	</body>

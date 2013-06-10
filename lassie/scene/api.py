@@ -11,22 +11,23 @@ from lassie.scene.models import Scene, SceneObject
 class SceneResource(ModelResource):
     class Meta:
         queryset = Scene.objects.all()
-        excludes = ['']
         resource_name = 'scene'
-        authorization = Authorization()
+        filtering = {
+            'id': ALL,
+        }
         
 
 class SceneObjectResource(ModelResource):
-    #scene = fields.ForeignKey(SceneResource, 'scene')
+    scene = fields.ForeignKey(SceneResource, 'scene')
     
     class Meta:
         queryset = SceneObject.objects.all()
         resource_name = 'object'
+        always_return_data = True
         authorization = Authorization()
-
-    def get_object_list(self, request):
-        obj_list = super(SceneObjectResource, self).get_object_list(request)
-        return obj_list.filter(scene=request.GET['scene']).order_by('depth')
+        filtering = {
+            'scene': ALL_WITH_RELATIONS,
+        }
             
 
 # API structure
