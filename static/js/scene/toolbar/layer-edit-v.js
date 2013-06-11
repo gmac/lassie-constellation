@@ -2,33 +2,22 @@ define([
 	'backbone',
     'jquery',
 	'underscore',
-	'./layer-m'
+	'../model/layer-m'
 ], function(Backbone, $, _, layersModel) {
 	
-	var silent = {silent: true};
-	var patch = {patch:true, silent: true};
+	var selectedModel = layersModel.selected;
 	
 	var LayerEditView = Backbone.View.extend({
 		el: '#layer-edit',
 
 		initialize: function() {
-			this.listenTo(layersModel, 'select', this.load);
-		},
-		
-		load: function(model) {
-			this.model && this.stopListening(this.model);
-			this.model = model;
-			
-			if (model) {
-				this.listenTo(model, 'change', this.render);
-				this.listenTo(model, 'change:float_enabled', this.renderSubtitle);
-				this.listenTo(model, 'change:subtitle_color', this.renderSubtitle);
-				this.render();
-			}
+			this.listenTo(selectedModel, 'select change', this.render);
+			this.listenTo(selectedModel, 'change:float_enabled', this.renderSubtitle);
+			this.listenTo(selectedModel, 'change:subtitle_color', this.renderSubtitle);
 		},
 		
 		render: function() {
-			_.each(this.model.attributes, function(value, attribute) {
+			_.each(selectedModel.attrs(), function(value, attribute) {
 				this.$('[name="'+attribute+'"]').val(value);
 			}, this);
 			
@@ -46,26 +35,26 @@ define([
 		},
 		
 		onCancel: function() {
-			layersModel.select(null);
+			selectedModel.cancel();
 		},
 		
 		onSlug: function(evt) {
 			var target = $(evt.target);
 			var field = target.attr('name');
-			this.model.set(field, target.val(), silent);
+			selectedModel.set(field, target.val(), layersModel.SILENT);
 		},
 		
 		onString: function(evt) {
 			var target = $(evt.target);
 			var field = target.attr('name');
-			this.model.save(field, target.val(), patch);
+			selectedModel.save(field, target.val(), layersModel.SILENT_PATCH);
 		},
 		
 		onInteger: function(evt) {
 			var target = $(evt.target);
 			var field = target.attr('name');
 			var value = parseInt(target.val(), 10);
-			this.model.save(field, isNaN(value) ? 0 : value, patch);
+			selectedModel.save(field, isNaN(value) ? 0 : value, layersModel.SILENT_PATCH);
 		}
 	});
 

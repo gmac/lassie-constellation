@@ -4,6 +4,7 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/scene-edit.scss' %}" type="text/x-scss">
+<link rel="stylesheet" href="{% static 'css/scene-grid.scss' %}" type="text/x-scss">
 {% endblock %}
 
 
@@ -12,9 +13,11 @@
 
 <div class="toolbar">
 	<div id="toolbar-list">
-		<div id="layer-list" data-api="layer">
-			<h1>{{ scene.slug }} Layers</h1>
-			<button class="add">Add</button>
+		<div id="layer-list" class="list-module" data-api="layer">
+			<div class="list-header">
+				<h1>{{ scene.slug }} Layers</h1>
+				<button class="add">Add</button>
+			</div>
 			<ul class="list"></ul>
 			<script type="text/template" id="layer-list-item">
 				<li class="layer" data-cid="<%= cid %>">
@@ -26,18 +29,22 @@
 			</script>
 		</div>
 		
-		<div id="grid-list" data-api="grid">
-			<h1>{{ scene.slug }} Grids</h1>
-			<button class="add">Add</button>
+		<div id="grid-list" class="list-module" data-api="grid">
+			<div class="list-header">
+				<h1>{{ scene.slug }} Grids</h1>
+				<button class="add">Add</button>
+			</div>
 			<select class="list"></select>
-			<button>^</button>
+			<button class="edit">^</button>
 		</div>
 		
-		<div id="matrix-list" data-api="matrix">
-			<h1>{{ scene.slug }} Matrices</h1>
-			<button class="add">Add</button>
+		<div id="matrix-list" class="list-module" data-api="matrix">
+			<div class="list-header">
+				<h1>{{ scene.slug }} Matrices</h1>
+				<button class="add">Add</button>
+			</div>
 			<select class="list"></select>
-			<button>^</button>
+			<button class="edit">^</button>
 		</div>
 	</div>
 	
@@ -109,11 +116,37 @@
 		
 		<div id="grid-edit" data-api="grid">
 			<button class="cancel">x</button>
+			<h1>Grid</h1>
+			<label for="grid-slug">Slug</label>
+			<input id="grid-slug" type="text" name="slug" class="slug">
+			
+			<label for="grid-notes">Notes</label>
+			<input id="grid-notes" type="text" name="notes" class="string">
 		</div>
 		
 		<div id="matrix-edit" data-api="matrix">
 			<button class="cancel">x</button>
+			<h1>Matrix</h1>
+			<label for="matrix-slug">Slug</label>
+			<input id="matrix-slug" type="text" name="slug" class="slug">
+			
+			<label for="matrix-type">Type</label>
+			<select id="matrix-type" name="type">
+				<option value="0">Scale</option>
+				<option value="1">Color</option>
+				<option value="2">Rate</option>
+			</select>
 		</div>
+	</div>
+</div>
+
+
+<div class="viewport">
+	<div class="scene">
+		<div id="layers-layout" class="layer"></div>
+		<div id="layer-layout" class="layer-metrics"></div>
+		<div id="grid-layout" class="grid"></div>
+		<div id="matrix-layout" class="matrix"></div>
 	</div>
 </div>
 {% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+<p>id: {{ layer.id }}</p>
+<p>ct_id: {{ content_type }}</p>
+
+<div class="action-editor">
+	<ul class="tabs">
+		<li>New</li>
+	</ul>
+	<div class="script">
+		
+	</div>
+	<div class="dialogue">
+		
+	</div>
+</div>
+
+<script src="{% static 'js/libs/jquery.js' %}"></script>
+<!--script>
+$.ajax({
+	url: '/api/v1/action/',
+	method: 'post',
+	data: JSON.stringify({
+		content_object: '/api/v1/layer/{{ layer.id }}/'
+	}),
+	contentType: 'application/json',
+	error: function(e) {
+		console.log(e.responseText);
+	}
+});
+</script-->
+
+{% endblock %}

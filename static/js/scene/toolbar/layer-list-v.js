@@ -2,7 +2,7 @@ define([
 	'backbone',
     'jquery',
 	'underscore',
-	'./layer-m'
+	'../model/layer-m'
 ], function(Backbone, $, _, layersModel) {
     
 	var LayersListView = Backbone.View.extend({
@@ -46,7 +46,7 @@ define([
 		
 		onEdit: function(evt) {
 			var model = this.getModelForEl(evt.target);
-			layersModel.select(model);
+			layersModel.select(model, true);
 		},
 		
 		onRemove: function(evt) {

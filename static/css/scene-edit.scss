@@ -2,17 +2,46 @@
 
 .toolbar {
 	background-color: #eee;
+	border-right: 2px solid #ccc;
+	float: left;
 	height: 100%;
 	overflow: auto;
 	width: 200px;
 	
-	h1 {
-		margin: 20px 0 10px;
+	label {
+		display: block;
+	}
+	
+	.cancel {
+		float: right;
+	}
+	
+	#toolbar-list {
+		
+	}
+	
+	#toolbar-edit {
+		display: none;
 	}
 }
 
-#toolbar-edit {
-	display: none;
+.list-module {
+	margin-bottom: 35px;
+}
+
+.list-header {
+	background-color: #333;
+	color: #fff;
+	@include clearfix;
+	padding: 2px 5px;
+	
+	h1 {
+		float: left;
+	}
+	
+	.add {
+		float: right;
+	}
 }
 
 #layer-list {
@@ -67,4 +96,24 @@
 			width: 25px;
 		}
 	}
+}
+
+
+.viewport {
+	border: 1px solid #000;
+	height: 600px;
+	margin: auto;
+	overflow: hidden;
+	position: relative;
+	top: 25px;
+	width: 800px;
+}
+
+.scene {
+	background-color: #eee;
+	height: 600px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 1000px;
 }
