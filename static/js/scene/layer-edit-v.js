@@ -17,11 +17,14 @@ define([
 		
 		load: function(model) {
 			this.model && this.stopListening(this.model);
-			this.listenTo(model, 'change', this.render);
-			this.listenTo(model, 'change:float_enabled', this.renderSubtitle);
-			this.listenTo(model, 'change:subtitle_color', this.renderSubtitle);
 			this.model = model;
-			this.render();
+			
+			if (model) {
+				this.listenTo(model, 'change', this.render);
+				this.listenTo(model, 'change:float_enabled', this.renderSubtitle);
+				this.listenTo(model, 'change:subtitle_color', this.renderSubtitle);
+				this.render();
+			}
 		},
 		
 		render: function() {
@@ -38,7 +41,12 @@ define([
 		
 		events: {
 			'change .string': 'onString',
-			'change .integer': 'onInteger'
+			'change .integer': 'onInteger',
+			'click .cancel': 'onCancel'
+		},
+		
+		onCancel: function() {
+			layersModel.select(null);
 		},
 		
 		onSlug: function(evt) {

@@ -63,7 +63,7 @@ define([
 		},
 		
 		select: function(model) {
-			if (!(model instanceof Backbone.Model)) {
+			if (model && !(model instanceof Backbone.Model)) {
 				model = this.get(model);
 			}
 			this.trigger('select', model);

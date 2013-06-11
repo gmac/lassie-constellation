@@ -11,8 +11,8 @@
 <input type="hidden" id="scene-id" value="{{ scene.id }}">
 
 <div class="toolbar">
-	<div class="panel lists">
-		<div id="layer-list">
+	<div id="toolbar-list">
+		<div id="layer-list" data-api="layer">
 			<h1>{{ scene.slug }} Layers</h1>
 			<button class="add">Add</button>
 			<ul class="list"></ul>
@@ -26,14 +26,14 @@
 			</script>
 		</div>
 		
-		<div id="grid-list">
+		<div id="grid-list" data-api="grid">
 			<h1>{{ scene.slug }} Grids</h1>
 			<button class="add">Add</button>
 			<select class="list"></select>
 			<button>^</button>
 		</div>
 		
-		<div id="matrix-list">
+		<div id="matrix-list" data-api="matrix">
 			<h1>{{ scene.slug }} Matrices</h1>
 			<button class="add">Add</button>
 			<select class="list"></select>
@@ -41,8 +41,8 @@
 		</div>
 	</div>
 	
-	<div class="panel edits">
-		<div id="layer-edit">
+	<div id="toolbar-edit">
+		<div id="layer-edit" data-api="layer">
 			<button class="cancel">x</button>
 			<h1>Layer Attributes</h1>
 			<label for="layer-slug">Slug</label>
@@ -105,6 +105,14 @@
 		
 			<label for="layer-float-y">Float-y</label>
 			<input id="layer-float-y" type="text" name="float_y" class="integer">
+		</div>
+		
+		<div id="grid-edit" data-api="grid">
+			<button class="cancel">x</button>
+		</div>
+		
+		<div id="matrix-edit" data-api="matrix">
+			<button class="cancel">x</button>
 		</div>
 	</div>
 </div>
