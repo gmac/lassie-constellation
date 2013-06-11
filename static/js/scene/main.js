@@ -1,8 +1,14 @@
 define([
-    './objects-v',
-	'./objects-m'
-], function(objectsView, objectsModel) {
+	'./layer-m',
+	'./grid-m',
+	'./matrix-m',
+    './layer-list-v',
+	'./layer-edit-v',
+	'./grid-list-v'
+], function(layersModel, gridsModel, matricesModel) {
     
-	objectsModel.fetch();
-   
+	layersModel.fetch();
+	gridsModel.fetch();
+	matricesModel.fetch();
+	
 });

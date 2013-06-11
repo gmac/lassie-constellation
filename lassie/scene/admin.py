@@ -1,17 +1,16 @@
 from django.contrib import admin
+from lassie.scene.models import Scene, Layer
 
-from lassie.scene.models import Scene, SceneObject
 
-
-class SceneObjectAdmin(admin.TabularInline):
-    model = SceneObject
-    fields = ('uid',)
+class LayerAdmin(admin.TabularInline):
+    model = Layer
+    fields = ('slug',)
 
 
 class SceneAdmin(admin.ModelAdmin):
     model = Scene
-    list_display = ('title', 'uid', 'notes',)
-    inlines = [SceneObjectAdmin,]
+    list_display = ('title', 'slug', 'notes',)
+    inlines = [LayerAdmin,]
 
 
 admin.site.register(Scene, SceneAdmin)

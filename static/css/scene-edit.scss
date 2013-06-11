@@ -3,12 +3,13 @@
 .toolbar {
 	background-color: #eee;
 	height: 100%;
+	overflow: auto;
 	width: 200px;
 }
 
-#objects-list {
+#layer-list {
 	
-	.layers {
+	.list {
 		border-bottom: 2px solid #ccc;
 		position: relative;
 		

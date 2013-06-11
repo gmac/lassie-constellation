@@ -1,6 +1,6 @@
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404
-from lassie.scene.models import Scene, SceneObject
+from lassie.scene.models import Scene
 
 
 def scene_index(request):

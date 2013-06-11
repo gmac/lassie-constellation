@@ -1,27 +1,31 @@
 from django.db import models
 
+
 class Scene(models.Model):
     """
     Describes an individual scene layout within the world.
     """
-    uid = models.CharField('Reference id', max_length=40, unique=True)
+    slug = models.SlugField(unique=True)
     title = models.CharField(max_length=255, blank=True)
     notes = models.CharField(max_length=255, blank=True)
+    # bgimage = models.CharField(max_length=255, blank=True)
+    # music = models.CharField(max_length=255, blank=True)
+    # soundfx = models.CharField(max_length=255, blank=True)
     
     def __unicode__(self):
         return self.title
 
 
-class SceneObject(models.Model):
+class Layer(models.Model):
     """
     Describes an individual interactive object within a scene.
     """
     scene = models.ForeignKey('scene.Scene')
-    uid = models.CharField('Reference id', max_length=40)
+    slug = models.SlugField(default='')
     title = models.CharField(max_length=255, blank=True)
     notes = models.CharField(max_length=255, blank=True)
-    depth = models.SmallIntegerField(default=0)
-    grid = models.CharField(max_length=40, blank=True)
+    index = models.SmallIntegerField(default=0)
+    grid = models.SlugField(blank=True)
     opacity = models.PositiveSmallIntegerField(default=100)
     parallax_axis = models.CharField(max_length=10, blank=True)
     subtitle_color = models.CharField(max_length=10, default='#ffffff')
@@ -64,3 +68,34 @@ class SceneObject(models.Model):
     
     def __unicode__(self):
         return self.title
+
+
+class Grid(models.Model):
+    scene = models.ForeignKey('scene.Scene')
+    slug = models.SlugField(default='')
+    notes = models.CharField(max_length=255, blank=True)
+    data = models.TextField(blank=True)
+    
+    def __unicode__(self):
+        return self.slug
+
+
+class Matrix(models.Model):
+    scene = models.ForeignKey('scene.Scene')
+    slug = models.SlugField(default='')
+    notes = models.CharField(max_length=255, blank=True)
+    type = models.SmallIntegerField(default=0)
+    axis = models.SmallIntegerField(default=0)
+    # Node A (origin)
+    a_x = models.SmallIntegerField(default=0)
+    a_y = models.SmallIntegerField(default=0)
+    a_value = models.CharField(max_length=10, blank=True)
+    # Node B (outlier)
+    b_x = models.SmallIntegerField(default=0)
+    b_y = models.SmallIntegerField(default=0)
+    b_value = models.CharField(max_length=10, blank=True)
+    
+    def __unicode__(self):
+        return self.slug
+
+    

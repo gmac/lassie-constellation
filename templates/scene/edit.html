@@ -11,18 +11,101 @@
 <input type="hidden" id="scene-id" value="{{ scene.id }}">
 
 <div class="toolbar">
-	<div id="objects-list">
-		<h1>{{ scene.uid }} Objects</h1>
-		<button class="add">Add</button>
-		<button class="save">Save</button>
-		<ul class="layers"></ul>
-		<script type="text/template" id="objects-list-item">
-			<li class="layer" data-cid="<%= cid %>">
-				<span class="drag"></span>
-				<input type="text" readonly="readonly" value="<%= uid %>">
-				<button class="remove">x</button>
-			</li>
-		</script>
+	<div class="panel lists">
+		<div id="layer-list">
+			<h1>{{ scene.slug }} Layers</h1>
+			<button class="add">Add</button>
+			<ul class="list"></ul>
+			<script type="text/template" id="layer-list-item">
+				<li class="layer" data-cid="<%= cid %>">
+					<span class="drag"></span>
+					<input type="text" readonly="readonly" value="<%= slug %>">
+					<!--button class="remove">x</button-->
+					<button class="edit">^</button>
+				</li>
+			</script>
+		</div>
+		
+		<div id="grid-list">
+			<h1>{{ scene.slug }} Grids</h1>
+			<button class="add">Add</button>
+			<select class="list"></select>
+			<button>^</button>
+		</div>
+		
+		<div id="matrix-list">
+			<h1>{{ scene.slug }} Matrices</h1>
+			<button class="add">Add</button>
+			<select class="list"></select>
+			<button>^</button>
+		</div>
+	</div>
+	
+	<div class="panel edits">
+		<div id="layer-edit">
+			<button class="cancel">x</button>
+			<h1>Layer Attributes</h1>
+			<label for="layer-slug">Slug</label>
+			<input id="layer-slug" type="text" name="slug" class="slug">
+		
+			<label for="layer-title">Title</label>
+			<input id="layer-title" type="text" name="title" class="string">
+		
+			<label for="layer-subtitle-color">Title</label>
+			<input id="layer-subtitle-color" type="text" name="subtitle_color" class="hex">
+		
+			<h2>Image</h2>
+			<label for="layer-img">Image</label>
+			<input id="layer-img" type="text" name="img" class="string">
+		
+			<label for="layer-img-x">Image-x</label>
+			<input id="layer-img-x" type="text" name="img_x" class="integer">
+		
+			<label for="layer-img-y">Image-y</label>
+			<input id="layer-img-y" type="text" name="img_y" class="integer">
+		
+			<label for="layer-img-w">Image width</label>
+			<input id="layer-img-w" type="text" name="img_w" class="integer">
+		
+			<label for="layer-img-h">Image height</label>
+			<input id="layer-img-h" type="text" name="img_h" class="integer">
+		
+			<label for="layer-opacity">Opacity</label>
+			<input id="layer-opacity" type="text" name="opacity" class="percent">
+		
+			<h2>Hit Area</h2>
+			<label for="layer-hit-x">Hit-x</label>
+			<input id="layer-hit-x" type="text" name="hit_x" class="integer">
+		
+			<label for="layer-hit-y">Hit-y</label>
+			<input id="layer-hit-y" type="text" name="hit_y" class="integer">
+		
+			<label for="layer-hit-w">Hitarea width</label>
+			<input id="layer-hit-w" type="text" name="hit_w" class="integer">
+		
+			<label for="layer-hit-h">Hitarea height</label>
+			<input id="layer-hit-h" type="text" name="hit_h" class="integer">
+		
+			<h2>Map Point</h2>
+			<label for="layer-map-x">Map-x</label>
+			<input id="layer-map-x" type="text" name="map_x" class="integer">
+		
+			<label for="layer-map-y">Map-y</label>
+			<input id="layer-map-y" type="text" name="map_y" class="integer">
+		
+			<label for="layer-map-orien">Map orientation</label>
+			<input id="layer-map-orien" type="text" name="map_orientation" class="integer">
+		
+			<h2>Floating</h2>
+			<label for="layer-float">Floating</label>
+			<input id="layer-float" type="checkbox" name="float_enabled" class="boolean">
+		
+			<label for="layer-float-x">Float-x</label>
+			<input id="layer-float-x" type="text" name="float_x" class="integer">
+		
+			<label for="layer-float-y">Float-y</label>
+			<input id="layer-float-y" type="text" name="float_y" class="integer">
+		</div>
 	</div>
 </div>
 {% endblock %}

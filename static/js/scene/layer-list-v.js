@@ -2,50 +2,51 @@ define([
 	'backbone',
     'jquery',
 	'underscore',
-	'./objects-m'
-], function(Backbone, $, _, objectsModel) {
+	'./layer-m'
+], function(Backbone, $, _, layersModel) {
     
-	var ObjectsListView = Backbone.View.extend({
-		el: '#objects-list',
+	var LayersListView = Backbone.View.extend({
+		el: '#layer-list',
 		
 		initialize: function() {
-			this.listenTo(objectsModel, 'add remove reset sync', this.render);
+			this.listenTo(layersModel, 'add remove reset sync', this.render);
 		},
 		
 		render: function() {
 			var html = '';
-			this.tmpl = this.tmpl || _.template($('#objects-list-item').html());
+			this.tmpl = this.tmpl || _.template($('#layer-list-item').html());
 			
-			objectsModel.each(function(item, index) {
+			layersModel.each(function(item, index) {
 				html += this.tmpl({
 					cid: item.cid,
-					uid: item.get('uid')
+					slug: item.get('slug')
 				});
 			}, this);
 			
-			this.$('.layers').html(html);
+			this.$('.list').html(html);
 		},
 		
 		getModelForEl: function(el) {
 			var el = $(el).closest('.layer');
-			return objectsModel.get(el.attr('data-cid'));
+			return layersModel.get(el.attr('data-cid'));
 		},
 		
 		events: {
 			'click .add': 'onAdd',
-			'click .save': 'onSave',
+			'click .edit': 'onEdit',
 			'click .remove': 'onRemove',
 			'dblclick input': 'onEditId',
 			'blur input': 'onCancelId',
 			'mousedown .drag': 'onDrag'
 		},
 		
-		onAdd: function() {
-			objectsModel.create();
+		onAdd: function(evt) {
+			layersModel.create();
 		},
 		
-		onSave: function() {
-			objectsModel.save();
+		onEdit: function(evt) {
+			var model = this.getModelForEl(evt.target);
+			layersModel.select(model);
 		},
 		
 		onRemove: function(evt) {
@@ -60,7 +61,7 @@ define([
 		onCancelId: function(evt) {
 			var input = $(evt.target);
 			var model = this.getModelForEl(input);
-			model && model.set('uid', input.val());
+			model && model.save('slug', input.val(), {patch: true});
 			input.prop('readonly', true);
 		},
 		
@@ -95,20 +96,19 @@ define([
 				hilite.removeClass('hilite');
 				layer.removeClass('dragging');
 				
-				if (layer.index() != index) {
-					if (after) {
-						items.eq(index).after(layer);
-					} else {
-						items.eq(index).before(layer);
-					}
+				if (layer.index() == index) return;
+				
+				if (after) {
+					items.eq(index).after(layer);
+				} else {
+					items.eq(index).before(layer);
 				}
 				
-				items.each(function() {
-					var item = $(this);
-					objectsModel.get(item.attr('data-cid')).set('index', item.index());
+				list.children().each(function(index) {
+					layersModel.get($(this).attr('data-cid')).set('index', index);
 				});
 				
-				objectsModel.reorder();
+				layersModel.reorder();
 			}
 			
 			$(document)
@@ -124,5 +124,5 @@ define([
 		}
 	});
 
-	return new ObjectsListView();
+	return new LayersListView();
 });
