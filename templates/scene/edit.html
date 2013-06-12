@@ -15,7 +15,7 @@
 	<div id="toolbar-list">
 		<div id="layer-list" class="list-module" data-api="layer">
 			<div class="list-header">
-				<h1>{{ scene.slug }} Layers</h1>
+				<h1>Layers</h1>
 				<button class="add">Add</button>
 			</div>
 			<ul class="list"></ul>
@@ -31,7 +31,7 @@
 		
 		<div id="grid-list" class="list-module" data-api="grid">
 			<div class="list-header">
-				<h1>{{ scene.slug }} Grids</h1>
+				<h1>Grids</h1>
 				<button class="add">Add</button>
 			</div>
 			<select class="list"></select>
@@ -40,7 +40,7 @@
 		
 		<div id="matrix-list" class="list-module" data-api="matrix">
 			<div class="list-header">
-				<h1>{{ scene.slug }} Matrices</h1>
+				<h1>Matrices</h1>
 				<button class="add">Add</button>
 			</div>
 			<select class="list"></select>
@@ -49,8 +49,8 @@
 	</div>
 	
 	<div id="toolbar-edit">
-		<div id="layer-edit" data-api="layer">
-			<button class="cancel">x</button>
+		<div id="layer-edit" class="edit-view" data-api="layer">
+			<button class="cancel-edit">x</button>
 			<h1>Layer Attributes</h1>
 			<label for="layer-slug">Slug</label>
 			<input id="layer-slug" type="text" name="slug" class="slug">
@@ -112,10 +112,12 @@
 		
 			<label for="layer-float-y">Float-y</label>
 			<input id="layer-float-y" type="text" name="float_y" class="integer">
+			
+			<div class="model-delete"></div>
 		</div>
 		
-		<div id="grid-edit" data-api="grid">
-			<button class="cancel">x</button>
+		<div id="grid-edit" class="edit-view" data-api="grid">
+			<button class="cancel-edit">x</button>
 			<h1>Grid</h1>
 			<label for="grid-slug">Slug</label>
 			<input id="grid-slug" type="text" name="slug" class="slug">
@@ -124,14 +126,16 @@
 			<input id="grid-notes" type="text" name="notes" class="string">
 			
 			<h2>Grid Operations</h2>
-			<button class="join">Join</button>
-			<button class="split">Break</button>
-			<button class="polygon">Polygon</button>
-			<button class="remove">Remove</button>
+			<button class="grid-op" data-op="join">Join</button>
+			<button class="grid-op" data-op="split">Break</button>
+			<button class="grid-op" data-op="polygon">Polygon</button>
+			<button class="grid-op" data-op="remove">Remove</button>
+			
+			<div class="model-delete"></div>
 		</div>
 		
-		<div id="matrix-edit" data-api="matrix">
-			<button class="cancel">x</button>
+		<div id="matrix-edit" class="edit-view" data-api="matrix">
+			<button class="cancel-edit">x</button>
 			<h1>Matrix</h1>
 			<label for="matrix-slug">Slug</label>
 			<input id="matrix-slug" type="text" name="slug" class="slug">
@@ -142,9 +146,23 @@
 				<option value="1">Color</option>
 				<option value="2">Rate</option>
 			</select>
+			
+			<div class="model-delete"></div>
 		</div>
 	</div>
 </div>
+
+<script type="text/template" id="model-delete-tmpl">
+<div class="intent">
+	<p>Danger zone</p>
+	<button class="delete" data-op="intent">Delete</button>
+</div>
+<div class="confirm" style="display:none;">
+	<p>Are you sure?</p>
+	<button class="delete" data-op="cancel">Cancel</button>
+	<button class="delete" data-op="confirm">Delete</button>
+</div>
+</script>
 
 
 <div class="viewport">

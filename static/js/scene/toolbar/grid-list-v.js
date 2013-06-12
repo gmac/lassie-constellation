@@ -1,15 +1,10 @@
 define([
 	'./base-list-v',
 	'../model/grid-m'
-], function(BaseListView, gridsModel) {
+], function(ListView, gridsResource) {
     
-	var GridListView = BaseListView.extend({
+	return new ListView({
 		el: '#grid-list',
-		
-		initialize: function() {
-			this.setModel(gridsModel);
-		}
+		collection: gridsResource
 	});
-	
-	return new GridListView();
 });

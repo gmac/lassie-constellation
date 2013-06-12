@@ -1,15 +1,13 @@
 define([
 	'./base-edit-v',
 	'../model/matrix-m'
-], function(BaseEditView, matrixModel) {
+], function(BaseEditView, matrixResource) {
     
 	var MatrixEditView = BaseEditView.extend({
-		el: '#matrix-edit',
-		
-		initialize: function() {
-			this.setModel(matrixModel);
-		}
+		el: '#matrix-edit'
 	});
 	
-	return new MatrixEditView();
+	return new MatrixEditView({
+		collection: matrixResource
+	});
 });

@@ -1,40 +1,30 @@
 define([
+	'jquery',
 	'./base-edit-v',
 	'../model/grid-m',
 	'../grid/grid'
-], function(BaseEditView, gridModel, gridController) {
+], function($, BaseEditView, gridResource, gridController) {
     
 	var GridEditView = BaseEditView.extend({
 		el: '#grid-edit',
 		
-		initialize: function() {
-			this.setModel(gridModel);
+		events: function() {
+			return _.extend({
+				'click .grid-op': 'onGridOp'
+			}, BaseEditView.prototype.events);
 		},
 		
-		events: {
-			'click .cancel': 'onCancel',
-			'click .join': 'onJoin',
-			'click .split': 'onSplit',
-			'click .polygon': 'onPolygon',
-			'click .remove': 'onRemove'
-		},
-		
-		onJoin: function() {
-			gridController.joinNodes();
-		},
-		
-		onSplit: function() {
-			gridController.splitNodes();
-		},
-		
-		onPolygon: function() {
-			gridController.makePolygon();
-		},
-		
-		onRemove: function() {
-			gridController.deleteGeometry();
+		onGridOp: function(evt) {
+			switch ($(evt.currentTarget).attr('data-op')) {
+				case 'join': gridController.joinNodes(); return;
+				case 'split': gridController.splitNodes(); return;
+				case 'polygon': gridController.makePolygon(); return;
+				case 'remove': gridController.deleteGeometry(); return;
+			}
 		}
 	});
 	
-	return new GridEditView();
+	return new GridEditView({
+		collection: gridResource
+	});
 });

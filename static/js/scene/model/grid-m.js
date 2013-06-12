@@ -1,8 +1,8 @@
 define([
 	'./base-m'
-], function(BaseSceneModelList) {
+], function(SceneModelList) {
 
-	var GridModelList = BaseSceneModelList.extend({
+	var GridModelList = SceneModelList.extend({
 		api: 'grid'
 	});
 

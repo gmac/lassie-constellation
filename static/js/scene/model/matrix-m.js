@@ -1,8 +1,8 @@
 define([
 	'./base-m'
-], function(BaseSceneModelList) {
+], function(SceneModelList) {
 
-	var MatrixModelList = BaseSceneModelList.extend({
+	var MatrixModelList = SceneModelList.extend({
 		api: 'matrix'
 	});
 

@@ -1,16 +1,16 @@
 define([
 	'./base-m'
-], function(BaseSceneModelList) {
+], function(SceneModelList) {
 
-	var LayerModelList = BaseSceneModelList.extend({
+	var LayerModelList = SceneModelList.extend({
 		api: 'layer',
 		
 		comparator: function(model) {
 			return model.get('index');
 		},
 		
-		getNewModel: function() {
-			var data = BaseSceneModelList.prototype.getNewModel.call(this);
+		getNewModelData: function() {
+			var data = BaseSceneModelList.prototype.getNewModelData.call(this);
 			data.index = this.length;
 			return data;
 		},

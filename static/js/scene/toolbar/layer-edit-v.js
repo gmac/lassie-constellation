@@ -1,43 +1,26 @@
 define([
-	'backbone',
-    'jquery',
 	'underscore',
+	'./base-edit-v',
 	'../model/layer-m'
-], function(Backbone, $, _, layersModel) {
-	
-	var selectedModel = layersModel.selected;
-	
-	var LayerEditView = Backbone.View.extend({
+], function(_, BaseEditView, layersResource) {
+
+	var LayerEditView = BaseEditView.extend({
 		el: '#layer-edit',
 
-		initialize: function() {
-			this.listenTo(selectedModel, 'select change', this.render);
-			this.listenTo(selectedModel, 'change:float_enabled', this.renderSubtitle);
-			this.listenTo(selectedModel, 'change:subtitle_color', this.renderSubtitle);
+		setup: function() {
+			//this.listenTo(selectedModel, 'select change', this.render);
+			//this.listenTo(selectedModel, 'change:float_enabled', this.renderSubtitle);
+			//this.listenTo(selectedModel, 'change:subtitle_color', this.renderSubtitle);
 		},
 		
-		render: function() {
-			_.each(selectedModel.attrs(), function(value, attribute) {
-				this.$('[name="'+attribute+'"]').val(value);
-			}, this);
-			
-			this.renderSubtitle();
-		},
+		events: function() {
+			return _.extend({
+				//'change .string': 'onString',
+				//'change .integer': 'onInteger'
+			}, BaseEditView.prototype.events);
+		}
 		
-		renderSubtitle: function() {
-			
-		},
-		
-		events: {
-			'change .string': 'onString',
-			'change .integer': 'onInteger',
-			'click .cancel': 'onCancel'
-		},
-		
-		onCancel: function() {
-			selectedModel.cancel();
-		},
-		
+		/*
 		onSlug: function(evt) {
 			var target = $(evt.target);
 			var field = target.attr('name');
@@ -55,8 +38,10 @@ define([
 			var field = target.attr('name');
 			var value = parseInt(target.val(), 10);
 			selectedModel.save(field, isNaN(value) ? 0 : value, layersModel.SILENT_PATCH);
-		}
+		}*/
 	});
 
-	return new LayerEditView();
+	return new LayerEditView({
+		collection: layersResource
+	});
 });

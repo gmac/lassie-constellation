@@ -1,15 +1,10 @@
 define([
 	'./base-list-v',
 	'../model/matrix-m'
-], function(BaseListView, matrixModel) {
+], function(ListView, matrixResource) {
     
-	var MatrixListView = BaseListView.extend({
+	return new ListView({
 		el: '#matrix-list',
-		
-		initialize: function() {
-			this.setModel(matrixModel);
-		}
+		collection: matrixResource
 	});
-	
-	return new MatrixListView();
 });

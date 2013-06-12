@@ -3,18 +3,32 @@ define([
 ], function(Backbone) {
     
 	var BaseListView = Backbone.View.extend({
-		
-		setModel: function(model) {
-			this.model = model;
-			this.listenTo(this.model, 'add remove reset sync', this.render);
+		initialize: function() {
+			if (this.collection) {
+				this.listenTo(this.collection, 'add remove reset sync', this.render);
+				this.listenTo(this.collection.selected, 'select', this.updateSelection);
+			} else {
+				throw('Requires a resource collection model.');
+			}	
 		},
 		
 		render: function() {
 			var html = '';
-			this.model.each(function(model) {
-				html += '<option value="'+ model.cid +'">'+ model.get('slug') +'</option>';
-			});
+			
+			// Render list options, including selection state:
+			this.collection.each(function(model) {
+				html += '<option value="'+ model.cid +'"';
+				if (model.cid === this.collection.selected.cid) {
+					html += ' selected="selected"';
+				}
+				html += '>'+ model.get('slug') +'</option>';
+			}, this);
+			
 			this.$('.list').html(html);
+		},
+		
+		updateSelection: function() {
+			this.$('.list').val(this.collection.selected.cid);
 		},
 		
 		events: {
@@ -22,21 +36,17 @@ define([
 			'click .add': 'onAdd',
 			'click .edit': 'onEdit'
 		},
-		
-		getValue: function() {
-			return this.$('.list').val();
-		},
-		
+
 		onSelect: function() {
-			this.model.select(this.getValue());
+			this.collection.select(this.$('.list').val());
 		},
 		
 		onAdd: function() {
-			this.model.create();
+			this.collection.create();
 		},
 		
 		onEdit: function() {
-			this.model.select(this.getValue(), true);
+			this.collection.selected.edit();
 		}
 	});
 
