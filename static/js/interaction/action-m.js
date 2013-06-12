@@ -1,11 +1,12 @@
 define([
 	'backbone',
 	'underscore',
-	'common/proxy-m'
-], function(Backbone, _, ProxyModel) {
+	'common/resource-m'
+], function(Backbone, _, ResourceModelList) {
 	
-	var ActionModelList = Backbone.Collection.extend({
-		url: '/api/v1/action/',
+	var ActionModelList = ResourceModelList.extend({
+		api: 'action',
+		allowEmpty: false,
 		
 		// Fill these in using .setResource();
 		resourceId: 0,
@@ -18,18 +19,17 @@ define([
 			this.resourceURI = uri;
 		},
 		
-		initialize: function() {
-			this.selected = new ProxyModel();
-			this.listenTo(this, 'reset sync', this.setup);
+		comparator: function(model) {
+			return model.get('index');
 		},
 		
-		// Setup once after initial load:
-		// Create a default Action (if none available),
-		// and then select the first record.
-		setup: function() {
-			this.stopListening(this);
-			if (!this.length) this.create();
-			this.select(0);
+		// Gets a base fieldset for new models:
+		// may be overridden in sub-classes to extend fields.
+		getNewModelData: function() {
+			return {
+				content_object: this.resourceURI,
+				index: this.length
+			};
 		},
 		
 		// HACK: request objects based on resource ID.
@@ -37,12 +37,12 @@ define([
 		// however Tastypie (API) seems to have issues filtering generic foreign keys.
 		// Instead we'll request on resource id with no results limit,
 		// and then filter out the relevant resources client-side.
-		sync: function(method, model, options) {
-			options.data = options.data || {};
-			options.data.format = 'json';
-			options.data.limit = 0;
-			options.data.object_id = this.resourceId;
-			Backbone.sync(method, model, options);
+		getRequestData: function(method) {
+			return {
+				object_id: this.resourceId,
+				format: 'json',
+				limit: 0
+			};
 		},
 		
 		// HACK: filter out unrelated resources that don't match the resource URI.
@@ -51,22 +51,6 @@ define([
 			return _.filter(response.objects, function(model) {
 				return model.content_object === this.resourceURI;
 			}, this);
-		},
-		
-		create: function() {
-			Backbone.Collection.prototype.create.call(this, {
-				content_object: this.resourceURI,
-				index: this.length
-			});
-		},
-		
-		select: function(model) {
-			if (_.isString(model)) model = this.get(model);
-			else if (_.isNumber(model)) model = this.at(model);
-			
-			if (model instanceof Backbone.Model) {
-				this.selected.load(model);
-			}
 		}
 	});
 	

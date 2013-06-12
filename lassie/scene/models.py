@@ -8,9 +8,9 @@ class Scene(models.Model):
     slug = models.SlugField(unique=True)
     title = models.CharField(max_length=255, blank=True)
     notes = models.CharField(max_length=255, blank=True)
-    # bgimage = models.CharField(max_length=255, blank=True)
-    # music = models.CharField(max_length=255, blank=True)
-    # soundfx = models.CharField(max_length=255, blank=True)
+    image = models.ImageField(upload_to='scene', blank=True)
+    music = models.FileField(upload_to='music', blank=True)
+    soundfx = models.FileField(upload_to='soundfx', blank=True)
     
     def __unicode__(self):
         return self.title
@@ -52,7 +52,7 @@ class Layer(models.Model):
     hit_y = models.SmallIntegerField(default=0)
     
     # Image display
-    img = models.CharField(max_length=255, blank=True)
+    image = models.ImageField(upload_to='layer', blank=True)
     img_h = models.PositiveSmallIntegerField(default=0)
     img_w = models.PositiveSmallIntegerField(default=0)
     img_x = models.SmallIntegerField(default=0)

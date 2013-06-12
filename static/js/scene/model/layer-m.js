@@ -10,7 +10,7 @@ define([
 		},
 		
 		getNewModelData: function() {
-			var data = BaseSceneModelList.prototype.getNewModelData.call(this);
+			var data = SceneModelList.prototype.getNewModelData.call(this);
 			data.index = this.length;
 			return data;
 		},

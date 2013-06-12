@@ -23,7 +23,6 @@
 				<li class="layer" data-cid="<%= cid %>">
 					<span class="drag"></span>
 					<input type="text" readonly="readonly" value="<%= slug %>">
-					<!--button class="remove">x</button-->
 					<button class="edit">^</button>
 				</li>
 			</script>
@@ -166,7 +165,7 @@
 
 
 <div class="viewport">
-	<div class="scene">
+	<div class="scene" {% if scene.image %}style="background:url(/media/{{ scene.image }}) no-repeat;"{% endif %}>
 		<div id="layers-layout" class="layer"></div>
 		<div id="layer-layout" class="layer-metrics"></div>
 		<div id="grid-layout" class="grid"></div>

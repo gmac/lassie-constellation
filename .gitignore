@@ -1,3 +1,7 @@
+# asset folders
+CACHE
+media
+
 *.py[cod]
 
 # C extensions
@@ -35,12 +39,8 @@ nosetests.xml
 
 # Local env settings
 local_settings.py
-.sass-cache
-CACHE
+node_modules
 bourbon
 
-# OSX garbage
+.sass-cache
 .DS_Store
-
-# Require.js build tools
-node_modules

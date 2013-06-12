@@ -8,8 +8,13 @@
 
 	li {
 		background-color: #ccc;
+		cursor: default;
 		@include inline-block;
 		margin: 0 2px;
 		padding: 5px 15px;
+		
+		&.selected {
+			background-color: #eee;
+		}
 	}
 }
