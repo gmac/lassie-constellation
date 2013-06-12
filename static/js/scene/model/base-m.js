@@ -63,7 +63,6 @@ define([
 		}
 	});
 	
-	
 	var SceneModelList = Backbone.Collection.extend({
 		api: '',
 		model: Backbone.Model,

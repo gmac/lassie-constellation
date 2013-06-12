@@ -1,5 +1,4 @@
 define([
-	'./toolbar/toolbar-c'
-], function() {
-
-});
+	'./toolbar/toolbar-c',
+	'./grid/grid-layout-v'
+]);

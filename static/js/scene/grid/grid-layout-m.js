@@ -22,6 +22,9 @@ define([
 	var gridViewModel = _.extend(new Const.Grid(), Backbone.Events, {
 		
 		init: function() {
+			// Reload data when grid selection changes:
+			this.listenTo(gridModel.selected, 'select', this.load);
+			
 			var self = this;
 			
 			// Override all grid mutators with event-firing method wrappers:
@@ -37,13 +40,13 @@ define([
 
 		// Loads current cache selection into the model:
 		load: function() {
-			var data = gridModel.selected.get('data') || '';
-			this.reset(JSON.parse(data) || {});
+			var data = gridModel.selected.get('data') || '{}';
+			this.reset(JSON.parse(data));
 		},
 		
 		// Saves current model data into the cache:
 		save: function() {
-			gridModel.selected.set('data', this.toJSON());
+			gridModel.selected.set('data', JSON.stringify(this.toJSON()));
 		},
 		
 		update: function() {

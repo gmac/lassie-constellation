@@ -101,6 +101,7 @@ class ActionResource(ModelResource):
         always_return_data = True
         authorization = Authorization()
         filtering = {
+            'id': ALL,
             'content_object': ALL,
             'content_type': ['exact'],
             'object_id': ['exact'],

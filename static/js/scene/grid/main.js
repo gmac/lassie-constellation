@@ -2,6 +2,6 @@ define([
 	'./grid',
 	'./grid-layout-m',
 	'./grid-layout-v'
-], function( gridAPI, gridModel, gridView ) {
+], function(gridAPI, gridModel, gridView) {
 	gridModel.load();
 });

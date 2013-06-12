@@ -21,9 +21,6 @@ define([
 			// Add event listeners:
 			this.listenTo(gridModel, 'change', this.render);
 			this.listenTo(selectionModel, 'update', this.setSelection);
-			
-			// Set initial viewport:
-			this.setFrame();
 		},
 		
 		// Generates a polygon drawing path based on an array of node models.
@@ -75,7 +72,7 @@ define([
 			});
 			
 			// Generate grid view template:
-			this.tmpl = this.tmpl || _.template( $('#grid-view').html() );
+			this.tmpl = this.tmpl || _.template( $('#grid-layout-tmpl').html() );
 			
 			// Generate and set new view template.
 			this.$el.html( this.tmpl({

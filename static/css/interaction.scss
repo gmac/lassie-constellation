@@ -1,0 +1,15 @@
+@import "bourbon/bourbon";
+
+#actions-manager {
+
+}
+
+.actions-list {
+
+	li {
+		background-color: #ccc;
+		@include inline-block;
+		margin: 0 2px;
+		padding: 5px 15px;
+	}
+}

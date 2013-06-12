@@ -1,23 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block main %}
-<p>id: {{ layer.id }}</p>
-<p>ct_id: {{ content_type }}</p>
 
-<div class="action-editor">
-	<ul class="tabs">
-		<li>New</li>
-	</ul>
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/interaction.scss' %}" type="text/x-scss">
+{% endblock %}
+
+
+{% block main %}
+
+<div id="actions-manager">
+	<input id="resource-uri" type="hidden" value="/api/v1/layer/{{ layer.id }}/">
+	<ul class="actions-list"></ul>
 	<div class="script">
-		
-	</div>
-	<div class="dialogue">
-		
+		<h2>Script</h2>
+		<textarea></textarea>
 	</div>
 </div>
+<div id="dialogue-manager">
+	<h2>Dialogue</h2>
+	<button class="add-dialogue">Add</button>
+	<ul class="dialogue-list"></ul>
+</div>
 
-<script src="{% static 'js/libs/jquery.js' %}"></script>
 <!--script>
 $.ajax({
 	url: '/api/v1/action/',
@@ -32,4 +37,9 @@ $.ajax({
 });
 </script-->
 
+{% endblock %}
+
+
+{% block js %}
+<script>require(['interaction/main']);</script>
 {% endblock %}
