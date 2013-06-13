@@ -1,20 +1,55 @@
 @import "bourbon/bourbon";
 
 #actions-manager {
+	
+	.actions-list {
 
+		li {
+			background-color: #ccc;
+			cursor: default;
+			@include inline-block;
+			margin: 0 2px;
+			padding: 5px 15px;
+
+			&.selected {
+				background-color: #eee;
+			}
+		}
+	}
+	
+	textarea {
+		height: 200px;
+		width: 100%;
+	}	
 }
 
-.actions-list {
-
+.dialogue-list {
+	
+	border-bottom: 1px solid #ccc;
+	width: 200px;
+	
 	li {
-		background-color: #ccc;
-		cursor: default;
-		@include inline-block;
-		margin: 0 2px;
-		padding: 5px 15px;
-		
-		&.selected {
-			background-color: #eee;
-		}
+		border-top: 1px solid #ccc;
+	}
+}
+
+.add-header {
+	background-color: #333;
+	border-radius: 5px;
+	color: #fff;
+	height: 25px;
+	padding: 4px 10px;
+	margin: 50px 0 25px;
+	
+	h2 {
+		line-height: 25px;
+	}
+
+	button {
+		border: none;
+		float: right;
+		height: 100%;
+		margin: 0;
+		padding: 0;
 	}
 }
