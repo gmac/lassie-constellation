@@ -22,6 +22,5 @@ def scene_layer(request, layer_id):
     content_type = ContentType.objects.get_for_model(layer)
     
     return render(request, 'scene/layer.html', {
-        'layer': layer,
-        'content_type': content_type.id,
+        'model': layer
     })

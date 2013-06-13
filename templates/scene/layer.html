@@ -1,80 +1,19 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static action_manager %}
 
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/interaction.scss' %}" type="text/x-scss">
+
 {% endblock %}
 
 
 {% block main %}
 
-<div id="actions-manager">
-	<input id="resource-uri" type="hidden" value="/api/v1/layer/{{ layer.id }}/">
-	<ul class="actions-list"></ul>
+	{% action_manager model %}
 	
-	<ul>
-		<li>
-			<label for="trigger-type">Trigger Type</label>
-			<select id="trigger-type">
-				<option value="0">Primary</option>
-				<option value="1">Item</option>
-			</select>
-		</li>
-		<li>
-			<label for="trigger-item">Trigger Item</label>
-			<select id="trigger-item">
-				<option value="0">Apple</option>
-				<option value="1">Banana</option>
-			</select>
-		</li>
-	</ul>
-	
-	<div class="script">
-		<h2>Script</h2>
-		<textarea></textarea>
-	</div>
-	
-	<div id="dialogue-manager">
-		<div class="add-header">
-			<button class="add-dialogue">Add</button>
-			<h2>Dialogue</h2>
-		</div>
-		<ul class="dialogue-list"></ul>
-		
-		<label for="dialogue-subtitle">Subtitle</label>
-		<textarea id="dialogue-subtitle"></textarea>
-		
-		<label for="dialogue-puppet">Puppet</label>
-		<input id="dialogue-puppet" type="text">
-		
-		<label for="dialogue-tone">Intonation</label>
-		<input id="dialogue-tone" type="text">
-		
-		<label for="dialogue-sound">Sound</label>
-		<input id="dialogue-sound" type="text">
-	</div>
-	
-	<div class="model-delete"></div>
-</div>
-
-<!--script>
-$.ajax({
-	url: '/api/v1/action/',
-	method: 'post',
-	data: JSON.stringify({
-		content_object: '/api/v1/layer/{{ layer.id }}/'
-	}),
-	contentType: 'application/json',
-	error: function(e) {
-		console.log(e.responseText);
-	}
-});
-</script-->
-
 {% endblock %}
 
 
 {% block js %}
-<script>require(['interaction/main']);</script>
+<!--script>require(['interaction/main']);</script-->
 {% endblock %}

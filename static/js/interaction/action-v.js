@@ -17,7 +17,40 @@ define([
 				model: actionsModel.selected
 			});
 			
-			actionsModel.setResource(this.$('#resource-uri').val());
+			this.loadWidget();
+		},
+		
+		// Loads up widget configuration:
+		// several aspects of configuration are loaded from the rendered DOM data.
+		loadWidget: function() {
+			// Pull resource URI from template form:
+			var uri = this.$('#resource-uri').val();
+			
+			if (!uri) {
+				this.$el.hide();
+				return;
+			}
+			
+			// Parse interaction options out of the DOM:
+			var types = _.map(this.$('#action-interaction').children().toArray(), function(opt) { 
+				return {
+					id: opt.getAttribute('value'),
+					is_item: !!opt.getAttribute('data-item'),
+					label: opt.innerHTML
+				};
+			});
+			
+			// Parse items options out of the DOM:
+			var items = _.map(this.$('#action-item').children().toArray(), function(opt) { 
+				return {
+					id: opt.getAttribute('value'),
+					label: opt.innerHTML
+				};
+			});
+
+			actionsModel.types.reset(types);
+			actionsModel.items.reset(items);
+			actionsModel.setResource(uri);
 			actionsModel.fetch();
 		},
 		
@@ -32,6 +65,7 @@ define([
 			
 			html += '<li class="action add-action">+</li>';
 			this.$tabs.html(html);
+			this.$el.show();
 		},
 		
 		updateSelection: function() {

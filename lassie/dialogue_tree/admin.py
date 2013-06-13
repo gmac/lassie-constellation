@@ -1,7 +1,5 @@
 from django.contrib import admin
-
 from lassie.dialogue_tree.models import Tree, TreeMenu, TreeTopic
-from lassie.interaction.admin import SingleActionAdmin
 
      
 class TreeTopicInline(admin.StackedInline):
@@ -19,7 +17,6 @@ class TreeMenuInline(admin.StackedInline):
 
 class TreeTopicAdmin(admin.ModelAdmin):
     model = TreeTopic
-    inlines = [SingleActionAdmin,]
 
 
 class TreeMenuAdmin(admin.ModelAdmin):

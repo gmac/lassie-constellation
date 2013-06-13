@@ -12,6 +12,10 @@ define([
 		resourceId: 0,
 		resourceURI: '/api/v1/xxx/x/',
 		
+		// Related Model collections:
+		types: new Backbone.Collection(),
+		items: new Backbone.Collection(),
+		
 		// Sets the associated API resource that Actions will be assigned to:
 		// Parses out the object's foreign key from the API resource.
 		setResource: function(uri) {

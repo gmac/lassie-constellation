@@ -1,12 +1,10 @@
 from django.contrib import admin
-
-from lassie.interaction.admin import MultiActionAdmin
+from lassie.interaction.admin import ActionInline
 from lassie.player.models import InventoryCollection, DefaultResponse, Avatar
 
 
 class DefaultResponseAdmin(admin.ModelAdmin):
     model = DefaultResponse
-    inlines = [MultiActionAdmin,]
     list_display = ('title', 'uid', 'notes',)
     
 

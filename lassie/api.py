@@ -4,7 +4,7 @@ from tastypie.authorization import Authorization
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 from tastypie.resources import ModelResource
-from lassie.interaction.models import Action, Dialogue
+from lassie.interaction.models import ActionType, Action, Dialogue
 from lassie.inventory.models import Item
 from lassie.scene.models import Scene, Layer, Grid, Matrix
 
@@ -84,12 +84,24 @@ class ItemResource(ModelResource):
         filtering = {
             'id': ALL,
         }
-                
+
+
+class ActionTypeResource(ModelResource):
+    '''
+    API resource for accessing action type classifications.
+    '''
+    class Meta:
+        queryset = ActionType.objects.all()
+        resource_name = 'action_type'
+        allowed_methods = ['get']
+                  
 
 class ActionResource(ModelResource):
     '''
     API resource for accessing action profiles (script and dialogue).
     '''
+    action_type = fields.ForeignKey(ActionTypeResource, 'action_type', null=True)
+    related_item = fields.ForeignKey(ItemResource, 'related_item', null=True)
     content_object = GenericForeignKeyField({
         Item: ItemResource,
         Layer: LayerResource,
@@ -129,6 +141,7 @@ class DialogueResource(ModelResource):
 v1_api = Api(api_name='v1')
 
 v1_api.register(ItemResource())
+v1_api.register(ActionTypeResource())
 v1_api.register(ActionResource())
 v1_api.register(DialogueResource())
 v1_api.register(SceneResource())

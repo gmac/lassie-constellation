@@ -2,6 +2,7 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+
 class Voice(models.Model):
     """
     Describes a voice actor reference.
@@ -11,7 +12,7 @@ class Voice(models.Model):
     
     def __unicode__(self):
         return self.title
-        
+
 
 class Dialogue(models.Model):
     """
@@ -35,23 +36,32 @@ class Dialogue(models.Model):
         return self.subtitle
 
 
+class ActionType(models.Model):
+    """
+    Available game interactions. Each game action will conform to an interaction type.
+    """
+    title = models.CharField(max_length=255, blank=True)
+    is_item = models.BooleanField('Relates to items', default=False)
+    
+    def __unicode__(self):
+        return self.title
+        
+
 class Action(models.Model):
     """
     Defines an actionable trigger.
     Actions run an environment script, and provide a collection of related dialogue.
     """
-    index = models.PositiveIntegerField(default=0)
-    title = models.CharField('Action title*', max_length=255, blank=True)
+    title = models.CharField(max_length=255, blank=True)
     notes = models.CharField(max_length=255, blank=True)
+    grammar = models.CharField(max_length=255, blank=True)
     script = models.TextField(blank=True)
     object_id = models.PositiveIntegerField()
     content_type = models.ForeignKey(ContentType)
     content_object = generic.GenericForeignKey()
+    related_item = models.ForeignKey('inventory.Item', blank=True, null=True)
+    action_type = models.ForeignKey('interaction.ActionType', blank=True, null=True)
     
-    class Meta:
-        ordering = ['index']
-        
     def __unicode__(self):
         return self.title
-        
 

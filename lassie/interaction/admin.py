@@ -1,30 +1,16 @@
 from django.contrib import admin
 from django.contrib.contenttypes import generic
-
-from lassie.interaction.models import Voice, Dialogue, Action
+from lassie.interaction.models import Voice, Dialogue, ActionType, Action
 
 
 # Global Action admin components:
 
-class SingleActionAdmin(generic.GenericStackedInline):
+class ActionInline(generic.GenericInlineModelAdmin):
     '''
     Defines an admin control for a single Action editor UI.
     '''
     model = Action
-    fields = ('script',)
-    can_delete = False
-    max_num = 1
-
-
-class MultiActionAdmin(generic.GenericStackedInline):
-    '''
-    Defines an admin control for multiple Action UI options.
-    '''
-    model = Action
-    classes = 'collapse'
-    fields = ('title',)
-    min_num = 1
-    template = "admin/multi-action.html"
+    template = "admin/edit_inline/actions-inline.html"
 
 
 # Package-specific admin/browsing tools:
@@ -50,11 +36,7 @@ class DialogueAdmin(admin.ModelAdmin):
     
     def has_delete_permission(self, request, obj=None):
         return False
-
-
-class DialogueInlineAdmin(admin.StackedInline):
-    model = Dialogue;
-            
+  
 
 class ActionAdmin(admin.ModelAdmin):
     '''
@@ -63,8 +45,7 @@ class ActionAdmin(admin.ModelAdmin):
     Actions may NOT be added/removed through this browsing interface.
     '''
     model = Action
-    exclude = ('index','object_id','content_type',)
-    inlines = [DialogueInlineAdmin,]
+    exclude = ('object_id','content_type',)
     
     def has_add_permission(self, request):
         return False
@@ -76,3 +57,4 @@ class ActionAdmin(admin.ModelAdmin):
 admin.site.register(Voice, VoiceAdmin)
 admin.site.register(Dialogue, DialogueAdmin)
 admin.site.register(Action, ActionAdmin)
+admin.site.register(ActionType)
