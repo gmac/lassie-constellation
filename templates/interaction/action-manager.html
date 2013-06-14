@@ -13,29 +13,26 @@
 		
 		{% if allow_multiple %}
 		<ul class="actions-list"></ul>
-		<ul>
+		<ul class="action-options">
+			<li id="action-delete" class="model-delete"></li>
 			<li class="action-type">
-				<label for="action-type">Interaction</label>
+				<label for="action-type">Action type</label><br>
 				<select id="action-type"></select>
 			</li>
 			<li class="action-item">
-				<label for="action-item">Trigger Item</label>
-				<select id="action-item">
-					{% for item in items %}
-					<option value="{{ item.id }}">{{ item.slug }}</option>
-					{% endfor %}
-				</select>
+				<label for="action-item">Related item</label><br>
+				<select id="action-item"></select>
 			</li>
 			<li class="action-slug">
-				<label for="action-slug">Trigger Item</label>
+				<label for="action-slug">Action slug</label><br>
 				<input id="action-slug" type="text">
+			</li>
+			<li class="action-grammar">
+				<label for="action-grammar">Grammar</label><br>
+				<input id="action-grammar" type="text"> <span class="tokens">Tokens: #action#, #object#, #item#</span>
 			</li>
 		</ul>
 		{% endif %}
-		
-		<label for="action-grammar">Grammar</label>
-		<input id="action-grammar" type="text">
-		<p>Formatted as "#action#, #object#, #item#"</p>
 	
 		<div class="script">
 			<h2>Script</h2>
@@ -48,31 +45,30 @@
 				<h2>Dialogue</h2>
 			</div>
 			<ul class="dialogue-list"></ul>
+			<div class="dialogue-edit">
+				<label for="dialogue-subtitle">Subtitle</label>
+				<textarea id="dialogue-subtitle"></textarea>
 		
-			<label for="dialogue-subtitle">Subtitle</label>
-			<textarea id="dialogue-subtitle"></textarea>
+				<label for="dialogue-puppet">Puppet</label>
+				<input id="dialogue-puppet" type="text">
 		
-			<label for="dialogue-puppet">Puppet</label>
-			<input id="dialogue-puppet" type="text">
+				<label for="dialogue-tone">Intonation</label>
+				<input id="dialogue-tone" type="text">
 		
-			<label for="dialogue-tone">Intonation</label>
-			<input id="dialogue-tone" type="text">
+				<label for="dialogue-sound">Sound</label>
+				<input id="dialogue-sound" type="text">
 		
-			<label for="dialogue-sound">Sound</label>
-			<input id="dialogue-sound" type="text">
+				<label for="dialogue-voice">Voice</label>
+				<select id="dialogue-voice">
+					<option value="">--None Selected--</option>
+					{% for voice in voices %}
+					<option value="{{ voice.id }}">{{ voice.title }}</option>
+					{% endfor %}
+				</select>
 		
-			<label for="dialogue-voice">Voice</label>
-			<select id="dialogue-voice">
-				<option value="">--None Selected--</option>
-				{% for voice in voices %}
-				<option value="{{ voice.id }}">{{ voice.title }}</option>
-				{% endfor %}
-			</select>
-		
-			<div class="model-delete"></div>
+				<div id="dialogue-delete" class="model-delete"></div>
+			</div>
 		</div>
-	
-		<div class="model-delete"></div>
 	</div>
 
 	<script src="{% static 'js/libs/require.js' %}"></script>

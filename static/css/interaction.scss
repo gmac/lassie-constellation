@@ -3,6 +3,10 @@
 #actions-manager {
 	clear: both;
 	padding: 25px 0;
+
+	textarea {
+		width: 100%;
+	}
 	
 	.actions-list {
 		border-bottom: 2px solid #ccc;
@@ -21,21 +25,85 @@
 		}
 	}
 	
-	textarea {
-		height: 200px;
-		width: 100%;
-	}	
-}
+	.action-options {
+		@include clearfix;
+		list-style: none;
+		margin: 15px 0;
+		padding: 0;
+		
+		input,
+		select,
+		li {
+			width: 100px;
+		}
+		
+		li {
+			float: left;
+			list-style: none;
+			margin-right: 25px;
 
-.dialogue-list {
+			&.action-item,
+			&.action-slug {
+				display: none;
+			}
+			
+			&.action-grammar {
+				width: auto;
+			}
+		}
+		
+		.tokens {
+			color: #999;
+			margin-left: 10px;
+		}
+		
+		.model-delete {
+			float: right;
+			margin: 0;
+			text-align: right;
+			width: 150px;
+		}
+	}
 	
-	border-bottom: 1px solid #ccc;
-	width: 200px;
+	.script textarea {
+		height: 200px;
+	}
 	
-	li {
-		border-top: 1px solid #ccc;
+	.dialogue-list {
+		background-color: #eee;
+		border: 1px solid #ccc;
+		float: left;
+		height: 200px;
+		overflow: auto;
+		list-style: none;
+		margin: 0;
+		margin-right: -100%;
+		padding: 0;
+		width: 48%;
+		
+		li {
+			background-color: #fff;
+			border-bottom: 1px solid #ccc;
+			list-style: none;
+			padding: 10px 5px;
+			
+			&.selected {
+				background-color: #ccc;
+			}
+		}
+	}
+	
+	.dialogue-edit {
+		float: left;
+		margin-left: 51%;
+		width: 48%;
+		
+		textarea {
+			height: 60px;
+		}
 	}
 }
+
 
 .add-header {
 	background-color: #333;

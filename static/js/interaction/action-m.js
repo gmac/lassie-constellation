@@ -27,6 +27,14 @@ define([
 			return model.get('action_type');
 		},
 		
+		// Finds the first available item that is not already in use:
+		getDefaultItem: function() {
+			var selectedItems = this.pluck('related_item');
+			return this.items.find(function(item) {
+				return !_.contains(selectedItems, item.id);
+			});
+		},
+		
 		// Gets a base fieldset for new models:
 		// may be overridden in sub-classes to extend fields.
 		getNewModelData: function() {

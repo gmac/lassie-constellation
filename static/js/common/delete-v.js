@@ -3,11 +3,11 @@ define([
 	'jquery'
 ], function(Backbone, $) {
     
-	var tmpl = '<div class="intent"><p>Danger zone</p>';
+	var tmpl = '<div class="intent"><label>Danger</label><br>';
 	tmpl += '<button class="delete" data-op="intent">Delete</button></div>';
-	tmpl += '<div class="confirm" style="display:none;"><p>Are you sure?</p>';
-	tmpl += '<button class="delete" data-op="cancel">Cancel</button>';
-	tmpl += '<button class="delete" data-op="confirm">Delete</button></div>';
+	tmpl += '<div class="confirm" style="display:none;"><label>Are you sure?</label><br>';
+	tmpl += '<button class="delete" data-op="confirm">Delete</button>';
+	tmpl += '<button class="delete" data-op="cancel">Cancel</button></div>';
 
 	var DeleteView = Backbone.View.extend({
 		initialize: function() {

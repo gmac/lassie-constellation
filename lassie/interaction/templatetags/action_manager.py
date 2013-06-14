@@ -45,7 +45,6 @@ def action_manager(model):
         'allow_multiple': allow_multiple,
         'types_json': json.dumps(list(ActionType.objects.values())),
         'items_json': json.dumps(list(Item.objects.values('id', 'slug'))),
-        'items': Item.objects.all(),
         'voices': Voice.objects.all(),
     }
     

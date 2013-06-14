@@ -17,18 +17,9 @@ define([
 		
 		reorder: function() {
 			this.sort();
-			
-			var order = this.map(function(model) {
-				return {
-					index: model.get('index'),
-					resource_uri: model.get('resource_uri')
-				};
-			});
-			
-			this.sync('patch', this, {
-				data: JSON.stringify({objects: order, format: 'json'}),
-				contentType: 'application/json'
-			});
+			this.patchAll(this.map(function(model) {
+				return model.pick('resource_uri', 'index');
+			}));
 		}
 	});
 	

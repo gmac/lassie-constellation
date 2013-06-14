@@ -11,6 +11,7 @@ define([
 		initialize: function() {
 			ResourceModelList.prototype.initialize.apply(this, arguments);
 			this.listenTo(actionResource.selected, 'select', this.reload);
+			this.listenTo(this, 'destroy', this.resetOrder);
 		},
 		
 		reload: function() {
@@ -39,6 +40,21 @@ define([
 				format: 'json',
 				limit: 0
 			};
+		},
+		
+		resetOrder: function() {
+			this.each(function(model, index) {
+				model.set('index', index);
+			});
+			this.reorder();
+		},
+		
+		reorder: function() {
+			this.sort();
+			this.patchAll(this.map(function(model) {
+				console.log(model.pick);
+				return model.pick('resource_uri', 'index');
+			}));
 		}
 	});
 	

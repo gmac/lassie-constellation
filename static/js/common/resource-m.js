@@ -70,6 +70,7 @@ define([
 		api: '',
 		allowEmpty: true,
 		SILENT: {silent: true},
+		PATCH: {patch: true},
 		SILENT_PATCH: {patch:true, silent: true},
 		
 		constructor: function() {
@@ -138,6 +139,13 @@ define([
 			
 			this.selected.load(model);
 			model && edit && this.selected.edit();
+		},
+		
+		patchAll: function(patch) {
+			this.sync('patch', this, {
+				data: JSON.stringify({objects: patch, format: 'json'}),
+				contentType: 'application/json'
+			});
 		}
 	});
 	

@@ -17,7 +17,7 @@ define([
 			var types = JSON.parse(this.$('#resource-types').val());
 			var items = JSON.parse(this.$('#resource-items').val());
 			
-			if (!uri) {
+			if (!uri || !types.length) {
 				this.$el.hide();
 				return;
 			}
@@ -39,13 +39,15 @@ define([
 		
 		setup: function() {
 			this.listenTo(selectedModel, 'select', this.render);
-			this.listenTo(selectedModel, 'change:action_type', this.render);
+			this.listenTo(selectedModel, 'change', this.render);
 			
-			this.$tabs = this.$('.actions-list');
+			this.$list = this.$('.actions-list');
 			this.$types = this.$('#action-type');
+			this.$items = this.$('#action-item');
+			this.isMultiAction = !!this.$list.length;
 			
 			this.$delete = new DeleteWidget({
-				el: this.$('.model-delete'),
+				el: this.$('#action-delete'),
 				model: selectedModel
 			});
 		},
@@ -53,53 +55,88 @@ define([
 		render: function() {
 			// Abort if there's no selected model (something went wrong)...
 			if (!selectedModel.model) return;
-			
-			var html = '';
+			if (this.isMultiAction) this.renderMultiAction();
+		},
+		
+		// Renders multi-select options:
+		// includes multiple actions, action types, and related items.
+		renderMultiAction: function() {
 			var selectedType = actionsModel.types.get(selectedModel.get('action_type'));
-			var selectedItem = actionsModel.items.get(selectedModel.get('related_item') || '');
 			
 			// Render action tab options:
 			actionsModel.sort();
-			actionsModel.each(function(model) {
+			var html = actionsModel.reduce(function(memo, model) {
 				// Get type and related item models:
 				var type = actionsModel.types.get(model.get('action_type') || '');
 				var item = actionsModel.items.get(model.get('related_item') || '');
-				var label = type.get('is_generic') ? model.get('slug') : type.get('title');
-				if (item && type.get('is_item')) {
-					item = item.get('slug');
+				var label = type.get('title');
+				var slug = model.get('slug');
+				
+				if (type.get('is_generic') && slug) {
+					label += ': '+ slug;
+				} else if (type.get('is_item') && item) {
+					label += ': '+ item.get('slug');
 				}
 
-				html += '<li class="action';
-				if (model.cid === selectedModel.cid) html += ' selected';
-				html += '" data-cid="'+model.cid+'">'+ (label || 'Untitled') +'</li>';
-			});
+				memo += '<li class="action';
+				if (model.cid === selectedModel.cid) memo += ' selected';
+				memo += '" data-cid="'+model.cid+'">'+ (label || 'Untitled') +'</li>';
+				return memo;
+			}, '');
 			
 			html += '<li class="action add-action">+</li>';
-			this.$tabs.html(html);
+			this.$list.html(html);
+			
 			
 			// Render action type options:
-			html = '';
-			var selected = actionsModel.pluck('action_type');
-			actionsModel.types.each(function(type) {
-				var current = (type.id === selectedType.id);
-				if (current || type.get('is_generic') || type.get('is_item')  || !_.contains(selected, type.id)) {
-					html += '<option value="'+ type.id +'" data-cid="'+ type.cid +'"';
-					if (current) html += ' selected="selected"';
-					html += '>'+ type.get('title') +'</option>';
+			var usedTypes = actionsModel.pluck('action_type');
+			this.$types.html(actionsModel.types.reduce(function(memo, model) {
+				var current = (model.id === selectedType.id);
+				
+				// Add option if:
+				// - type is selected.
+				// - type is generic (allow unlimited).
+				// - type is an item (allow unlimited).
+				// - type is unused.
+				if (current || model.get('is_generic') || model.get('is_item')  || !_.contains(usedTypes, model.id)) {
+					memo += '<option value="'+ model.id +'" data-cid="'+ model.cid +'"';
+					if (current) memo += ' selected="selected"';
+					memo += '>'+ model.get('title') +'</option>';
 				}
-			});
+				return memo;
+			}, ''));
 			
-			this.$types.html(html);
 			
-			// Toggle dependent field visibility:
-			this.$('.action-item').toggle(!!selectedItem);
+			// Render item options:
+			if (selectedType.get('is_item')) {
+				var usedItems = actionsModel.pluck('related_item');
+				this.$items.html(actionsModel.items.reduce(function(memo, model) {
+					var current = (model.id === selectedModel.get('related_item'));
+					
+					// Add option if:
+					// - item is selected (current).
+					// - item is unused.
+					if (current || !_.contains(usedItems, model.id)) {
+						memo += '<option value="'+ model.id +'" data-cid="'+ model.cid +'"';
+						if (current) memo += ' selected="selected"';
+						memo += '>'+ model.get('slug') +'</option>';
+					}
+					return memo;
+				}, ''));
+			}
+			
+			// Set dependent fields visibility & values:
+			this.$('.action-item').toggle(selectedType.get('is_item'));
 			this.$('.action-slug').toggle(selectedType.get('is_generic'));
+			this.$('#action-slug').val(selectedModel.get('slug') || '');
 		},
 		
 		events: {
 			'click .action': 'onSelect',
 			'click .add-action': 'onAdd',
-			'change #action-type': 'onSetType'
+			'change #action-type': 'onSetType',
+			'change #action-slug': 'onSetSlug',
+			'change #action-item': 'onSetItem'
 		},
 		
 		onSelect: function(evt) {
@@ -112,7 +149,25 @@ define([
 		},
 		
 		onSetType: function() {
-			selectedModel.set('action_type', this.$types.val());
+			var type = actionsModel.types.get(this.$types.val());
+			if (type) {
+				// Reset related fields when switching types:
+				var defaultItem = actionsModel.getDefaultItem();
+				var data = {
+					action_type: type.id,
+					related_item: type.get('is_item') && defaultItem ? defaultItem.id : null
+				};
+				if (!type.get('is_generic')) data.slug = '';
+				selectedModel.save(data, actionsModel.PATCH);
+			}
+		},
+		
+		onSetSlug: function() {
+			selectedModel.set('slug', this.$('#action-slug').val() || '');
+		},
+		
+		onSetItem: function() {
+			selectedModel.set('related_item', this.$('#action-item').val() || null);
 		}
 	});
 	
