@@ -5,7 +5,9 @@
 	padding: 25px 0;
 	
 	.actions-list {
-
+		border-bottom: 2px solid #ccc;
+		padding: 0;
+		
 		li {
 			background-color: #ccc;
 			cursor: default;

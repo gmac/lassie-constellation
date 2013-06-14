@@ -1,84 +1,105 @@
 define([
 	'backbone',
 	'jquery',
+	'underscore',
 	'common/delete-v',
 	'./action-m'
-], function(Backbone, $, DeleteWidget, actionsModel) {
+], function(Backbone, $, _, DeleteWidget, actionsModel) {
+	
+	var selectedModel = actionsModel.selected;
 	
 	var ActionsView = Backbone.View.extend({
 		el: '#actions-manager',
 		
 		initialize: function() {
-			this.listenTo(actionsModel, 'add remove reset sync', this.render);
-			this.listenTo(actionsModel.selected, 'select', this.updateSelection);
-			this.$tabs = this.$('.actions-list');
-			this.$delete = new DeleteWidget({
-				el: this.$('.model-delete'),
-				model: actionsModel.selected
-			});
-			
-			this.loadWidget();
-		},
-		
-		// Loads up widget configuration:
-		// several aspects of configuration are loaded from the rendered DOM data.
-		loadWidget: function() {
 			// Pull resource URI from template form:
 			var uri = this.$('#resource-uri').val();
+			var types = JSON.parse(this.$('#resource-types').val());
+			var items = JSON.parse(this.$('#resource-items').val());
 			
 			if (!uri) {
 				this.$el.hide();
 				return;
 			}
 			
-			// Parse interaction options out of the DOM:
-			var types = _.map(this.$('#action-interaction').children().toArray(), function(opt) { 
-				return {
-					id: opt.getAttribute('value'),
-					is_item: !!opt.getAttribute('data-item'),
-					label: opt.innerHTML
-				};
+			_.each(types, function(model) {
+				model.id = '/api/v1/action_type/'+model.id+'/';
 			});
 			
-			// Parse items options out of the DOM:
-			var items = _.map(this.$('#action-item').children().toArray(), function(opt) { 
-				return {
-					id: opt.getAttribute('value'),
-					label: opt.innerHTML
-				};
+			_.each(items, function(model) {
+				model.id = '/api/v1/item/'+model.id+'/';
 			});
-
+			
+			this.setup();
 			actionsModel.types.reset(types);
 			actionsModel.items.reset(items);
 			actionsModel.setResource(uri);
 			actionsModel.fetch();
 		},
 		
-		render: function() {
-			var html = '';
+		setup: function() {
+			this.listenTo(selectedModel, 'select', this.render);
+			this.listenTo(selectedModel, 'change:action_type', this.render);
 			
+			this.$tabs = this.$('.actions-list');
+			this.$types = this.$('#action-type');
+			
+			this.$delete = new DeleteWidget({
+				el: this.$('.model-delete'),
+				model: selectedModel
+			});
+		},
+		
+		render: function() {
+			// Abort if there's no selected model (something went wrong)...
+			if (!selectedModel.model) return;
+			
+			var html = '';
+			var selectedType = actionsModel.types.get(selectedModel.get('action_type'));
+			var selectedItem = actionsModel.items.get(selectedModel.get('related_item') || '');
+			
+			// Render action tab options:
+			actionsModel.sort();
 			actionsModel.each(function(model) {
-				html += '<li class="action'
-				if (model.cid === actionsModel.selected.cid) html += ' selected';
-				html += '" data-cid="'+model.cid+'">'+ model.get('id') +'</li>';
+				// Get type and related item models:
+				var type = actionsModel.types.get(model.get('action_type') || '');
+				var item = actionsModel.items.get(model.get('related_item') || '');
+				var label = type.get('is_generic') ? model.get('slug') : type.get('title');
+				if (item && type.get('is_item')) {
+					item = item.get('slug');
+				}
+
+				html += '<li class="action';
+				if (model.cid === selectedModel.cid) html += ' selected';
+				html += '" data-cid="'+model.cid+'">'+ (label || 'Untitled') +'</li>';
 			});
 			
 			html += '<li class="action add-action">+</li>';
 			this.$tabs.html(html);
-			this.$el.show();
-		},
-		
-		updateSelection: function() {
-			this.$tabs
-				.children()
-				.removeClass('selected')
-				.filter('[data-cid="'+ actionsModel.selected.cid +'"]')
-				.addClass('selected');
+			
+			// Render action type options:
+			html = '';
+			var selected = actionsModel.pluck('action_type');
+			actionsModel.types.each(function(type) {
+				var current = (type.id === selectedType.id);
+				if (current || type.get('is_generic') || type.get('is_item')  || !_.contains(selected, type.id)) {
+					html += '<option value="'+ type.id +'" data-cid="'+ type.cid +'"';
+					if (current) html += ' selected="selected"';
+					html += '>'+ type.get('title') +'</option>';
+				}
+			});
+			
+			this.$types.html(html);
+			
+			// Toggle dependent field visibility:
+			this.$('.action-item').toggle(!!selectedItem);
+			this.$('.action-slug').toggle(selectedType.get('is_generic'));
 		},
 		
 		events: {
 			'click .action': 'onSelect',
-			'click .add-action': 'onAdd'
+			'click .add-action': 'onAdd',
+			'change #action-type': 'onSetType'
 		},
 		
 		onSelect: function(evt) {
@@ -88,6 +109,10 @@ define([
 		
 		onAdd: function() {
 			actionsModel.create();
+		},
+		
+		onSetType: function() {
+			selectedModel.set('action_type', this.$types.val());
 		}
 	});
 	

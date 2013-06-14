@@ -24,15 +24,16 @@ define([
 		},
 		
 		comparator: function(model) {
-			return model.get('index');
+			return model.get('action_type');
 		},
 		
 		// Gets a base fieldset for new models:
 		// may be overridden in sub-classes to extend fields.
 		getNewModelData: function() {
+			var generic = this.types.where({is_generic: true})[0] || this.types.at(0);
 			return {
 				content_object: this.resourceURI,
-				index: this.length
+				action_type: generic.get('id')
 			};
 		},
 		

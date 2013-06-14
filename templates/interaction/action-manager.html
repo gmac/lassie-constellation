@@ -8,27 +8,26 @@
 	<div id="actions-manager">
 		<h1>Related Actions</h1>
 		<input id="resource-uri" type="hidden" value="/api/v1/{{ content_type }}/{{ content_id }}/">
-	
+		<input id="resource-types" type="hidden" value="{{ types_json }}">
+		<input id="resource-items" type="hidden" value="{{ items_json }}">
+		
 		<ul class="actions-list"></ul>
-	
 		<ul>
-			<li>
-				<label for="action-interaction">Interaction</label>
-				<select id="action-interaction">
-					<option value="">Generic</option>
-					{% for action_type in action_types %}
-					<option value="{{ action_type.id }}" data-item="{{ action_type.is_item|empty_false }}">{{ action_type.title }}</option>
-					{% endfor %}
-				</select>
+			<li class="action-type">
+				<label for="action-type">Interaction</label>
+				<select id="action-type"></select>
 			</li>
-			<li>
+			<li class="action-item">
 				<label for="action-item">Trigger Item</label>
 				<select id="action-item">
-					<option value="">No Item</option>
 					{% for item in items %}
 					<option value="{{ item.id }}">{{ item.slug }}</option>
 					{% endfor %}
 				</select>
+			</li>
+			<li class="action-slug">
+				<label for="action-slug">Trigger Item</label>
+				<input id="action-slug" type="text">
 			</li>
 		</ul>
 	

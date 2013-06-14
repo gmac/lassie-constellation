@@ -41,6 +41,7 @@ class ActionType(models.Model):
     Available game interactions. Each game action will conform to an interaction type.
     """
     title = models.CharField(max_length=255, blank=True)
+    is_generic = models.BooleanField('Generic action type', default=False)
     is_item = models.BooleanField('Relates to items', default=False)
     
     def __unicode__(self):
@@ -52,6 +53,7 @@ class Action(models.Model):
     Defines an actionable trigger.
     Actions run an environment script, and provide a collection of related dialogue.
     """
+    slug = models.SlugField(blank=True)
     title = models.CharField(max_length=255, blank=True)
     notes = models.CharField(max_length=255, blank=True)
     grammar = models.CharField(max_length=255, blank=True)
@@ -60,7 +62,7 @@ class Action(models.Model):
     content_type = models.ForeignKey(ContentType)
     content_object = generic.GenericForeignKey()
     related_item = models.ForeignKey('inventory.Item', blank=True, null=True)
-    action_type = models.ForeignKey('interaction.ActionType', blank=True, null=True)
+    action_type = models.ForeignKey('interaction.ActionType')
     
     def __unicode__(self):
         return self.title
