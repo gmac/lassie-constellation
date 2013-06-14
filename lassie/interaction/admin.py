@@ -46,6 +46,7 @@ class ActionAdmin(admin.ModelAdmin):
     '''
     model = Action
     exclude = ('object_id','content_type',)
+    list_display = ('action_type','content_type','object_id','related_item',)
     
     def has_add_permission(self, request):
         return False

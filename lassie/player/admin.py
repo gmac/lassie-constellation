@@ -1,22 +1,21 @@
 from django.contrib import admin
-from lassie.interaction.admin import ActionInline
 from lassie.player.models import InventoryCollection, DefaultResponse, Avatar
 
 
 class DefaultResponseAdmin(admin.ModelAdmin):
     model = DefaultResponse
-    list_display = ('title', 'uid', 'notes',)
+    list_display = ('slug', 'title', 'notes',)
     
 
 class InventoryCollectionAdmin(admin.ModelAdmin):
     model = InventoryCollection
     filter_horizontal = ('items',)
-    list_display = ('title', 'uid', 'notes',)
+    list_display = ('slug', 'title', 'notes',)
     
 
 class AvatarAdmin(admin.ModelAdmin):
     model = Avatar
-    list_display = ('title', 'uid', 'notes',)
+    list_display = ('slug', 'title', 'notes',)
 
 
 admin.site.register(InventoryCollection, InventoryCollectionAdmin)

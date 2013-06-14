@@ -7,7 +7,7 @@ class Item(models.Model):
     notes = models.CharField(max_length=255, blank=True)
     
     def __unicode__(self):
-        return self.title
+        return self.slug
 
 
 class ItemCombo(models.Model):
@@ -17,4 +17,4 @@ class ItemCombo(models.Model):
     items = models.ManyToManyField('inventory.Item')
 
     def __unicode__(self):
-        return self.title
+        return self.slug

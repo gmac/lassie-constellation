@@ -6,11 +6,12 @@
 	{% endcompress %}
 
 	<div id="actions-manager">
-		<h1>Related Actions</h1>
+		<h1>Related Action{% if allow_multiple %}s{% endif %}</h1>
 		<input id="resource-uri" type="hidden" value="/api/v1/{{ content_type }}/{{ content_id }}/">
 		<input id="resource-types" type="hidden" value="{{ types_json }}">
 		<input id="resource-items" type="hidden" value="{{ items_json }}">
 		
+		{% if allow_multiple %}
 		<ul class="actions-list"></ul>
 		<ul>
 			<li class="action-type">
@@ -30,7 +31,8 @@
 				<input id="action-slug" type="text">
 			</li>
 		</ul>
-	
+		{% endif %}
+		
 		<label for="action-grammar">Grammar</label>
 		<input id="action-grammar" type="text">
 		<p>Formatted as "#action#, #object#, #item#"</p>
