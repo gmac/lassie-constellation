@@ -17,7 +17,7 @@ define([
 		
 		reorder: function() {
 			this.sort();
-			this.patchAll(this.map(function(model) {
+			this.patch(this.map(function(model) {
 				return model.pick('resource_uri', 'index');
 			}));
 		}

@@ -69,15 +69,15 @@ define([
 	var ResourceModelList = Backbone.Collection.extend({
 		api: '',
 		allowEmpty: true,
+		RESET: {reset: true},
 		SILENT: {silent: true},
 		PATCH: {patch: true},
 		SILENT_PATCH: {patch:true, silent: true},
 		
 		constructor: function() {
-			Backbone.Collection.prototype.constructor.apply(this, arguments);
-			
-			this.listenTo(this, 'reset destroy', this.onReset);
 			this.selected = new SelectionProxy(this.api);
+			this.listenTo(this, 'reset destroy', this.onReset);
+			Backbone.Collection.prototype.constructor.apply(this, arguments);
 		},
 		
 		// Automatically select first model when the collection resets:
@@ -141,7 +141,7 @@ define([
 			model && edit && this.selected.edit();
 		},
 		
-		patchAll: function(patch) {
+		patch: function(patch) {
 			this.sync('patch', this, {
 				data: JSON.stringify({objects: patch, format: 'json'}),
 				contentType: 'application/json'

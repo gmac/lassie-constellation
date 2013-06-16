@@ -5,5 +5,14 @@ requirejs.config({
         backbone: 'libs/backbone',
         jquery: 'libs/jquery',
         underscore: 'libs/underscore'
-    }
+    },
+	shim: {
+		backbone: {
+			deps: ['jquery', 'underscore'],
+			exports: 'Backbone'
+		},
+		underscore: {
+			exports: '_'
+		}
+	}
 });

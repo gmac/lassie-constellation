@@ -34,7 +34,7 @@ define([
 			actionsModel.types.reset(types);
 			actionsModel.items.reset(items);
 			actionsModel.setResource(uri);
-			actionsModel.fetch();
+			actionsModel.fetch(actionsModel.RESET);
 		},
 		
 		setup: function() {

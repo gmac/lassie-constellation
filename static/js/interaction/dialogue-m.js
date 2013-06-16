@@ -17,7 +17,7 @@ define([
 		reload: function() {
 			this.reset();
 			if (actionResource.selected.get('id')) {
-				this.fetch();
+				this.fetch(this.RESET);
 			}
 		},
 		
@@ -51,8 +51,7 @@ define([
 		
 		reorder: function() {
 			this.sort();
-			this.patchAll(this.map(function(model) {
-				console.log(model.pick);
+			this.patch(this.map(function(model) {
 				return model.pick('resource_uri', 'index');
 			}));
 		}

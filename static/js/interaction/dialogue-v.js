@@ -1,17 +1,20 @@
 define([
 	'backbone',
 	'jquery',
+	'underscore',
 	'common/delete-v',
+	'common/base-edit-v',
 	'./dialogue-m'
-], function(Backbone, $, DeleteWidget, dialogueModel) {
+], function(Backbone, $, _, DeleteWidget, BaseEditView, dialogueModel) {
 	
 	var selectedModel = dialogueModel.selected;
 	
-	var DialogueView = Backbone.View.extend({
+	var DialogueView = BaseEditView.extend({
 		el: '#dialogue-manager',
 		
 		initialize: function() {
-			this.listenTo(dialogueModel, 'add remove reset sync', this.render);
+			this.model = dialogueModel.selected;
+			this.listenTo(dialogueModel, 'add remove reset', this.render);
 			this.listenTo(selectedModel, 'select', this.render);
 			
 			this.$delete = new DeleteWidget({
@@ -21,19 +24,21 @@ define([
 		},
 		
 		render: function() {
-			if (!selectedModel.model) return;
-
 			this.$('.dialogue-list').html(dialogueModel.reduce(function(memo, model, index) {
 				var selected = (model.cid === selectedModel.cid);
 				memo += '<li class="action'+ (selected ? ' selected' : '') +'" data-cid="'+model.cid+'">';
-				memo += (model.get('puppet') || 'puppet') +': '+ model.get('subtitle') +'</li>';
+				memo += (model.get('puppet') || 'puppet') +': '+ (model.get('subtitle') || '') +'</li>';
 				return memo;
 			}, ''));
+			
+			this.populate();
 		},
 		
-		events: {
-			'click .add-dialogue': 'onAdd',
-			'click .dialogue-list li': 'onSelect'
+		events: function() {
+			return _.extend({
+				'click .add-dialogue': 'onAdd',
+				'click .dialogue-list li': 'onSelect'
+			}, BaseEditView.prototype.events);
 		},
 		
 		onAdd: function() {
