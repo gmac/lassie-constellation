@@ -125,11 +125,12 @@
 			<input id="grid-notes" type="text" name="notes" class="text-field">
 			
 			<h2>Grid Operations</h2>
-			<button class="grid-op" data-op="join">Join</button>
-			<button class="grid-op" data-op="split">Break</button>
-			<button class="grid-op" data-op="polygon">Polygon</button>
-			<button class="grid-op" data-op="remove">Remove</button>
-			
+			<ul>
+				<li><button class="grid-op" data-op="join">Join</button></li>
+				<li><button class="grid-op" data-op="split">Break</button></li>
+				<li><button class="grid-op" data-op="polygon">Polygon</button></li>
+				<li><button class="grid-op" data-op="remove">Remove</button></li>
+			</ul>
 			<div class="model-delete"></div>
 		</div>
 		
@@ -184,10 +185,15 @@
 
 <div class="viewport">
 	<div class="scene" {% if scene.image %}style="background:url(/media/{{ scene.image }}) no-repeat;"{% endif %}>
-		<div id="layers-layout" class="layer"></div>
-		<div id="layer-layout" class="layer-metrics"></div>
-		<div id="grid-layout" class="grid"></div>
-		<div id="matrix-layout" class="matrix"></div>
+		<div id="layers-layout"></div>
+		<div id="grid-layout"></div>
+		<div id="matrix-layout"></div>
+		<div id="layer-metrics">
+			<div class="metric drag" data-attr="img"></div>
+			<div class="metric resize" data-attr="size"></div>
+			<div class="metric reg-pt" data-attr="float"></div>
+			<div class="metric map-pt" data-attr="map"></div>
+		</div>
 	</div>
 </div>
 <script type="text/template" id="grid-layout-tmpl">

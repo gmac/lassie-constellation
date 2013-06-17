@@ -23,7 +23,6 @@ define([
 			_.each(this.models, function(model) {
 				this.listenTo(model.selected, 'edit', this.onEdit);
 				this.listenTo(model.selected, 'cancel', this.onCancel);
-				model.fetch(model.RESET);
 			}, this);
 			
 			function setHeight() {

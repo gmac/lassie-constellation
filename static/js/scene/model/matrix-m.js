@@ -1,6 +1,7 @@
 define([
+	'backbone',
 	'./base-m'
-], function(SceneModelList) {
+], function(Backbone, SceneModelList) {
 	
 	var MatrixModel = Backbone.Model.extend({
 		defaults: {

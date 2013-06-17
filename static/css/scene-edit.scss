@@ -119,4 +119,26 @@
 	position: absolute;
 	top: 0;
 	width: 1000px;
+	
+	.layer {
+		background-color: #ccc;
+		height: 50px;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 50px;
+	}
+	
+	#layer-metrics {
+		display: none;
+	}
+	
+	.metric {
+		background-color: #f00;
+		height: 10px;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 10px;
+	}
 }
