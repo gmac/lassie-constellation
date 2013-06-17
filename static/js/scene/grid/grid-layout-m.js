@@ -46,7 +46,7 @@ define([
 		
 		// Saves current model data into the cache:
 		save: function() {
-			gridModel.selected.set('data', JSON.stringify(this.toJSON()));
+			gridModel.selected.save('data', JSON.stringify(this.toJSON()));
 		},
 		
 		update: function() {
