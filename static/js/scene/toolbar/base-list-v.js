@@ -1,8 +1,8 @@
 define([
-	'backbone'
-], function(Backbone) {
+	'common/base-edit-v'
+], function(BaseEditView) {
     
-	var BaseListView = Backbone.View.extend({
+	var BaseListView = BaseEditView.extend({
 		initialize: function() {
 			if (this.collection) {
 				this.listenTo(this.collection, 'add remove reset sync', this.render);

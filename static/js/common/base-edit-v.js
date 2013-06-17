@@ -6,6 +6,9 @@ define([
 	var PATCH = {patch:true};
 	
 	var BaseEditView = Backbone.View.extend({
+		initialize: function() {
+			this.listenTo(this.model, 'select', this.populate);
+		},
 		
 		populate: function() {
 			var model = this.model;
@@ -13,6 +16,17 @@ define([
 			
 			this.$('[name]').each(function() {
 				this.value = model.get(this.name);
+			});
+		},
+		
+		// Makes list items draggable:
+		// requires a collection resource of models with an "index" property.
+		makeDragable: function(ulSelector, gripSelector, equalRowHeights) {
+			if (!this.collection) return;
+			
+			var self = this;
+			var $list = this.$(ulSelector).on('mousedown', gripSelector, function(evt) {
+				self.fDragItem(evt, self.collection, equalRowHeights);
 			});
 		},
 		
@@ -27,7 +41,7 @@ define([
 			'change .select-field': 'fValue',
 			'change .integer-field': 'fInteger',
 			'change .percent-field': 'fPercent',
-			'click .delete-confirm': 'fDelete',
+			'click .delete': 'fDelete',
 			'click .cancel-edit': 'fCancel'
 		},
 		
@@ -86,13 +100,13 @@ define([
 			this.model.save(name, valid, PATCH);
 		},
 		
-		fDragItem: function(evt) {
+		fDragItem: function(evt, indexedModel, equalRowHeights) {
 			evt.preventDefault();
-			var layer = $(evt.target).closest('.layer').addClass('dragging');
-			var list = layer.parent();
+			var target = $(evt.target).closest('li').addClass('dragging');
+			var list = target.parent();
 			var items = list.children();
-			var itemH = layer.outerHeight();
-			var hilite = layer;
+			var itemH = target.outerHeight();
+			var hilite = target;
 			var index = -1;
 			var after = false;
 			
@@ -115,29 +129,29 @@ define([
 			// Drops an item within the stacking order:
 			function drop() {
 				hilite.removeClass('hilite');
-				layer.removeClass('dragging');
+				target.removeClass('dragging');
 				
-				if (layer.index() == index) return;
+				if (target.index() == index) return;
 				
 				if (after) {
-					items.eq(index).after(layer);
+					items.eq(index).after(target);
 				} else {
-					items.eq(index).before(layer);
+					items.eq(index).before(target);
 				}
 				
 				list.children().each(function(index) {
-					layersModel.get($(this).attr('data-cid')).set('index', index);
+					indexedModel.get($(this).attr('data-cid')).set('index', index);
 				});
 				
-				layersModel.reorder();
+				indexedModel.reorder();
 			}
 			
 			$(document)
-				.on('mousemove.layer', function(evt) {
+				.on('mousemove.drag', function(evt) {
 					drag(evt.pageY);
 				})
-				.on('mouseup.layer', function(evt) {
-					$(document).off('mousemove.layer mouseup.layer');
+				.on('mouseup.drag', function(evt) {
+					$(document).off('mousemove.drag mouseup.drag');
 					drop();
 				});
 			

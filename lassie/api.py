@@ -1,6 +1,6 @@
 from tastypie import fields
 from tastypie.api import Api
-from tastypie.authorization import Authorization
+from tastypie.authorization import DjangoAuthorization
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 from tastypie.resources import ModelResource
@@ -35,7 +35,7 @@ class LayerResource(ModelResource):
         queryset = Layer.objects.all()
         resource_name = 'layer'
         always_return_data = True
-        authorization = Authorization()
+        authorization = DjangoAuthorization()
         filtering = {
             'scene': ALL_WITH_RELATIONS,
             'id': ALL,
@@ -52,7 +52,7 @@ class GridResource(ModelResource):
         queryset = Grid.objects.all()
         resource_name = 'grid'
         always_return_data = True
-        authorization = Authorization()
+        authorization = DjangoAuthorization()
         filtering = {
             'scene': ALL_WITH_RELATIONS,
         }
@@ -68,7 +68,7 @@ class MatrixResource(ModelResource):
         queryset = Matrix.objects.all()
         resource_name = 'matrix'
         always_return_data = True
-        authorization = Authorization()
+        authorization = DjangoAuthorization()
         filtering = {
             'scene': ALL_WITH_RELATIONS,
         }
@@ -105,7 +105,7 @@ class DefaultResponseResource(ModelResource):
         queryset = DefaultResponse.objects.all()
         resource_name = 'defaultresponse'
         always_return_data = True
-        authorization = Authorization()
+        authorization = DjangoAuthorization()
         filtering = {
             'action': ALL_WITH_RELATIONS,
         }
@@ -138,7 +138,7 @@ class ActionResource(ModelResource):
         resource_name = 'action'
         queryset = Action.objects.all()
         always_return_data = True
-        authorization = Authorization()
+        authorization = DjangoAuthorization()
         filtering = {
             'id': ALL,
             'content_object': ALL,
@@ -157,7 +157,7 @@ class DialogueResource(ModelResource):
         queryset = Dialogue.objects.all()
         resource_name = 'dialogue'
         always_return_data = True
-        authorization = Authorization()
+        authorization = DjangoAuthorization()
         filtering = {
             'action': ALL_WITH_RELATIONS,
         }

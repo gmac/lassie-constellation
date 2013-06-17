@@ -12,7 +12,7 @@
 		display: block;
 	}
 	
-	.cancel {
+	.cancel-edit {
 		float: right;
 	}
 	
@@ -24,13 +24,13 @@
 		display: none;
 	}
 	
+	.list-view {
+		margin-bottom: 35px;
+	}
+	
 	.edit-view {
 		padding: 15px;
 	}
-}
-
-.list-module {
-	margin-bottom: 35px;
 }
 
 .list-header {

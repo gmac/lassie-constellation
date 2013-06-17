@@ -1,4 +1,4 @@
 define([
-	'./toolbar/toolbar-c',
+	'./toolbar/main',
 	'./grid/grid-layout-v'
 ]);

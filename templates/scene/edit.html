@@ -11,9 +11,9 @@
 {% block main %}
 <input type="hidden" id="scene-id" value="{{ scene.id }}">
 
-<div class="toolbar">
+<div id="toolbar" class="toolbar">
 	<div id="toolbar-list">
-		<div id="layer-list" class="list-module" data-api="layer">
+		<div id="layer-list" class="list-view" data-api="layer">
 			<div class="list-header">
 				<h1>Layers</h1>
 				<button class="add">Add</button>
@@ -28,7 +28,7 @@
 			</script>
 		</div>
 		
-		<div id="grid-list" class="list-module" data-api="grid">
+		<div id="grid-list" class="list-view" data-api="grid">
 			<div class="list-header">
 				<h1>Grids</h1>
 				<button class="add">Add</button>
@@ -37,7 +37,7 @@
 			<button class="edit">^</button>
 		</div>
 		
-		<div id="matrix-list" class="list-module" data-api="matrix">
+		<div id="matrix-list" class="list-view" data-api="matrix">
 			<div class="list-header">
 				<h1>Matrices</h1>
 				<button class="add">Add</button>
@@ -145,6 +145,24 @@
 				<option value="1">Color</option>
 				<option value="2">Rate</option>
 			</select>
+			
+			<label for="matrix-ax">A-x</label>
+			<input id="matrix-ax" type="text" name="a_x" class="integer-field">
+		
+			<label for="matrix-ay">A-y</label>
+			<input id="matrix-ay" type="text" name="a_y" class="integer-field">
+			
+			<label for="matrix-aval">A value</label>
+			<input id="matrix-aval" type="text" name="a_value" class="text-field">
+			
+			<label for="matrix-bx">B-x</label>
+			<input id="matrix-bx" type="text" name="b_x" class="integer-field">
+		
+			<label for="matrix-by">B-y</label>
+			<input id="matrix-by" type="text" name="b_y" class="integer-field">
+			
+			<label for="matrix-bval">B value</label>
+			<input id="matrix-bval" type="text" name="b_value" class="text-field">
 			
 			<div class="model-delete"></div>
 		</div>

@@ -9,7 +9,7 @@ class LayerAdmin(admin.TabularInline):
 
 class SceneAdmin(admin.ModelAdmin):
     model = Scene
-    list_display = ('title', 'slug', 'notes',)
+    list_display = ('slug', 'title', 'notes',)
     inlines = [LayerAdmin,]
 
 

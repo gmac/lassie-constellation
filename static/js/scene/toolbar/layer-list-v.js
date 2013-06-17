@@ -6,6 +6,11 @@ define([
 	var LayersListView = BaseListView.extend({
 		el: '#layer-list',
 		
+		initialize: function() {
+			this.makeDragable('.list', '.drag', true);
+			BaseListView.prototype.initialize.call(this);
+		},
+		
 		render: function() {
 			this.tmpl = this.tmpl || _.template($('#layer-list-item').html());
 			
