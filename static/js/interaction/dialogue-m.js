@@ -5,8 +5,20 @@ define([
 	'./action-m'
 ], function(Backbone, _, ResourceModelList, actionResource) {
 	
+	var DialogueModel = Backbone.Model.extend({
+		defaults: {
+			index: 0,
+			subtitle: '',
+			slug: '',
+			puppet: '',
+			tone: 0,
+			sound: ''
+		}
+	});
+	
 	var DialogueModelList = ResourceModelList.extend({
 		api: 'dialogue',
+		model: DialogueModel,
 		
 		initialize: function() {
 			ResourceModelList.prototype.initialize.apply(this, arguments);

@@ -46,9 +46,9 @@ define([
 		}
 	};
 	
-	layerModel.fetch();
-	gridModel.fetch();
-	matrixModel.fetch();
+	layerModel.fetch(layerModel.RESET);
+	gridModel.fetch(gridModel.RESET);
+	matrixModel.fetch(matrixModel.RESET);
 	
 	return new ToolbarViewController();
 });

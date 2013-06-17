@@ -1,5 +1,5 @@
 define([
-	'./base-edit-v',
+	'common/base-edit-v',
 	'../model/matrix-m'
 ], function(BaseEditView, matrixResource) {
     
@@ -8,6 +8,7 @@ define([
 	});
 	
 	return new MatrixEditView({
-		collection: matrixResource
+		collection: matrixResource,
+		model: matrixResource.selected
 	});
 });

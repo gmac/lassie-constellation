@@ -3,10 +3,6 @@
 #actions-manager {
 	clear: both;
 	padding: 25px 0;
-
-	textarea {
-		width: 100%;
-	}
 	
 	.actions-list {
 		border-bottom: 2px solid #ccc;
@@ -68,7 +64,10 @@
 	.script textarea {
 		height: 200px;
 	}
-	
+}
+
+#dialogue-manager {
+
 	.dialogue-list {
 		background-color: #eee;
 		border: 1px solid #ccc;
@@ -104,6 +103,12 @@
 	}
 }
 
+#actions-manager,
+#dialogue-manager {
+	textarea {
+		width: 100%;
+	}
+}
 
 .add-header {
 	background-color: #333;

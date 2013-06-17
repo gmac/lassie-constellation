@@ -6,6 +6,7 @@ from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 from tastypie.resources import ModelResource
 from lassie.interaction.models import ActionType, Action, Dialogue
 from lassie.inventory.models import Item, ItemCombo
+from lassie.player.models import DefaultResponse
 from lassie.scene.models import Scene, Layer, Grid, Matrix
 
 
@@ -99,6 +100,17 @@ class ItemComboResource(ModelResource):
         }
 
 
+class DefaultResponseResource(ModelResource):
+    class Meta:
+        queryset = DefaultResponse.objects.all()
+        resource_name = 'defaultresponse'
+        always_return_data = True
+        authorization = Authorization()
+        filtering = {
+            'action': ALL_WITH_RELATIONS,
+        }
+
+
 class ActionTypeResource(ModelResource):
     '''
     API resource for accessing action type classifications.
@@ -116,6 +128,7 @@ class ActionResource(ModelResource):
     action_type = fields.ForeignKey(ActionTypeResource, 'action_type', null=True)
     related_item = fields.ForeignKey(ItemResource, 'related_item', null=True)
     content_object = GenericForeignKeyField({
+        DefaultResponse: DefaultResponseResource,
         Item: ItemResource,
         ItemCombo: ItemComboResource,
         Layer: LayerResource,
@@ -154,13 +167,14 @@ class DialogueResource(ModelResource):
 
 v1_api = Api(api_name='v1')
 
-v1_api.register(ItemResource())
-v1_api.register(ItemComboResource())
-v1_api.register(ActionTypeResource())
 v1_api.register(ActionResource())
+v1_api.register(ActionTypeResource())
+v1_api.register(DefaultResponseResource())
 v1_api.register(DialogueResource())
-v1_api.register(SceneResource())
-v1_api.register(LayerResource())
 v1_api.register(GridResource())
+v1_api.register(ItemComboResource())
+v1_api.register(ItemResource())
+v1_api.register(LayerResource())
 v1_api.register(MatrixResource())
+v1_api.register(SceneResource())
 

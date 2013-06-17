@@ -16,6 +16,7 @@ define([
 			this.model = dialogueModel.selected;
 			this.listenTo(dialogueModel, 'add remove reset', this.render);
 			this.listenTo(selectedModel, 'select', this.render);
+			this.listenTo(selectedModel, 'change:subtitle', this.renderOptions);
 			
 			this.$delete = new DeleteWidget({
 				el: this.$('#dialogue-delete'),
@@ -24,14 +25,22 @@ define([
 		},
 		
 		render: function() {
+			this.renderOptions();
+			this.populate();
+			
+			this.$('.dialogue-edit').css({
+				'opacity': selectedModel.model ? 1 : 0.5,
+				pointerEvents: selectedModel.model ? 'auto' : 'none'
+			});
+		},
+		
+		renderOptions: function() {
 			this.$('.dialogue-list').html(dialogueModel.reduce(function(memo, model, index) {
 				var selected = (model.cid === selectedModel.cid);
 				memo += '<li class="action'+ (selected ? ' selected' : '') +'" data-cid="'+model.cid+'">';
 				memo += (model.get('puppet') || 'puppet') +': '+ (model.get('subtitle') || '') +'</li>';
 				return memo;
 			}, ''));
-			
-			this.populate();
 		},
 		
 		events: function() {

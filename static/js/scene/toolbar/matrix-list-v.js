@@ -5,6 +5,7 @@ define([
     
 	return new ListView({
 		el: '#matrix-list',
-		collection: matrixResource
+		collection: matrixResource,
+		model: matrixResource.selected
 	});
 });

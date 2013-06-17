@@ -14,18 +14,23 @@ define([
 		model: null,
 
 		load: function(model) {
+			if (model === this.model) return;
+			
+			// Clear previous model:
 			if (this.model) {
 				this.stopListening(this.model);
 			}
 			
+			// Subscribe to new valid model:
+			if (model) {
+				this.listenTo(model, 'all', this.proxyEvent);
+			}
+			
+			// Store new model and trigger selection change:
 			this.model = model;
 			this.id = model ? model.id : '';
 			this.cid = model ? model.cid : '';
-			
-			if (model) {
-				this.listenTo(model, 'all', this.proxyEvent);
-				this.trigger('select');
-			}
+			this.trigger('select');
 		},
 		
 		unload: function() {

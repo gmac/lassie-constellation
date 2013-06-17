@@ -22,7 +22,7 @@
 			<script type="text/template" id="layer-list-item">
 				<li class="layer" data-cid="<%= cid %>">
 					<span class="drag"></span>
-					<input type="text" readonly="readonly" value="<%= slug %>">
+					<span><%= slug %></span>
 					<button class="edit">^</button>
 				</li>
 			</script>
@@ -52,65 +52,65 @@
 			<button class="cancel-edit">x</button>
 			<h1>Layer Attributes</h1>
 			<label for="layer-slug">Slug</label>
-			<input id="layer-slug" type="text" name="slug" class="slug">
+			<input id="layer-slug" type="text" name="slug" class="slug-field">
 		
 			<label for="layer-title">Title</label>
-			<input id="layer-title" type="text" name="title" class="string">
+			<input id="layer-title" type="text" name="title" class="text-field">
 		
-			<label for="layer-subtitle-color">Title</label>
-			<input id="layer-subtitle-color" type="text" name="subtitle_color" class="hex">
+			<label for="layer-subtitle-color">Subtitle color</label>
+			<input id="layer-subtitle-color" type="text" name="subtitle_color" class="color-field">
 		
 			<h2>Image</h2>
 			<label for="layer-img">Image</label>
-			<input id="layer-img" type="text" name="img" class="string">
+			<input id="layer-img" type="text" name="img" class="text-field">
 		
 			<label for="layer-img-x">Image-x</label>
-			<input id="layer-img-x" type="text" name="img_x" class="integer">
+			<input id="layer-img-x" type="text" name="img_x" class="integer-field">
 		
 			<label for="layer-img-y">Image-y</label>
-			<input id="layer-img-y" type="text" name="img_y" class="integer">
+			<input id="layer-img-y" type="text" name="img_y" class="integer-field">
 		
 			<label for="layer-img-w">Image width</label>
-			<input id="layer-img-w" type="text" name="img_w" class="integer">
+			<input id="layer-img-w" type="text" name="img_w" class="integer-field">
 		
 			<label for="layer-img-h">Image height</label>
-			<input id="layer-img-h" type="text" name="img_h" class="integer">
+			<input id="layer-img-h" type="text" name="img_h" class="integer-field">
 		
 			<label for="layer-opacity">Opacity</label>
-			<input id="layer-opacity" type="text" name="opacity" class="percent">
+			<input id="layer-opacity" type="text" name="opacity" class="percent-field">
 		
 			<h2>Hit Area</h2>
 			<label for="layer-hit-x">Hit-x</label>
-			<input id="layer-hit-x" type="text" name="hit_x" class="integer">
+			<input id="layer-hit-x" type="text" name="hit_x" class="integer-field">
 		
 			<label for="layer-hit-y">Hit-y</label>
-			<input id="layer-hit-y" type="text" name="hit_y" class="integer">
+			<input id="layer-hit-y" type="text" name="hit_y" class="integer-field">
 		
 			<label for="layer-hit-w">Hitarea width</label>
-			<input id="layer-hit-w" type="text" name="hit_w" class="integer">
+			<input id="layer-hit-w" type="text" name="hit_w" class="integer-field">
 		
 			<label for="layer-hit-h">Hitarea height</label>
-			<input id="layer-hit-h" type="text" name="hit_h" class="integer">
+			<input id="layer-hit-h" type="text" name="hit_h" class="integer-field">
 		
 			<h2>Map Point</h2>
 			<label for="layer-map-x">Map-x</label>
-			<input id="layer-map-x" type="text" name="map_x" class="integer">
+			<input id="layer-map-x" type="text" name="map_x" class="integer-field">
 		
 			<label for="layer-map-y">Map-y</label>
-			<input id="layer-map-y" type="text" name="map_y" class="integer">
+			<input id="layer-map-y" type="text" name="map_y" class="integer-field">
 		
 			<label for="layer-map-orien">Map orientation</label>
-			<input id="layer-map-orien" type="text" name="map_orientation" class="integer">
+			<input id="layer-map-orien" type="text" name="map_orientation" class="integer-field">
 		
 			<h2>Floating</h2>
 			<label for="layer-float">Floating</label>
-			<input id="layer-float" type="checkbox" name="float_enabled" class="boolean">
+			<input id="layer-float" type="checkbox" name="float_enabled" class="boolean-field">
 		
 			<label for="layer-float-x">Float-x</label>
-			<input id="layer-float-x" type="text" name="float_x" class="integer">
+			<input id="layer-float-x" type="text" name="float_x" class="integer-field">
 		
 			<label for="layer-float-y">Float-y</label>
-			<input id="layer-float-y" type="text" name="float_y" class="integer">
+			<input id="layer-float-y" type="text" name="float_y" class="integer-field">
 			
 			<div class="model-delete"></div>
 		</div>
@@ -119,10 +119,10 @@
 			<button class="cancel-edit">x</button>
 			<h1>Grid</h1>
 			<label for="grid-slug">Slug</label>
-			<input id="grid-slug" type="text" name="slug" class="slug">
+			<input id="grid-slug" type="text" name="slug" class="slug-field">
 			
 			<label for="grid-notes">Notes</label>
-			<input id="grid-notes" type="text" name="notes" class="string">
+			<input id="grid-notes" type="text" name="notes" class="text-field">
 			
 			<h2>Grid Operations</h2>
 			<button class="grid-op" data-op="join">Join</button>
@@ -137,10 +137,10 @@
 			<button class="cancel-edit">x</button>
 			<h1>Matrix</h1>
 			<label for="matrix-slug">Slug</label>
-			<input id="matrix-slug" type="text" name="slug" class="slug">
+			<input id="matrix-slug" type="text" name="slug" class="slug-field">
 			
 			<label for="matrix-type">Type</label>
-			<select id="matrix-type" name="type">
+			<select id="matrix-type" name="type" class="select-field">
 				<option value="0">Scale</option>
 				<option value="1">Color</option>
 				<option value="2">Rate</option>

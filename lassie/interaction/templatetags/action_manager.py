@@ -24,27 +24,34 @@ def action_manager(model):
         'layer': MULTI,
         'item': MULTI,
         'itemcombo': SINGLE,
-        'defaultresponse': SINGLE,
+        'defaultresponse': MULTI,
     }
     
     content_id = ''
     content_type = ''
     allow_multiple = False
+    all_types = list(ActionType.objects.values())
+    all_items = list(Item.objects.values('id', 'slug'))
     
     if (model):
         content_id = model.id
         content_type = ContentType.objects.get_for_model(model).model
-        
+    
+    # Check if content type allows multiple related actions:
     if (content_type in allowed_types):
         allow_multiple = (allowed_types[content_type] == MULTI)
+    
+    # Provide no items for default response action selectors:
+    if (content_type == 'defaultresponse'):
+        all_items = list()
         
     return {
         'valid_type': content_type in allowed_types,
         'content_id': content_id,
         'content_type': content_type,
         'allow_multiple': allow_multiple,
-        'types_json': json.dumps(list(ActionType.objects.values())),
-        'items_json': json.dumps(list(Item.objects.values('id', 'slug'))),
+        'types_json': json.dumps(all_types),
+        'items_json': json.dumps(all_items),
         'voices': Voice.objects.all(),
     }
     

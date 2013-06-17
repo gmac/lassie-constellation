@@ -6,25 +6,20 @@ define([
 		initialize: function() {
 			if (this.collection) {
 				this.listenTo(this.collection, 'add remove reset sync', this.render);
+				this.listenTo(this.collection.selected, 'change:slug', this.render);
 				this.listenTo(this.collection.selected, 'select', this.updateSelection);
-			} else {
-				throw('Requires a resource collection model.');
-			}	
+			}
 		},
 		
 		render: function() {
-			var html = '';
-			
 			// Render list options, including selection state:
-			this.collection.each(function(model) {
-				html += '<option value="'+ model.cid +'"';
+			this.$('.list').html(this.collection.reduce(function(memo, model) {
+				memo += '<option value="'+ model.cid +'"';
 				if (model.cid === this.collection.selected.cid) {
-					html += ' selected="selected"';
+					memo += ' selected="selected"';
 				}
-				html += '>'+ model.get('slug') +'</option>';
-			}, this);
-			
-			this.$('.list').html(html);
+				return memo += '>'+ model.get('slug') +'</option>';
+			}, '', this));
 		},
 		
 		updateSelection: function() {

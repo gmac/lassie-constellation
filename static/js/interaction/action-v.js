@@ -2,13 +2,14 @@ define([
 	'backbone',
 	'jquery',
 	'underscore',
+	'common/base-edit-v',
 	'common/delete-v',
 	'./action-m'
-], function(Backbone, $, _, DeleteWidget, actionsModel) {
+], function(Backbone, $, _, BaseEditView, DeleteWidget, actionsModel) {
 	
 	var selectedModel = actionsModel.selected;
 	
-	var ActionsView = Backbone.View.extend({
+	var ActionsView = BaseEditView.extend({
 		el: '#actions-manager',
 		
 		initialize: function() {
@@ -38,6 +39,7 @@ define([
 		},
 		
 		setup: function() {
+			this.model = selectedModel;
 			this.listenTo(selectedModel, 'select', this.render);
 			this.listenTo(selectedModel, 'change', this.render);
 			
@@ -56,6 +58,7 @@ define([
 			// Abort if there's no selected model (something went wrong)...
 			if (!selectedModel.model) return;
 			if (this.isMultiAction) this.renderMultiAction();
+			this.populate();
 		},
 		
 		// Renders multi-select options:
@@ -126,17 +129,17 @@ define([
 			}
 			
 			// Set dependent fields visibility & values:
-			this.$('.action-item').toggle(selectedType.get('is_item'));
+			// (specifically cast '.length' as boolean for jQuery toggle implementation quirks...)
+			this.$('.action-item').toggle(selectedType.get('is_item') && Boolean(actionsModel.items.length));
 			this.$('.action-slug').toggle(selectedType.get('is_generic'));
-			this.$('#action-slug').val(selectedModel.get('slug') || '');
 		},
 		
-		events: {
-			'click .action': 'onSelect',
-			'click .add-action': 'onAdd',
-			'change #action-type': 'onSetType',
-			'change #action-slug': 'onSetSlug',
-			'change #action-item': 'onSetItem'
+		events: function() {
+			return _.extend({
+				'click .action': 'onSelect',
+				'click .add-action': 'onAdd',
+				'change #action-type': 'onSetType'
+			}, BaseEditView.prototype.events);
 		},
 		
 		onSelect: function(evt) {
@@ -160,14 +163,6 @@ define([
 				if (!type.get('is_generic')) data.slug = '';
 				selectedModel.save(data, actionsModel.PATCH);
 			}
-		},
-		
-		onSetSlug: function() {
-			selectedModel.set('slug', this.$('#action-slug').val() || '');
-		},
-		
-		onSetItem: function() {
-			selectedModel.set('related_item', this.$('#action-item').val() || null);
 		}
 	});
 	

@@ -1,6 +1,6 @@
 define([
 	'jquery',
-	'./base-edit-v',
+	'common/base-edit-v',
 	'../model/grid-m',
 	'../grid/grid'
 ], function($, BaseEditView, gridResource, gridController) {
@@ -25,6 +25,7 @@ define([
 	});
 	
 	return new GridEditView({
-		collection: gridResource
+		collection: gridResource,
+		model: gridResource.selected
 	});
 });

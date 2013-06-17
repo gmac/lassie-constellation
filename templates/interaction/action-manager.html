@@ -1,10 +1,9 @@
 {% load static compress action_manager %}
 {% if valid_type %}
-
 	{% compress css %}
 	<link rel="stylesheet" href="{% static 'css/interaction.scss' %}" type="text/x-scss">
 	{% endcompress %}
-
+	
 	<div id="actions-manager">
 		<h1>Related Action{% if allow_multiple %}s{% endif %}</h1>
 		<input id="resource-uri" type="hidden" value="/api/v1/{{ content_type }}/{{ content_id }}/">
@@ -17,65 +16,65 @@
 			<li id="action-delete" class="model-delete"></li>
 			<li class="action-type">
 				<label for="action-type">Action type</label><br>
-				<select id="action-type"></select>
+				<select id="action-type" name="action_type"></select>
 			</li>
 			<li class="action-item">
 				<label for="action-item">Related item</label><br>
-				<select id="action-item"></select>
+				<select id="action-item" name="related_item"></select>
 			</li>
 			<li class="action-slug">
 				<label for="action-slug">Action slug</label><br>
-				<input id="action-slug" type="text">
+				<input id="action-slug" type="text" name="slug" class="slug-field">
 			</li>
 			<li class="action-grammar">
 				<label for="action-grammar">Grammar</label><br>
-				<input id="action-grammar" type="text"> <span class="tokens">Tokens: #action#, #object#, #item#</span>
+				<input id="action-grammar" type="text" name="grammar" class="text-field"> 
+				<span class="tokens">Tokens: #target#, #item#</span>
 			</li>
 		</ul>
 		{% endif %}
 	
 		<div class="script">
 			<h2>Script</h2>
-			<textarea></textarea>
-		</div>
-	
-		<div id="dialogue-manager">
-			<div class="add-header">
-				<button class="add-dialogue">Add</button>
-				<h2>Dialogue</h2>
-			</div>
-			<ul class="dialogue-list"></ul>
-			<div class="dialogue-edit">
-				<label for="dialogue-subtitle">Subtitle</label>
-				<textarea id="dialogue-subtitle" name="subtitle" class="text-field"></textarea>
-				
-				<label for="dialogue-slug">Slug</label>
-				<input id="dialogue-slug" type="text" name="slug" class="slug-field">
-				
-				<label for="dialogue-puppet">Puppet</label>
-				<input id="dialogue-puppet" type="text" name="puppet" class="slug-field">
-		
-				<label for="dialogue-tone">Intonation</label>
-				<input id="dialogue-tone" type="text" name="tone" class="integer-field">
-		
-				<label for="dialogue-sound">Sound</label>
-				<input id="dialogue-sound" type="text">
-		
-				<label for="dialogue-voice">Voice</label>
-				<select id="dialogue-voice">
-					<option value="">--None Selected--</option>
-					{% for voice in voices %}
-					<option value="{{ voice.id }}">{{ voice.title }}</option>
-					{% endfor %}
-				</select>
-		
-				<div id="dialogue-delete" class="model-delete"></div>
-			</div>
+			<textarea name="script" class="text-field"></textarea>
 		</div>
 	</div>
-
+	
+	<div id="dialogue-manager">
+		<div class="add-header">
+			<button class="add-dialogue">Add</button>
+			<h2>Dialogue</h2>
+		</div>
+		<ul class="dialogue-list"></ul>
+		<div class="dialogue-edit">
+			<label for="dialogue-subtitle">Subtitle</label>
+			<textarea id="dialogue-subtitle" name="subtitle" class="text-field"></textarea>
+			
+			<label for="dialogue-slug">Slug</label>
+			<input id="dialogue-slug" type="text" name="slug" class="slug-field">
+			
+			<label for="dialogue-puppet">Puppet</label>
+			<input id="dialogue-puppet" type="text" name="puppet" class="slug-field">
+	
+			<label for="dialogue-tone">Intonation</label>
+			<input id="dialogue-tone" type="text" name="tone" class="integer-field">
+	
+			<label for="dialogue-sound">Sound</label>
+			<input id="dialogue-sound" type="text">
+	
+			<label for="dialogue-voice">Voice</label>
+			<select id="dialogue-voice">
+				<option value="">--None Selected--</option>
+				{% for voice in voices %}
+				<option value="{{ voice.id }}">{{ voice.title }}</option>
+				{% endfor %}
+			</select>
+	
+			<div id="dialogue-delete" class="model-delete"></div>
+		</div>
+	</div>
+	
 	<script src="{% static 'js/libs/require.js' %}"></script>
 	<script src="{% static 'js/config.js' %}"></script>
 	<script>require(['interaction/main']);</script>
-
 {% endif %}

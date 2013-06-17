@@ -20,7 +20,8 @@ class Dialogue(models.Model):
     Dialogue is a single statement delivered by a single actor.
     """
     index = models.PositiveIntegerField(default=0)
-    puppet = models.CharField(max_length=40)
+    slug = models.SlugField(blank=True)
+    puppet = models.SlugField(blank=True)
     tone = models.CharField(max_length=40, blank=True)
     notes = models.CharField(max_length=255, blank=True)
     sound = models.CharField(max_length=40, blank=True)

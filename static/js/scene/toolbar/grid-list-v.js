@@ -5,6 +5,7 @@ define([
     
 	return new ListView({
 		el: '#grid-list',
-		collection: gridsResource
+		collection: gridsResource,
+		model: gridsResource.selected
 	});
 });
