@@ -1,10 +1,10 @@
 import dj_database_url
 from lassie.settings.base import *
 
-#DEBUG = True
+DEBUG = True
 SERVE_STATIC = True
 SERVE_MEDIA = False
-#TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
     'default': dj_database_url.config(),
