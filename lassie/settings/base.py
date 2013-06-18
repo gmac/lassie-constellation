@@ -6,29 +6,25 @@ PROJECT_DIR = os.path.normpath(os.path.join(
     os.pardir,
 ))
 
-DEBUG = True
-SERVE_STATIC = True
-TEMPLATE_DEBUG = DEBUG
-
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        #'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        #'NAME': os.path.join(PROJECT_DIR, 'lassie_db'), # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'lassie',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',            # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                 # Set to empty string for default.
-    }
-}
+# DATABASES = {
+#     'default': {
+#         #'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+#         #'NAME': os.path.join(PROJECT_DIR, 'lassie_db'), # Or path to database file if using sqlite3.
+#         # The following settings are not used with sqlite3:
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'lassie',
+#         'USER': '',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',            # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+#         'PORT': '',                 # Set to empty string for default.
+#     }
+# }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -177,12 +173,3 @@ COMPRESS_PRECOMPILERS = (
 # Tastypie settings
 API_LIMIT_PER_PAGE = 50;
 TASTYPIE_DEFAULT_FORMATS = ['json']
-
-
-# Parse database configuration from $DATABASE_URL
-#import dj_database_url
-#DATABASES['default'] =  dj_database_url.config()
-
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
