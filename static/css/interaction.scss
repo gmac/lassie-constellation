@@ -1,22 +1,28 @@
 @import "bourbon/bourbon";
 
+$ccWhite: #fff;
+$ccDark: #417690;
+
 #actions-manager {
 	clear: both;
-	padding: 25px 0;
+	padding: 25px 0 0;
 	
 	.actions-list {
-		border-bottom: 2px solid #ccc;
+		border-bottom: 4px solid $ccDark;
 		padding: 0;
 		
 		li {
 			background-color: #ccc;
+			border-radius: 5px;
+			@include border-bottom-radius(0); 
 			cursor: default;
 			@include inline-block;
 			margin: 0 2px;
 			padding: 5px 15px;
 
 			&.selected {
-				background-color: #eee;
+				background-color: $ccDark;
+				color: $ccWhite;
 			}
 		}
 	}
@@ -111,22 +117,26 @@
 }
 
 .add-header {
-	background-color: #333;
+	background-color: $ccDark;
 	border-radius: 5px;
-	color: #fff;
 	height: 25px;
 	padding: 4px 10px;
-	margin: 50px 0 25px;
+	margin: 25px 0;
 	
 	h2 {
+		color: $ccWhite;
+		display: inline;
 		line-height: 25px;
 	}
 
 	button {
 		border: none;
-		float: right;
+		border-radius: 5px;
 		height: 100%;
 		margin: 0;
+		margin-right: 10px;
 		padding: 0;
+		text-align: center;
+		width: 25px;
 	}
 }

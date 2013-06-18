@@ -128,17 +128,47 @@
 		top: 0;
 		width: 50px;
 	}
-	
-	#layer-metrics {
-		display: none;
-	}
+}
+
+#layer-metrics {
+	display: none;
 	
 	.metric {
-		background-color: #f00;
-		height: 10px;
 		left: 0;
 		position: absolute;
 		top: 0;
+	}
+	
+	.metric span {
+		background-color: #f00;
+		border: 1px solid #000;
+		display: block;
+		border-radius: 50%;
+		height: 10px;
+		left: -5px;
+		position: relative;
+		top: -5px;
 		width: 10px;
+	}
+	
+	.drag span {
+		background-color: #ccc;
+		border-radius: 5px;
+		height: 20px;
+		left: -10px;
+		top: -10px;
+		width: 20px;
+	}
+	
+	.resize span {
+		background-color: #ccc;
+	}
+	
+	.reg-pt span {
+		background-color: #fff;
+	}
+	
+	.map-pt span {
+		
 	}
 }

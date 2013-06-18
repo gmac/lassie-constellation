@@ -20,6 +20,7 @@ define([
 			
 			if (!uri || !types.length) {
 				this.$el.hide();
+				$('#dialogue-manager').hide();
 				return;
 			}
 			
@@ -68,7 +69,8 @@ define([
 			
 			// Render action tab options:
 			actionsModel.sort();
-			var html = actionsModel.reduce(function(memo, model) {
+			var html = '<li class="action add-action">+</li>';
+			html += actionsModel.reduce(function(memo, model) {
 				// Get type and related item models:
 				var type = actionsModel.types.get(model.get('action_type') || '');
 				var item = actionsModel.items.get(model.get('related_item') || '');
@@ -87,7 +89,6 @@ define([
 				return memo;
 			}, '');
 			
-			html += '<li class="action add-action">+</li>';
 			this.$list.html(html);
 			
 			

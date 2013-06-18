@@ -1,0 +1,5 @@
+DJANGO_SETTINGS_MODULE="lassie.settings.dev"
+export DJANGO_SETTINGS_MODULE
+
+DATABASE_URL='postgres://localhost/lassie'
+export DATABASE_URL
