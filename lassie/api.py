@@ -4,7 +4,7 @@ from tastypie.authorization import DjangoAuthorization
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 from tastypie.resources import ModelResource
-from lassie.interaction.models import ActionType, Action, Dialogue
+from lassie.interaction.models import ActionType, Action, Dialogue, Voice
 from lassie.inventory.models import Item, ItemCombo
 from lassie.player.models import DefaultResponse
 from lassie.scene.models import Scene, Layer, Grid, Matrix
@@ -22,8 +22,8 @@ class SceneResource(ModelResource):
         allowed_methods = ['get']
         filtering = {
             'id': ALL,
-        }
-        
+        }      
+
 
 class LayerResource(ModelResource):
     '''
@@ -147,11 +147,25 @@ class ActionResource(ModelResource):
         }
 
 
+class VoiceResource(ModelResource):
+    '''
+    API resource for accessing voices.
+    '''
+    class Meta:
+        queryset = Voice.objects.all()
+        resource_name = 'voice'
+        allowed_methods = ['get']
+        filtering = {
+            'id': ALL,
+        }
+                
+                
 class DialogueResource(ModelResource):
     '''
     API resource for accessing dialogue.
     '''
     action = fields.ForeignKey(ActionResource, 'action')
+    voice = fields.ForeignKey(VoiceResource, 'voice', null=True)
 
     class Meta:
         queryset = Dialogue.objects.all()
@@ -160,6 +174,7 @@ class DialogueResource(ModelResource):
         authorization = DjangoAuthorization()
         filtering = {
             'action': ALL_WITH_RELATIONS,
+            'voice': ALL_WITH_RELATIONS,
         }
 
 
@@ -177,4 +192,4 @@ v1_api.register(ItemResource())
 v1_api.register(LayerResource())
 v1_api.register(MatrixResource())
 v1_api.register(SceneResource())
-
+v1_api.register(VoiceResource())

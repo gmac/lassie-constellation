@@ -15,7 +15,7 @@ define([
 			if (!model) return;
 			
 			this.$('[name]').each(function() {
-				this.value = model.get(this.name);
+				this.value = model.get(this.name) || '';
 			});
 		},
 		

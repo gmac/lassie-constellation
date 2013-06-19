@@ -61,10 +61,10 @@
 			<input id="dialogue-sound" type="text">
 	
 			<label for="dialogue-voice">Voice</label>
-			<select id="dialogue-voice">
-				<option value="">--None Selected--</option>
+			<select id="dialogue-voice" name="voice" class="select-field">
+				<option value="">---</option>
 				{% for voice in voices %}
-				<option value="{{ voice.id }}">{{ voice.title }}</option>
+				<option value="/api/v1/voice/{{ voice.id }}/">{{ voice.title }}</option>
 				{% endfor %}
 			</select>
 	

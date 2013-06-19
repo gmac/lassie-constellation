@@ -16,7 +16,7 @@ class VoiceAdmin(admin.ModelAdmin):
     '''
     Configures the admin for listing out Voice options.
     '''
-    list_display = ('title','notes',)
+    list_display = ('title', 'notes',)
     
     
 class DialogueAdmin(admin.ModelAdmin):
@@ -27,6 +27,7 @@ class DialogueAdmin(admin.ModelAdmin):
     '''
     model = Dialogue
     exclude = ('action',)
+    list_display = ('subtitle', 'voice', 'id',)
     
     def has_add_permission(self, request):
         return False
