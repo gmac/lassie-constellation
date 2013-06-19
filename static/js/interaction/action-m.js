@@ -15,6 +15,7 @@ define([
 		// Related Model collections:
 		types: new Backbone.Collection(),
 		items: new Backbone.Collection(),
+		voices: new Backbone.Collection(),
 		
 		// Sets the associated API resource that Actions will be assigned to:
 		// Parses out the object's foreign key from the API resource.

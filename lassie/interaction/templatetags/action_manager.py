@@ -32,6 +32,7 @@ def action_manager(model):
     allow_multiple = False
     all_types = list(ActionType.objects.values())
     all_items = list(Item.objects.values('id', 'slug'))
+    all_voices = list(Voice.objects.values('id', 'title'))
     
     if (model):
         content_id = model.id
@@ -52,6 +53,6 @@ def action_manager(model):
         'allow_multiple': allow_multiple,
         'types_json': json.dumps(all_types),
         'items_json': json.dumps(all_items),
-        'voices': Voice.objects.all(),
+        'voices_json': json.dumps(all_voices),
     }
     

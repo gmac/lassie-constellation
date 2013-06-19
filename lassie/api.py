@@ -165,7 +165,7 @@ class DialogueResource(ModelResource):
     API resource for accessing dialogue.
     '''
     action = fields.ForeignKey(ActionResource, 'action')
-    voice = fields.ForeignKey(VoiceResource, 'voice', null=True)
+    voice = fields.ForeignKey(VoiceResource, 'voice')
 
     class Meta:
         queryset = Dialogue.objects.all()

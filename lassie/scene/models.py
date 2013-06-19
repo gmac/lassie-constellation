@@ -21,6 +21,7 @@ class Layer(models.Model):
     Describes an individual interactive object within a scene.
     """
     scene = models.ForeignKey('scene.Scene')
+    voice = models.ForeignKey('interaction.Voice', null=True, blank=True)
     slug = models.SlugField(default='')
     group = models.SlugField(default='')
     title = models.CharField(max_length=255, blank=True)
@@ -29,7 +30,6 @@ class Layer(models.Model):
     grid = models.SlugField(blank=True)
     opacity = models.PositiveSmallIntegerField(default=100)
     parallax_axis = models.CharField(max_length=10, blank=True)
-    subtitle_color = models.CharField(max_length=10, default='#ffffff')
     visible = models.BooleanField(default=True)
     
     # Cursor settings
@@ -68,6 +68,9 @@ class Layer(models.Model):
     # Editor settings
     editor_visible = models.BooleanField(default=True)
     
+    class Meta:
+        ordering = ['index']
+        
     def __unicode__(self):
         return self.slug
 

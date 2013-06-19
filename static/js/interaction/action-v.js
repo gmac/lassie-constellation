@@ -17,8 +17,9 @@ define([
 			var uri = this.$('#resource-uri').val();
 			var types = JSON.parse(this.$('#resource-types').val());
 			var items = JSON.parse(this.$('#resource-items').val());
+			var voices = JSON.parse(this.$('#resource-voices').val());
 			
-			if (!uri || !types.length) {
+			if (!uri || !types.length || !voices.length) {
 				this.$el.hide();
 				$('#dialogue-manager').hide();
 				return;
@@ -32,17 +33,21 @@ define([
 				model.id = '/api/v1/item/'+model.id+'/';
 			});
 			
+			_.each(voices, function(model) {
+				model.id = '/api/v1/voice/'+model.id+'/';
+			});
+			
 			this.setup();
 			actionsModel.types.reset(types);
 			actionsModel.items.reset(items);
+			actionsModel.voices.reset(voices);
 			actionsModel.setResource(uri);
 			actionsModel.fetch(actionsModel.RESET);
 		},
 		
 		setup: function() {
 			this.model = selectedModel;
-			this.listenTo(selectedModel, 'select', this.render);
-			this.listenTo(selectedModel, 'change', this.render);
+			this.listenTo(selectedModel, 'select change', this.render);
 			
 			this.$list = this.$('.actions-list');
 			this.$types = this.$('#action-type');

@@ -36,6 +36,7 @@ class Avatar(models.Model):
     notes = models.CharField(max_length=255, blank=True)
     inventory_collection = models.ForeignKey('player.InventoryCollection')
     default_response = models.ForeignKey('player.DefaultResponse')
+    voice = models.ForeignKey('interaction.Voice')
     
     def __unicode__(self):
         return self.slug

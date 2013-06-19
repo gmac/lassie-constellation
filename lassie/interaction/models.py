@@ -8,10 +8,23 @@ class Voice(models.Model):
     Describes a voice actor reference.
     """
     title = models.CharField(max_length=255)
+    subtitle_color = models.CharField(max_length=10, default='#FFFFFF')
     notes = models.CharField(max_length=255, blank=True)
     
     def __unicode__(self):
         return self.title
+
+
+# class Intonation(models.Model):
+#     """
+#     Describes a dialogue intonation level, used to control character expressions.
+#     """
+#     title = models.CharField(max_length=255)
+#     slug = models.SlugField(default='')
+#     notes = models.CharField(max_length=255, blank=True)
+# 
+#     def __unicode__(self):
+#         return self.title
 
 
 class Dialogue(models.Model):
@@ -20,13 +33,13 @@ class Dialogue(models.Model):
     Dialogue is a single statement delivered by a single actor.
     """
     index = models.PositiveIntegerField(default=0)
-    slug = models.SlugField(blank=True)
-    puppet = models.SlugField(blank=True)
+    slug = models.SlugField(default='')
+    related_target = models.SlugField(default='')
     tone = models.CharField(max_length=40, blank=True)
     notes = models.CharField(max_length=255, blank=True)
     sound = models.CharField(max_length=40, blank=True)
     subtitle = models.TextField('Subtitle*', blank=True)
-    voice = models.ForeignKey('interaction.Voice', null=True, blank=True)
+    voice = models.ForeignKey('interaction.Voice')
     action = models.ForeignKey('interaction.Action')
     
     class Meta:

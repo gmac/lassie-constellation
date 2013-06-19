@@ -8,17 +8,19 @@ define([
 	var DialogueModel = Backbone.Model.extend({
 		defaults: {
 			index: 0,
-			subtitle: '',
+			notes: '',
+			related_target: '',
 			slug: '',
-			puppet: '',
-			tone: 0,
-			sound: ''
+			sound: '',
+			subtitle: '',
+			tone: 0
 		}
 	});
 	
 	var DialogueModelList = ResourceModelList.extend({
 		api: 'dialogue',
 		model: DialogueModel,
+		voices: actionResource.voices,
 		
 		initialize: function() {
 			ResourceModelList.prototype.initialize.apply(this, arguments);
@@ -42,6 +44,7 @@ define([
 		getNewModelData: function() {
 			return {
 				action: actionResource.selected.get('resource_uri'),
+				voice: actionResource.voices.at(0).get('id'),
 				index: this.length
 			};
 		},

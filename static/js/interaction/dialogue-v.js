@@ -17,11 +17,21 @@ define([
 			this.listenTo(dialogueModel, 'add remove reset', this.render);
 			this.listenTo(selectedModel, 'select', this.render);
 			this.listenTo(selectedModel, 'change:subtitle', this.renderOptions);
+			this.renderVoices();
 			
+			// Create delete widget:
 			this.$delete = new DeleteWidget({
 				el: this.$('#dialogue-delete'),
 				model: dialogueModel.selected
 			});
+		},
+		
+		// Populate voice options selector:
+		// should only need to happen once during startup.
+		renderVoices: function() {
+			this.$('#dialogue-voice').html(dialogueModel.voices.reduce(function(memo, model) {
+				return memo += '<option value="'+ model.get('id') +'">'+ model.get('title') +'</option>';
+			}, ''));
 		},
 		
 		render: function() {
@@ -29,7 +39,7 @@ define([
 			this.populate();
 			
 			this.$('.dialogue-edit').css({
-				'opacity': selectedModel.model ? 1 : 0.5,
+				opacity: selectedModel.model ? 1 : 0.5,
 				pointerEvents: selectedModel.model ? 'auto' : 'none'
 			});
 		},
