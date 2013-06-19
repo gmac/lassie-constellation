@@ -13,7 +13,7 @@ class Scene(models.Model):
     soundfx = models.FileField(upload_to='soundfx', blank=True)
     
     def __unicode__(self):
-        return self.title
+        return self.slug
 
 
 class Layer(models.Model):
@@ -69,7 +69,7 @@ class Layer(models.Model):
     editor_visible = models.BooleanField(default=True)
     
     def __unicode__(self):
-        return self.title
+        return self.slug
 
 
 class Grid(models.Model):

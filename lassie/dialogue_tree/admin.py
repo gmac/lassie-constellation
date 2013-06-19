@@ -21,12 +21,12 @@ class TreeTopicAdmin(admin.ModelAdmin):
 
 class TreeMenuAdmin(admin.ModelAdmin):
     model = TreeMenu
-    inlines = [TreeTopicInline,]
+    #inlines = [TreeTopicInline,]
 
 
 class TreeAdmin(admin.ModelAdmin):
     model = Tree
-    inlines = [TreeMenuInline,]
+    #inlines = [TreeMenuInline,]
 
 
 admin.site.register(Tree, TreeAdmin)
