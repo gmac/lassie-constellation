@@ -1,4 +1,3 @@
-import dj_database_url
 from lassie.settings.base import *
 
 DEBUG = True
@@ -23,14 +22,23 @@ def _ddt_check(request):
         return True
     return False
 
+
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
     'SHOW_TOOLBAR_CALLBACK': _ddt_check
 }
 
 
-DATABASE_URL = 'postgres://localhost/lassie'
-
 DATABASES = {
-    'default': dj_database_url.config(),
+    'default': {
+        #'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        #'NAME': os.path.join(PROJECT_DIR, 'lassie_db'), # Or path to database file if using sqlite3.
+        # The following settings are not used with sqlite3:
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'lassie',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': 'localhost', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '', # Set to empty string for default.
+    }
 }

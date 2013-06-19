@@ -8,6 +8,7 @@ define([
 	var BaseEditView = Backbone.View.extend({
 		initialize: function() {
 			this.listenTo(this.model, 'select', this.populate);
+			this.listenTo(this.model, 'change', this.update);
 		},
 		
 		populate: function() {
@@ -17,6 +18,17 @@ define([
 			this.$('[name]').each(function() {
 				this.value = model.get(this.name) || '';
 			});
+		},
+		
+		update: function() {
+			if (!this.model) return;
+			var changed = this.model.changedAttributes();
+			
+			if (changed) {
+				_.each(changed, function(value, attribute) {
+					this.$('[name="'+attribute+'"]').val(value);
+				}, this);
+			}
 		},
 		
 		// Makes list items draggable:

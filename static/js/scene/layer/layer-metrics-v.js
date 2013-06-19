@@ -15,10 +15,10 @@ define([
 			this.listenTo(selectedModel, 'change', this.render);
 			this.listenTo(selectedModel, 'edit', this.show);
 			this.listenTo(selectedModel, 'cancel', this.hide);
-			this.$pos = this.$('.drag');
-			this.$size = this.$('.resize');
-			this.$map = this.$('.map-pt');
-			this.$reg = this.$('.reg-pt');
+			this.$pos = this.$('.loc');
+			this.$size = this.$('.size');
+			this.$reg = this.$('.reg');
+			this.$map = this.$('.map');
 			this.hide();
 		},
 		

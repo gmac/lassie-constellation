@@ -12,9 +12,9 @@
 <div id="toolbar" class="toolbar">
 	<div id="toolbar-list">
 		<div id="layer-list" class="list-view" data-api="layer">
-			<div class="list-header">
+			<div class="add-header">
+				<button class="add">+</button>
 				<h1>Layers</h1>
-				<button class="add">Add</button>
 			</div>
 			<ul class="list"></ul>
 			<script type="text/template" id="layer-list-item">
@@ -27,18 +27,18 @@
 		</div>
 		
 		<div id="grid-list" class="list-view" data-api="grid">
-			<div class="list-header">
+			<div class="add-header">
+				<button class="add">+</button>
 				<h1>Grids</h1>
-				<button class="add">Add</button>
 			</div>
 			<select class="list"></select>
 			<button class="edit">^</button>
 		</div>
 		
 		<div id="matrix-list" class="list-view" data-api="matrix">
-			<div class="list-header">
+			<div class="add-header">
+				<button class="add">+</button>
 				<h1>Matrices</h1>
-				<button class="add">Add</button>
 			</div>
 			<select class="list"></select>
 			<button class="edit">^</button>
@@ -59,9 +59,6 @@
 			<input id="layer-subtitle-color" type="text" name="subtitle_color" class="color-field">
 		
 			<h2>Image</h2>
-			<label for="layer-img">Image</label>
-			<input id="layer-img" type="text" name="img" class="text-field">
-		
 			<label for="layer-img-x">Image-x</label>
 			<input id="layer-img-x" type="text" name="img_x" class="integer-field">
 		
@@ -98,8 +95,17 @@
 			<input id="layer-map-y" type="text" name="map_y" class="integer-field">
 		
 			<label for="layer-map-orien">Map orientation</label>
-			<input id="layer-map-orien" type="text" name="map_orientation" class="integer-field">
-		
+			<select id="layer-map-orien" type="text" name="map_orientation" class="select-field">
+				<option value="6">Back</option>
+				<option value="7">Back-right</option>
+				<option value="0">Side-right</option>
+				<option value="1">Front-right</option>
+				<option value="2">Front</option>
+				<option value="3">Front-left</option>
+				<option value="4">Side-left</option>
+				<option value="5">Back-left</option>
+			</select>
+			
 			<h2>Floating</h2>
 			<label for="layer-float">Floating</label>
 			<input id="layer-float" type="checkbox" name="float_enabled" class="boolean-field">
@@ -110,7 +116,10 @@
 			<label for="layer-float-y">Float-y</label>
 			<input id="layer-float-y" type="text" name="float_y" class="integer-field">
 			
-			<div class="model-delete"></div>
+			<div class="model-delete">
+				<button class="delete" data-op="confirm">Delete</button>
+				<button class="delete" data-op="cancel">Cancel</button>
+			</div>
 		</div>
 		
 		<div id="grid-edit" class="edit-view" data-api="grid">
@@ -129,7 +138,11 @@
 				<li><button class="grid-op" data-op="polygon">Polygon</button></li>
 				<li><button class="grid-op" data-op="remove">Remove</button></li>
 			</ul>
-			<div class="model-delete"></div>
+			
+			<div class="model-delete">
+				<button class="delete" data-op="confirm">Delete</button>
+				<button class="delete" data-op="cancel">Cancel</button>
+			</div>
 		</div>
 		
 		<div id="matrix-edit" class="edit-view" data-api="matrix">
@@ -163,7 +176,10 @@
 			<label for="matrix-bval">B value</label>
 			<input id="matrix-bval" type="text" name="b_value" class="text-field">
 			
-			<div class="model-delete"></div>
+			<div class="model-delete">
+				<button class="delete" data-op="confirm">Delete</button>
+				<button class="delete" data-op="cancel">Cancel</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -187,10 +203,10 @@
 		<div id="grid-layout"></div>
 		<div id="matrix-layout"></div>
 		<div id="layer-metrics">
-			<div class="metric drag" data-attr="img"><span></span></div>
-			<div class="metric resize" data-attr="size"><span></span></div>
-			<div class="metric reg-pt" data-attr="float"><span></span></div>
-			<div class="metric map-pt" data-attr="map"><span></span></div>
+			<div class="metric loc" data-attr="img"><span></span></div>
+			<div class="metric size" data-attr="size"><span></span></div>
+			<div class="metric reg" data-attr="float"><span></span></div>
+			<div class="metric map" data-attr="map"><span></span></div>
 		</div>
 	</div>
 </div>

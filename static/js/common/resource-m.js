@@ -53,6 +53,10 @@ define([
 			return this.model ? this.model.attributes : this.attributes;
 		},
 		
+		changedAttributes: function() {
+			return this.model ? this.model.changedAttributes.apply(this.model, arguments) : false;
+		},
+		
 		get: function() {
 			return this.model ? this.model.get.apply(this.model, arguments) : null;
 		},

@@ -1,3 +1,5 @@
+@import "vars";
+
 /* Reset based on Eric Meyer's reset and Monkey Do's HTML5 Reset */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -71,4 +73,29 @@ th {
 article, aside, canvas, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, summary {
   display:block;
+}
+
+.add-header {
+	background-color: $ccDark;
+	border-radius: 5px;
+	height: 25px;
+	padding: 4px 10px;
+	margin: 25px 0;
+	
+	h1, h2 {
+		color: $ccWhite;
+		display: inline;
+		line-height: 25px;
+	}
+
+	button {
+		border: none;
+		border-radius: 5px;
+		height: 100%;
+		margin: 0;
+		margin-right: 10px;
+		padding: 0;
+		text-align: center;
+		width: 25px;
+	}
 }
