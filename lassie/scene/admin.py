@@ -4,7 +4,7 @@ from lassie.scene.models import Scene, Layer
 
 class LayerInlineAdmin(admin.TabularInline):
     model = Layer
-    fields = ('slug', 'title', 'image',)
+    fields = ('slug', 'group', 'title', 'image',)
     extra = 2
 
 

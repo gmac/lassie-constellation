@@ -22,6 +22,7 @@ class Layer(models.Model):
     """
     scene = models.ForeignKey('scene.Scene')
     slug = models.SlugField(default='')
+    group = models.SlugField(default='')
     title = models.CharField(max_length=255, blank=True)
     notes = models.CharField(max_length=255, blank=True)
     index = models.SmallIntegerField(default=0)
@@ -46,6 +47,7 @@ class Layer(models.Model):
     filter_speed = models.CharField(max_length=40, blank=True)
     
     # Hit area
+    hit_enabled = models.BooleanField(default=True)
     hit_h = models.PositiveSmallIntegerField(default=0)
     hit_w = models.PositiveSmallIntegerField(default=0)
     hit_x = models.SmallIntegerField(default=0)
