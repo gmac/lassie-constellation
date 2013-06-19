@@ -5,7 +5,9 @@ from lassie.scene.models import Scene, Layer
 
 
 def scene_index(request):
-    return render(request, 'scene/index.html', {})
+    return render(request, 'scene/index.html', {
+        'scenes': Scene.objects.all(),
+    })
 
 
 def scene_edit(request, scene_id):
@@ -14,13 +16,4 @@ def scene_edit(request, scene_id):
 	    'scene': scene,
 	    'json': serializers.serialize('json', [scene]),
 	}
-	return render(request, 'scene/edit.html', context)
-	
-
-def scene_layer(request, layer_id):
-    layer = get_object_or_404(Layer, pk=layer_id)
-    content_type = ContentType.objects.get_for_model(layer)
-    
-    return render(request, 'scene/layer.html', {
-        'model': layer
-    })
+	return render(request, 'scene/scene-edit.html', context)

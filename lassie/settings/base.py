@@ -127,7 +127,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'compressor',
+    #'compressor',
     'tastypie',
     'lassie.dialogue_tree',
     'lassie.interaction',
@@ -166,10 +166,10 @@ LOGGING = {
 }
 
 # Automatically compress/compile Sass files
-COMPRESS_PRECOMPILERS = (
-    ('text/x-sass', 'sass {infile} {outfile}'),
-    ('text/x-scss', 'sass --scss --style compact {infile} {outfile}'),
-)
+# COMPRESS_PRECOMPILERS = (
+#     ('text/x-sass', 'sass {infile} {outfile}'),
+#     ('text/x-scss', 'sass --scss --style compact {infile} {outfile}'),
+# )
 
 # Tastypie settings
 API_LIMIT_PER_PAGE = 50;

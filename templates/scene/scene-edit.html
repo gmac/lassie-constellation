@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
-
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/scene-edit.scss' %}" type="text/x-scss">
-<link rel="stylesheet" href="{% static 'css/scene-grid.scss' %}" type="text/x-scss">
+<link rel="stylesheet" href="{% static 'css/scene-edit.css' %}">
+<link rel="stylesheet" href="{% static 'css/scene-grid.css' %}">
 {% endblock %}
-
 
 {% block main %}
 <input type="hidden" id="scene-id" value="{{ scene.id }}">

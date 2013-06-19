@@ -1,9 +1,7 @@
-{% load static compress action_manager %}
+{% load static action_manager %}
 {% if valid_type %}
-	{% compress css %}
-	<link rel="stylesheet" href="{% static 'css/interaction.scss' %}" type="text/x-scss">
-	{% endcompress %}
-	
+	<link rel="stylesheet" href="{% static 'css/interaction.css' %}">
+
 	<div id="actions-manager">
 		<h1>Related Action{% if allow_multiple %}s{% endif %}</h1>
 		<input id="resource-uri" type="hidden" value="/api/v1/{{ content_type }}/{{ content_id }}/">

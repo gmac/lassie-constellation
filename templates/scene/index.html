@@ -2,5 +2,10 @@
 {% load static %}
 
 {% block main %}
-scenes
+<h1>Scenes</h1>
+<ul>
+	{% for scene in scenes %}
+	<li><a href="/scene/{{ scene.id }}">{{ scene.slug }}</a></li>
+	{% endfor %}
+</ul>
 {% endblock %}

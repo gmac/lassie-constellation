@@ -3,18 +3,15 @@ from django.contrib.contenttypes import generic
 from lassie.interaction.models import Voice, Dialogue, ActionType, Action
 
 
-# Global Action admin components:
-
-class ActionInline(generic.GenericInlineModelAdmin):
-    '''
-    Defines an admin control for a single Action editor UI.
-    '''
-    model = Action
-    template = "admin/edit_inline/actions-inline.html"
-
-
 # Package-specific admin/browsing tools:
 
+class ActionTypeAdmin(admin.ModelAdmin):
+    '''
+    Configures the admin for listing out action types.
+    '''
+    list_display = ('title', 'is_item', 'is_generic',)
+    
+    
 class VoiceAdmin(admin.ModelAdmin):
     '''
     Configures the admin for listing out Voice options.
@@ -55,7 +52,7 @@ class ActionAdmin(admin.ModelAdmin):
         return False
 
 
-admin.site.register(Voice, VoiceAdmin)
-admin.site.register(Dialogue, DialogueAdmin)
 admin.site.register(Action, ActionAdmin)
-admin.site.register(ActionType)
+admin.site.register(ActionType, ActionTypeAdmin)
+admin.site.register(Dialogue, DialogueAdmin)
+admin.site.register(Voice, VoiceAdmin)

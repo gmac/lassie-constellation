@@ -1,10 +1,10 @@
 import dj_database_url
 from lassie.settings.base import *
 
-DEBUG = True
+#DEBUG = True
 SERVE_STATIC = True
 SERVE_MEDIA = True
-TEMPLATE_DEBUG = DEBUG
+#TEMPLATE_DEBUG = DEBUG
 
 INSTALLED_APPS += (
     'debug_toolbar',
