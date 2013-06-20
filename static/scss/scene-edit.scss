@@ -53,6 +53,16 @@
 	}
 }
 
+.model-delete {
+	.cancel {
+		display: none;
+	}
+	
+	&.confirm .cancel {
+		@include inline-block;
+	}
+}
+
 .list-header {
 	background-color: #333;
 	color: #fff;

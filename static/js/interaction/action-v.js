@@ -3,9 +3,8 @@ define([
 	'jquery',
 	'underscore',
 	'common/base-edit-v',
-	'common/delete-v',
 	'./action-m'
-], function(Backbone, $, _, BaseEditView, DeleteWidget, actionsModel) {
+], function(Backbone, $, _, BaseEditView, actionsModel) {
 	
 	var selectedModel = actionsModel.selected;
 	
@@ -44,11 +43,6 @@ define([
 			this.$types = this.$('#action-type');
 			this.$items = this.$('#action-item');
 			this.isMultiAction = !!this.$list.length;
-			
-			this.$delete = new DeleteWidget({
-				el: this.$('#action-delete'),
-				model: selectedModel
-			});
 		},
 		
 		render: function() {

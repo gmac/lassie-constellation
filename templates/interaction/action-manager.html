@@ -3,7 +3,10 @@
 	<link rel="stylesheet" href="{% static 'css/interaction.css' %}">
 
 	<div id="actions-manager">
+		{% if not dynamic_install %}
 		<h1>Related Action{% if allow_multiple %}s{% endif %}</h1>
+		{% endif %}
+		
 		<input id="resource-types" type="hidden" value="{{ types_json }}">
 		<input id="resource-items" type="hidden" value="{{ items_json }}">
 		<input id="resource-voices" type="hidden" value="{{ voices_json }}">
@@ -13,7 +16,11 @@
 			<li>+</li>
 		</ul>
 		<ul class="action-options">
-			<li id="action-delete" class="model-delete"></li>
+			<li class="model-delete">
+				<h2>Delete Action</h2>
+				<button class="delete cancel" data-op="cancel">Cancel</button>
+				<button class="delete" data-op="delete">Delete</button>
+			</li>
 			<li class="action-type">
 				<label for="action-type">Action type</label><br>
 				<select id="action-type" name="action_type"></select>
@@ -73,7 +80,11 @@
 			<!--label for="dialogue-sound">Sound</label>
 			<input id="dialogue-sound" type="text"-->
 	
-			<div id="dialogue-delete" class="model-delete"></div>
+			<div class="model-delete">
+				<h2>Delete Dialogue</h2>
+				<button class="delete cancel" data-op="cancel">Cancel</button>
+				<button class="delete" data-op="delete">Delete</button>
+			</div>
 		</div>
 	</div>
 	

@@ -2,10 +2,9 @@ define([
 	'backbone',
 	'jquery',
 	'underscore',
-	'common/delete-v',
 	'common/base-edit-v',
 	'./dialogue-m'
-], function(Backbone, $, _, DeleteWidget, BaseEditView, dialogueModel) {
+], function(Backbone, $, _, BaseEditView, dialogueModel) {
 	
 	var selectedModel = dialogueModel.selected;
 	
@@ -18,12 +17,6 @@ define([
 			this.listenTo(selectedModel, 'select', this.render);
 			this.listenTo(selectedModel, 'change:subtitle', this.renderOptions);
 			this.renderVoices();
-			
-			// Create delete widget:
-			this.$delete = new DeleteWidget({
-				el: this.$('#dialogue-delete'),
-				model: dialogueModel.selected
-			});
 		},
 		
 		// Populate voice options selector:
