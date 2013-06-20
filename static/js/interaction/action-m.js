@@ -17,11 +17,14 @@ define([
 		items: new Backbone.Collection(),
 		voices: new Backbone.Collection(),
 		
-		// Sets the associated API resource that Actions will be assigned to:
-		// Parses out the object's foreign key from the API resource.
-		setResource: function(uri) {
+		// Loads a resource URI into the model:
+		// resource URI must allow relations to Action object types;
+		// includes: Item, ItemCombo, DefaultResponse, Layer.
+		load: function(uri) {
+			this.reset();
 			this.resourceId = parseInt(uri.replace(/.*\/(.+?)\/$/g, '$1'), 10);
 			this.resourceURI = uri;
+			this.fetch(this.RESET);
 		},
 		
 		comparator: function(model) {

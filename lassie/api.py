@@ -12,6 +12,19 @@ from lassie.scene.models import Scene, Layer, Grid, Matrix
 
 # API Resources
 
+class VoiceResource(ModelResource):
+    '''
+    API resource for accessing voices.
+    '''
+    class Meta:
+        queryset = Voice.objects.all()
+        resource_name = 'voice'
+        allowed_methods = ['get']
+        filtering = {
+            'id': ALL,
+        }
+        
+        
 class SceneResource(ModelResource):
     '''
     API resource for accessing scene layouts.
@@ -30,6 +43,7 @@ class LayerResource(ModelResource):
     API resource for accessing layers within scene layouts.
     '''
     scene = fields.ForeignKey(SceneResource, 'scene')
+    voice = fields.ForeignKey(VoiceResource, 'voice', null=True)
     
     class Meta:
         queryset = Layer.objects.all()
@@ -145,19 +159,6 @@ class ActionResource(ModelResource):
             'content_type': ['exact'],
             'object_id': ['exact'],
         }
-
-
-class VoiceResource(ModelResource):
-    '''
-    API resource for accessing voices.
-    '''
-    class Meta:
-        queryset = Voice.objects.all()
-        resource_name = 'voice'
-        allowed_methods = ['get']
-        filtering = {
-            'id': ALL,
-        }
                 
                 
 class DialogueResource(ModelResource):
@@ -181,7 +182,6 @@ class DialogueResource(ModelResource):
 # API structure
 
 v1_api = Api(api_name='v1')
-
 v1_api.register(ActionResource())
 v1_api.register(ActionTypeResource())
 v1_api.register(DefaultResponseResource())

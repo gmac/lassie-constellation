@@ -1,12 +1,14 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static action_manager %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/scene-edit.css' %}">
 <link rel="stylesheet" href="{% static 'css/scene-grid.css' %}">
+<link rel="stylesheet" href="{% static 'colorbox/colorbox.css' %}">
 {% endblock %}
 
 {% block main %}
+<div id="scene-editor">
 <input type="hidden" id="scene-id" value="{{ scene.id }}">
 
 <div id="toolbar" class="toolbar">
@@ -58,9 +60,16 @@
 			<label for="layer-title">Title</label>
 			<input id="layer-title" type="text" name="title" class="text-field">
 		
-			<label for="layer-subtitle-color">Subtitle color</label>
-			<input id="layer-subtitle-color" type="text" name="subtitle_color" class="color-field">
-		
+			<label for="layer-voice">Voice</label>
+			<select id="layer-voice" type="text" name="voice" class="select-field">
+				<option value="">---</option>
+				{% for voice in voices %}
+				<option value="/api/v1/voice/{{ voice.id }}/">{{ voice.title }}</option>
+				{% endfor %}
+			</select>
+			
+			<button class="edit-actions">Edit Actions</button>
+			
 			<h2>Image</h2>
 			<label for="layer-img-x">Image-x</label>
 			<input id="layer-img-x" type="text" name="img_x" class="integer-field">
@@ -230,8 +239,12 @@
 	<div id="marquee"></div>
 </script>
 
-{% endblock %}
 
+<div id="layer-actions">
+	{% action_manager scene %}
+</div>
+</div>
+{% endblock %}
 
 {% block js %}
 <script>require(['scene/main']);</script>

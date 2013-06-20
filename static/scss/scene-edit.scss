@@ -1,5 +1,20 @@
 @import "bourbon/bourbon";
 
+#scene-editor {
+	height: 100%;
+	overflow: hidden;
+	width: 100%;
+}
+
+#layer-actions {
+	padding: 10px 15px;
+	width: 800px;
+	
+	#scene-editor & {
+		display: none;
+	}
+}
+
 .toolbar {
 	background-color: #eee;
 	border-right: 2px solid #ccc;

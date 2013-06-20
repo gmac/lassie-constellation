@@ -14,16 +14,9 @@ define([
 		
 		initialize: function() {
 			// Pull resource URI from template form:
-			var uri = this.$('#resource-uri').val();
 			var types = JSON.parse(this.$('#resource-types').val());
 			var items = JSON.parse(this.$('#resource-items').val());
 			var voices = JSON.parse(this.$('#resource-voices').val());
-			
-			if (!uri || !types.length || !voices.length) {
-				this.$el.hide();
-				$('#dialogue-manager').hide();
-				return;
-			}
 			
 			_.each(types, function(model) {
 				model.id = '/api/v1/action_type/'+model.id+'/';
@@ -41,8 +34,6 @@ define([
 			actionsModel.types.reset(types);
 			actionsModel.items.reset(items);
 			actionsModel.voices.reset(voices);
-			actionsModel.setResource(uri);
-			actionsModel.fetch(actionsModel.RESET);
 		},
 		
 		setup: function() {
@@ -65,6 +56,7 @@ define([
 			if (!selectedModel.model) return;
 			if (this.isMultiAction) this.renderMultiAction();
 			this.populate();
+			this.$el.show();
 		},
 		
 		// Renders multi-select options:

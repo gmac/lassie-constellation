@@ -19,17 +19,20 @@ def action_manager(model):
     
     SINGLE = 'single'
     MULTI = 'multi'
+    DYNAMIC = 'dynamic'
     
     allowed_types = {
-        'layer': MULTI,
-        'item': MULTI,
-        'itemcombo': SINGLE,
-        'defaultresponse': MULTI,
+        'layer': {MULTI,},
+        'item': {MULTI,},
+        'itemcombo': {SINGLE,},
+        'defaultresponse': {MULTI,},
+        'scene': {MULTI, DYNAMIC,},
     }
     
     content_id = ''
     content_type = ''
     allow_multiple = False
+    dynamic_install = False
     all_types = list(ActionType.objects.values())
     all_items = list(Item.objects.values('id', 'slug'))
     all_voices = list(Voice.objects.values('id', 'title'))
@@ -40,7 +43,8 @@ def action_manager(model):
     
     # Check if content type allows multiple related actions:
     if (content_type in allowed_types):
-        allow_multiple = (allowed_types[content_type] == MULTI)
+        allow_multiple = MULTI in allowed_types[content_type]
+        dynamic_install = DYNAMIC in allowed_types[content_type]
     
     # Provide no items for default response action selectors:
     if (content_type == 'defaultresponse'):
@@ -51,6 +55,7 @@ def action_manager(model):
         'content_id': content_id,
         'content_type': content_type,
         'allow_multiple': allow_multiple,
+        'dynamic_install': dynamic_install,
         'types_json': json.dumps(all_types),
         'items_json': json.dumps(all_items),
         'voices_json': json.dumps(all_voices),

@@ -91,7 +91,7 @@ define([
 		
 		// Automatically select first model when the collection resets:
 		onReset: function() {
-			if (!this.length && !this.allowEmpty) this.create();
+			//if (!this.length && !this.allowEmpty) this.create();
 			this.select(0);
 		},
 		
