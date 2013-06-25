@@ -75,8 +75,8 @@
 </form></div>
 
 {% if adminform.form.instance.id %}
-	{% topic_manager adminform.form.instance %}
-	<!-- { % action_manager adminform.form.instance % } -->
+	{ % topic_manager adminform.form.instance % }
+	{% action_manager adminform.form.instance %}
 {% endif %}
 
 {% endblock %}

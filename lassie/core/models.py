@@ -13,7 +13,10 @@ class ActionType(models.Model):
     notes = models.CharField(max_length=255, blank=True)
     is_custom = models.BooleanField('Custom action type', default=False)
     is_item = models.BooleanField('Relates to items', default=False)
-
+    
+    def resource_uri(self):
+        return '/api/v1/actiontype/{0}/'.format(self.id)
+        
     def __unicode__(self):
         return self.label
                 
@@ -38,7 +41,10 @@ class Voice(models.Model):
     label = models.CharField(max_length=255)
     notes = models.CharField(max_length=255, blank=True)
     subtitle_color = models.CharField(max_length=10, default='#FFFFFF')
-
+    
+    def resource_uri(self):
+        return '/api/v1/voice/{0}/'.format(self.id)
+        
     def __unicode__(self):
         return self.label
 
@@ -60,6 +66,9 @@ class Action(models.Model):
     related_item = models.ForeignKey('core.Item', blank=True, null=True)
     action_type = models.ForeignKey('core.ActionType')
     
+    def resource_uri(self):
+        return '/api/v1/action/{0}/'.format(self.id)
+        
     def __unicode__(self):
         return self.id
 
@@ -85,7 +94,10 @@ class DefaultActionSet(models.Model):
     """
     slug = models.SlugField(unique=True)
     notes = models.CharField(max_length=255, blank=True)
-
+    
+    def resource_uri(self):
+        return '/api/v1/defaultactionset/{0}/'.format(self.id)
+        
     def __unicode__(self):
         return self.slug
                 
@@ -108,7 +120,10 @@ class Dialogue(models.Model):
     class Meta:
         ordering = ['index']
         verbose_name_plural = 'Dialogue'
-            
+    
+    def resource_uri(self):
+        return '/api/v1/dialogue/{0}/'.format(self.id)
+    
     def __unicode__(self):
         return self.title
 
@@ -133,6 +148,9 @@ class Item(models.Model):
     notes = models.CharField(max_length=255, blank=True)
     title = models.CharField(max_length=255, blank=True) #I18N
     
+    def resource_uri(self):
+        return '/api/v1/item/{0}/'.format(self.id)
+        
     def __unicode__(self):
         return self.slug
 
@@ -141,7 +159,10 @@ class ItemCombo(models.Model):
     slug = models.SlugField(unique=True)
     notes = models.CharField(max_length=255, blank=True)
     items = models.ManyToManyField('core.Item')
-
+    
+    def resource_uri(self):
+        return '/api/v1/itemcombo/{0}/'.format(self.id)
+        
     def __unicode__(self):
         return self.slug
 

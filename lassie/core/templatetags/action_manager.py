@@ -1,7 +1,7 @@
 import json
 from django import template
 from django.contrib.contenttypes.models import ContentType
-from lassie.core.models import ActionType, Intonation, Item, Voice
+from lassie.core.models import Action, ActionType, Intonation, Item, Voice
 
 register = template.Library()
 
@@ -9,94 +9,111 @@ register = template.Library()
 # def empty_false(value):
 #     return ''
 
+
 @register.inclusion_tag('templatetags/action-manager.html')
 def action_manager(model):
     
     # Configuration param constants:
     SINGLE = 'single'
     MULTI = 'multi'
-    NO_ITEM_TYPE = 'no item type'
-    NO_ITEM_OPTIONS = 'no item options'
+    ITEM_TYPE = 'items'
+    ITEM_OPTIONS = 'item options'
     DYNAMIC = 'dynamic'
-    
+
     # Discrete editor configurations:
     editor_configs = {
-        'scene': {MULTI, DYNAMIC,},
-        'item': {MULTI, NO_ITEM_TYPE, NO_ITEM_OPTIONS,},
+        'scene': {MULTI, DYNAMIC, ITEM_TYPE, ITEM_OPTIONS,},
+        'item': {MULTI,},
         'itemcombo': {SINGLE,},
-        'defaultactionset': {MULTI, NO_ITEM_OPTIONS,},
+        'defaultactionset': {MULTI, ITEM_TYPE,},
         'tree': {SINGLE, DYNAMIC,},
     }
     
-    # Setup context variables:
-    content_id = ''
-    content_type = ''
-    content_type_name = ''
-    allow_multiple = False
-    dynamic_install = False
-    all_types = list(ActionType.objects.values())
-    all_items = list(Item.objects.values('id', 'slug'))
-    all_voices = list(Voice.objects.values('id', 'label'))
-    all_actions = list()
-    
-    if (model):
-        content_id = model.id
-        content_type = ContentType.objects.get_for_model(model)
-        content_type_name = content_type.model
-        
-    # Test if type is valid:
-    valid_type = content_type_name in editor_configs
-    error_message = ''
-    
-    # Check if content type allows multiple related actions:
-    if (valid_type):
-        editor_settings = editor_configs[content_type_name]
-        allow_multiple = MULTI in editor_settings
-        dynamic_install = DYNAMIC in editor_settings
-        all_actions = list(Action.objects.filter(content_type=content_type,content_id=content_id).values())
-        
-        # Create an action for a single-action record, if none exists:
-        if (not allow_multiple and not all_actions):
-            action = Action(content_type=content_type,content_id=content_id)
-            action.save()
-            all_actions.append(action.values())
-        
-        # Provide no items for default response action selectors:
-        if (NO_ITEM_TYPE in editor_settings):
-            # TODO: remove "is_item" type from types array...
-            pass
-             
-        # Provide no items for default response action selectors:
-        if (NO_ITEM_OPTIONS in editor_settings):
-            all_items = list()
-                
-        if (not all_types or not all_voices):
-            error_message = 'Actions editor requires one or more Action Type and Voice options to be defined.'
-            valid_type = False
-
-
-    # Format reference ids as API URIs:
-    for actiontype in all_types:
-        actiontype['id'] = '/api/v1/actiontype/{0}/'.format(actiontype['id'])
-        
-    for item in all_items:
-        item['id'] = '/api/v1/item/{0}/'.format(item['id'])
-        
-    for voice in all_voices:
-        voice['id'] = '/api/v1/voice/{0}/'.format(voice['id'])
-
-
-    return {
-        'valid_type': valid_type,
-        'error_message': error_message,
-        'content_id': content_id,
-        'content_type': content_type_name,
-        'allow_multiple': allow_multiple,
-        'dynamic_install': dynamic_install,
-        'actions_json': json.dumps(all_actions),
-        'types_json': json.dumps(all_types),
-        'items_json': json.dumps(all_items),
-        'voices_json': json.dumps(all_voices),
+    # Define base context:
+    content_type = None
+    context = {
+        'enable_manager': False,
+        'error_message': '',
+        'content_id': 0,
+        'content_type': '',
+        'allow_multiple': False,
+        'dynamic_install': False,
+        'actions_json': '[]',
+        'types_json': '[]',
+        'items_json': '[]',
+        'voices_json': '[]',
         'tones': Intonation.objects.all(),
     }
     
+    # Pull model config settings:
+    if (model):
+        content_type = ContentType.objects.get_for_model(model)
+        context['content_id'] = model.id
+        context['content_type'] = content_type.model
+        context['enable_manager'] = content_type.model in editor_configs
+    
+    # Return early if not enabling the manager:
+    if (not context['enable_manager']):
+        return context
+    
+    # Proceed with setting up context:
+    editor_settings = editor_configs[context['content_type']]
+    context['allow_multiple'] = MULTI in editor_settings
+    context['dynamic_install'] = DYNAMIC in editor_settings
+
+    
+    # TYPES / VOICES
+    # Provide interaction types & voices:
+    all_types = ActionType.objects.all()
+    all_voices = Voice.objects.all()
+    
+    # Make sure there's at least one custom action type:
+    if (not all_types.filter(is_custom=True).exists()):
+        ActionType.objects.create(label='Default Action (Rename!)', is_custom=True)
+    
+    # Make sure there's at least one voice:
+    if (not all_voices.exists()):
+        Voice.objects.create(label='Default Voice (Rename!)')
+    
+    # Remove item type when not applicable:
+    if (not ITEM_TYPE in editor_settings):
+        all_types = all_types.exclude(is_item=True)
+    
+    # Create lists and map id references:
+    all_types = list(all_types.values('id', 'label'))
+    all_voices = list(all_voices.values('id', 'label'))
+    
+    for actiontype in all_types:
+        actiontype['id'] = '/api/v1/actiontype/{0}/'.format(actiontype['id'])
+    
+    for voice in all_voices:
+        voice['id'] = '/api/v1/voice/{0}/'.format(voice['id'])
+    
+    # Define types and voices:
+    context['types_json'] = json.dumps(all_types)
+    context['voices_json'] = json.dumps(all_voices)
+    
+    
+    # ITEMS
+    # Provide item options, when applicable:
+    if (ITEM_OPTIONS in editor_settings):
+        all_items = list(Item.objects.values('id', 'slug'))
+        
+        for item in all_items:
+            item['id'] = '/api/v1/item/{0}/'.format(item['id'])
+            
+        context['items_json'] = json.dumps(all_items)
+    
+
+    # ACTIONS
+    all_actions = Action.objects.filter(content_type=content_type.model, object_id=model.id)
+    
+    # Forcibly create a new action for singular action records:
+    if (not all_actions.exists() and not context['allow_multiple']):
+        action_type = ActionType.objects.filter(is_custom=True)[:1].get()
+        Action.objects.create(content_type=content_type.model, object_id=model.id, action_type=action_type)
+    
+    context['actions_json'] = json.dumps(list(all_actions))
+    
+    
+    return context
