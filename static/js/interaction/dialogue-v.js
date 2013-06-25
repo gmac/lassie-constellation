@@ -2,10 +2,9 @@ define([
 	'backbone',
 	'jquery',
 	'underscore',
-	'common/delete-v',
 	'common/base-edit-v',
 	'./dialogue-m'
-], function(Backbone, $, _, DeleteWidget, BaseEditView, dialogueModel) {
+], function(Backbone, $, _, BaseEditView, dialogueModel) {
 	
 	var selectedModel = dialogueModel.selected;
 	
@@ -16,25 +15,20 @@ define([
 			this.model = dialogueModel.selected;
 			this.listenTo(dialogueModel, 'add remove reset', this.render);
 			this.listenTo(selectedModel, 'select', this.render);
-			this.listenTo(selectedModel, 'change:subtitle', this.renderOptions);
-			this.renderVoices();
-			
-			// Create delete widget:
-			this.$delete = new DeleteWidget({
-				el: this.$('#dialogue-delete'),
-				model: dialogueModel.selected
-			});
+			this.listenTo(selectedModel, 'change:title change:voice', this.renderOptions);
 		},
 		
 		// Populate voice options selector:
 		// should only need to happen once during startup.
 		renderVoices: function() {
-			this.$('#dialogue-voice').html(dialogueModel.voices.reduce(function(memo, model) {
-				return memo += '<option value="'+ model.get('id') +'">'+ model.get('title') +'</option>';
+			if (this.$voices) return;
+			this.$voices = this.$('#dialogue-voice').html(dialogueModel.voices.reduce(function(memo, model) {
+				return memo += '<option value="'+ model.get('id') +'">'+ model.get('label') +'</option>';
 			}, ''));
 		},
 		
 		render: function() {
+			this.renderVoices();
 			this.renderOptions();
 			this.populate();
 			
@@ -47,8 +41,10 @@ define([
 		renderOptions: function() {
 			this.$('.dialogue-list').html(dialogueModel.reduce(function(memo, model, index) {
 				var selected = (model.cid === selectedModel.cid);
+				var voice = dialogueModel.voices.get(model.get('voice'));
 				memo += '<li class="action'+ (selected ? ' selected' : '') +'" data-cid="'+model.cid+'">';
-				memo += (model.get('puppet') || 'puppet') +': '+ (model.get('subtitle') || '') +'</li>';
+				if (model.get('slug')) memo += '['+ model.get('slug') +'] ';
+				memo += (voice && voice.get('label') || '') +': '+ (model.get('title') || '') +'</li>';
 				return memo;
 			}, ''));
 		},

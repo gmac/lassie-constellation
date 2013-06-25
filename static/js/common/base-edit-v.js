@@ -6,6 +6,8 @@ define([
 	var PATCH = {patch:true};
 	
 	var BaseEditView = Backbone.View.extend({
+		isDeleting: false,
+		
 		initialize: function() {
 			this.listenTo(this.model, 'select', this.populate);
 			this.listenTo(this.model, 'change', this.update);
@@ -43,8 +45,8 @@ define([
 		},
 		
 		confirmDelete: function(confirm) {
-			this.$('> .delete-cancel').toggle(!confirm);
-			//this.$('> .delete-confirm').toggle(confirm);
+			this.$('.model-delete').toggleClass('confirm', confirm);
+			this.isDeleting = confirm;
 		},
 		
 		events: {
@@ -53,15 +55,15 @@ define([
 			'change .select-field': 'fValue',
 			'change .integer-field': 'fInteger',
 			'change .percent-field': 'fPercent',
-			'click .delete': 'fDelete',
-			'click .cancel-edit': 'fCancel'
+			'click .cancel-edit': 'fCancel',
+			'click .delete': 'fDelete'
 		},
 		
 		// Delete button field:
 		fDelete: function(evt) {
-			switch ($(evt.currentTarget).attr('data-op')) {
-				case 'intent': this.confirmDelete(true); return;
-				case 'cancel': this.confirmDelete(false); return;
+			// Toggle confirmation status when "cancel" button is pressed, or when inactive:
+			if ($(evt.currentTarget).attr('data-op') == 'cancel' || !this.isDeleting) {
+				return this.confirmDelete(!this.isDeleting);
 			}
 			this.confirmDelete(false);
 			this.model.cancel();

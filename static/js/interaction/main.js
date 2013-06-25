@@ -1,4 +1,7 @@
 define([
-	'./dialogue-v',
-	'./action-v'
-]);
+	'./action-m',
+	'./action-v',
+	'./dialogue-v'
+], function(actionsModel) {
+	return actionsModel;
+});

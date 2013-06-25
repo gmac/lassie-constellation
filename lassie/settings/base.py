@@ -115,10 +115,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'tastypie',
-    'lassie.dialogue_tree',
-    'lassie.interaction',
-    'lassie.inventory',
-    'lassie.player',
+    'lassie.dialoguetree',
+    'lassie.core',
     'lassie.scene',
 )
 

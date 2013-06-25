@@ -3,9 +3,8 @@ define([
 	'jquery',
 	'underscore',
 	'common/base-edit-v',
-	'common/delete-v',
 	'./action-m'
-], function(Backbone, $, _, BaseEditView, DeleteWidget, actionsModel) {
+], function(Backbone, $, _, BaseEditView, actionsModel) {
 	
 	var selectedModel = actionsModel.selected;
 	
@@ -13,39 +12,6 @@ define([
 		el: '#actions-manager',
 		
 		initialize: function() {
-			// Pull resource URI from template form:
-			var uri = this.$('#resource-uri').val();
-			var types = JSON.parse(this.$('#resource-types').val());
-			var items = JSON.parse(this.$('#resource-items').val());
-			var voices = JSON.parse(this.$('#resource-voices').val());
-			
-			if (!uri || !types.length || !voices.length) {
-				this.$el.hide();
-				$('#dialogue-manager').hide();
-				return;
-			}
-			
-			_.each(types, function(model) {
-				model.id = '/api/v1/action_type/'+model.id+'/';
-			});
-			
-			_.each(items, function(model) {
-				model.id = '/api/v1/item/'+model.id+'/';
-			});
-			
-			_.each(voices, function(model) {
-				model.id = '/api/v1/voice/'+model.id+'/';
-			});
-			
-			this.setup();
-			actionsModel.types.reset(types);
-			actionsModel.items.reset(items);
-			actionsModel.voices.reset(voices);
-			actionsModel.setResource(uri);
-			actionsModel.fetch(actionsModel.RESET);
-		},
-		
-		setup: function() {
 			this.model = selectedModel;
 			this.listenTo(selectedModel, 'select change', this.render);
 			
@@ -54,35 +20,59 @@ define([
 			this.$items = this.$('#action-item');
 			this.isMultiAction = !!this.$list.length;
 			
-			this.$delete = new DeleteWidget({
-				el: this.$('#action-delete'),
-				model: selectedModel
-			});
+			if (!actionsModel.types.length || !actionsModel.voices.length) {
+				$('#dialogue-manager').hide();
+				this.$el.hide();
+			} else if (!this.isMultiAction) {
+				actionsModel.enableAutoCreate();
+			}
 		},
 		
 		render: function() {
-			// Abort if there's no selected model (something went wrong)...
-			if (!selectedModel.model) return;
-			if (this.isMultiAction) this.renderMultiAction();
+			// Set up UI rendering:
+			if (this.isMultiAction) {
+				// Render multi-action:
+				this.renderMultiAction();
+			}
+			
 			this.populate();
 		},
 		
 		// Renders multi-select options:
 		// includes multiple actions, action types, and related items.
 		renderMultiAction: function() {
-			var selectedType = actionsModel.types.get(selectedModel.get('action_type'));
-			
 			// Render action tab options:
 			actionsModel.sort();
+			
 			var html = '<li class="action add-action">+</li>';
+			var hasModel = !!selectedModel.model;
+			var selectedType = actionsModel.types.get(selectedModel.get('action_type'));
+			
+			// Set dependent fields visibility & values:
+			// (specifically cast '.length' as boolean for jQuery toggle implementation quirks...)
+			this.$('.action-item').toggle(hasModel && selectedType.get('is_item') && Boolean(actionsModel.items.length));
+			this.$('.action-slug').toggle(hasModel && selectedType.get('is_custom'));
+			this.$('.model-delete').toggle(hasModel);
+			this.$('#action-script').prop('disabled', !hasModel);
+			this.$('#action-grammar').prop('disabled', !hasModel);
+			
+			// Empty/disable lists when no type option is available:
+			if (!selectedType) {
+				this.$list.html(html);
+				this.$types.html('').prop('disabled', true);
+				this.$items.html('').prop('disabled', true);
+				return;
+			}
+			
+			// Render actions list:
 			html += actionsModel.reduce(function(memo, model) {
 				// Get type and related item models:
 				var type = actionsModel.types.get(model.get('action_type') || '');
 				var item = actionsModel.items.get(model.get('related_item') || '');
-				var label = type.get('title');
+				var label = type.get('label');
 				var slug = model.get('slug');
-				
-				if (type.get('is_generic') && slug) {
+
+				if (type.get('is_custom') && slug) {
 					label += ': '+ slug;
 				} else if (type.get('is_item') && item) {
 					label += ': '+ item.get('slug');
@@ -93,7 +83,7 @@ define([
 				memo += '" data-cid="'+model.cid+'">'+ (label || 'Untitled') +'</li>';
 				return memo;
 			}, '');
-			
+				
 			this.$list.html(html);
 			
 			
@@ -101,43 +91,36 @@ define([
 			var usedTypes = actionsModel.pluck('action_type');
 			this.$types.html(actionsModel.types.reduce(function(memo, model) {
 				var current = (model.id === selectedType.id);
-				
+			
 				// Add option if:
 				// - type is selected.
 				// - type is generic (allow unlimited).
 				// - type is an item (allow unlimited).
 				// - type is unused.
-				if (current || model.get('is_generic') || model.get('is_item')  || !_.contains(usedTypes, model.id)) {
+				if (current || model.get('is_custom') || model.get('is_item')  || !_.contains(usedTypes, model.id)) {
 					memo += '<option value="'+ model.id +'" data-cid="'+ model.cid +'"';
 					if (current) memo += ' selected="selected"';
-					memo += '>'+ model.get('title') +'</option>';
+					memo += '>'+ model.get('label') +'</option>';
 				}
 				return memo;
-			}, ''));
+			}, '')).prop('disabled', false);
 			
 			
 			// Render item options:
-			if (selectedType.get('is_item')) {
-				var usedItems = actionsModel.pluck('related_item');
-				this.$items.html(actionsModel.items.reduce(function(memo, model) {
-					var current = (model.id === selectedModel.get('related_item'));
-					
-					// Add option if:
-					// - item is selected (current).
-					// - item is unused.
-					if (current || !_.contains(usedItems, model.id)) {
-						memo += '<option value="'+ model.id +'" data-cid="'+ model.cid +'"';
-						if (current) memo += ' selected="selected"';
-						memo += '>'+ model.get('slug') +'</option>';
-					}
-					return memo;
-				}, ''));
-			}
-			
-			// Set dependent fields visibility & values:
-			// (specifically cast '.length' as boolean for jQuery toggle implementation quirks...)
-			this.$('.action-item').toggle(selectedType.get('is_item') && Boolean(actionsModel.items.length));
-			this.$('.action-slug').toggle(selectedType.get('is_generic'));
+			var usedItems = actionsModel.pluck('related_item');
+			this.$items.html(actionsModel.items.reduce(function(memo, model) {
+				var current = (model.id === selectedModel.get('related_item'));
+				
+				// Add option if:
+				// - item is selected (current).
+				// - item is unused.
+				if (current || !_.contains(usedItems, model.id)) {
+					memo += '<option value="'+ model.id +'" data-cid="'+ model.cid +'"';
+					if (current) memo += ' selected="selected"';
+					memo += '>'+ model.get('slug') +'</option>';
+				}
+				return memo;
+			}, '')).prop('disabled', false);
 		},
 		
 		events: function() {

@@ -1,6 +1,6 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_static admin_modify %}
-{% load admin_urls action_manager %}
+{% load admin_urls action_manager topic_manager %}
 
 {% block extrahead %}{{ block.super }}
 <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
@@ -75,7 +75,8 @@
 </form></div>
 
 {% if adminform.form.instance.id %}
-	{% action_manager adminform.form.instance %}
+	{% topic_manager adminform.form.instance %}
+	<!-- { % action_manager adminform.form.instance % } -->
 {% endif %}
 
 {% endblock %}

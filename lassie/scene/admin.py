@@ -9,7 +9,6 @@ class LayerInlineAdmin(admin.TabularInline):
 
 
 class SceneAdmin(admin.ModelAdmin):
-    model = Scene
     list_display = ('slug', 'title', 'notes',)
     inlines = [LayerInlineAdmin,]
 

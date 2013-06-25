@@ -12,8 +12,7 @@ def scene_index(request):
 
 def scene_edit(request, scene_id):
 	scene = get_object_or_404(Scene, pk=scene_id)
-	context = {
+	return render(request, 'scene/scene-edit.html', {
 	    'scene': scene,
 	    'json': serializers.serialize('json', [scene]),
-	}
-	return render(request, 'scene/scene-edit.html', context)
+	})

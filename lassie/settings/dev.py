@@ -5,6 +5,8 @@ SERVE_STATIC = True
 SERVE_MEDIA = True
 TEMPLATE_DEBUG = DEBUG
 
+STATIC_ROOT = ''
+
 INSTALLED_APPS += (
     'debug_toolbar',
 )

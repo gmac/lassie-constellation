@@ -77,7 +77,9 @@ define([
 	
 	var ResourceModelList = Backbone.Collection.extend({
 		api: '',
-		allowEmpty: true,
+		createWhenEmpty: false,
+		hasData: false,
+		
 		RESET: {reset: true},
 		SILENT: {silent: true},
 		PATCH: {patch: true},
@@ -91,7 +93,7 @@ define([
 		
 		// Automatically select first model when the collection resets:
 		onReset: function() {
-			if (!this.length && !this.allowEmpty) this.create();
+			// if (!this.length && this.createWhenEmpty) this.create();
 			this.select(0);
 		},
 		
@@ -139,6 +141,7 @@ define([
 		},
 		
 		parse: function(data) {
+			this.hasData = true;
 			return data.objects;
 		},
 		

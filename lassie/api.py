@@ -4,21 +4,19 @@ from tastypie.authorization import DjangoAuthorization
 from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.contrib.contenttypes.fields import GenericForeignKeyField
 from tastypie.resources import ModelResource
-from lassie.interaction.models import ActionType, Action, Dialogue, Voice
-from lassie.inventory.models import Item, ItemCombo
-from lassie.player.models import DefaultResponse
+from lassie.core.models import Action, ActionType, DefaultActionSet, Dialogue, Item, ItemCombo, Voice
+from lassie.dialoguetree.models import Tree, TreeMenu, TreeTopic
 from lassie.scene.models import Scene, Layer, Grid, Matrix
 
 
 # API Resources
 
 class SceneResource(ModelResource):
-    '''
+    """
     API resource for accessing scene layouts.
-    '''
+    """
     class Meta:
         queryset = Scene.objects.all()
-        resource_name = 'scene'
         allowed_methods = ['get']
         filtering = {
             'id': ALL,
@@ -26,14 +24,13 @@ class SceneResource(ModelResource):
 
 
 class LayerResource(ModelResource):
-    '''
+    """
     API resource for accessing layers within scene layouts.
-    '''
+    """
     scene = fields.ForeignKey(SceneResource, 'scene')
     
     class Meta:
         queryset = Layer.objects.all()
-        resource_name = 'layer'
         always_return_data = True
         authorization = DjangoAuthorization()
         filtering = {
@@ -43,14 +40,13 @@ class LayerResource(ModelResource):
 
             
 class GridResource(ModelResource):
-    '''
+    """
     API resource for accessing grids within scene layouts.
-    '''
+    """
     scene = fields.ForeignKey(SceneResource, 'scene')
 
     class Meta:
         queryset = Grid.objects.all()
-        resource_name = 'grid'
         always_return_data = True
         authorization = DjangoAuthorization()
         filtering = {
@@ -59,14 +55,13 @@ class GridResource(ModelResource):
 
             
 class MatrixResource(ModelResource):
-    '''
+    """
     API resource for accessing matrices within scene layouts.
-    '''
+    """
     scene = fields.ForeignKey(SceneResource, 'scene')
 
     class Meta:
         queryset = Matrix.objects.all()
-        resource_name = 'matrix'
         always_return_data = True
         authorization = DjangoAuthorization()
         filtering = {
@@ -74,13 +69,56 @@ class MatrixResource(ModelResource):
         }
 
 
+class TreeResource(ModelResource):
+    """
+    API resource for accessing tree configurations.
+    """
+    class Meta:
+        queryset = Tree.objects.all()
+        allowed_methods = ['get']
+        filtering = {
+            'id': ALL,
+        }
+
+
+class TreeMenuResource(ModelResource):
+    """
+    API resource for accessing tree menu lists.
+    """
+    tree = fields.ForeignKey(TreeResource, 'tree')
+    
+    class Meta:
+        queryset = TreeMenu.objects.all()
+        authorization = DjangoAuthorization()
+        always_return_data = True
+        filtering = {
+            'id': ALL,
+            'tree': ALL_WITH_RELATIONS,
+        }
+
+
+class TreeTopicResource(ModelResource):
+    """
+    API resource for accessing tree topic items.
+    """
+    treemenu = fields.ForeignKey(TreeMenuResource, 'treemenu')
+    
+    class Meta:
+        queryset = TreeTopic.objects.all()
+        authorization = DjangoAuthorization()
+        always_return_data = True
+        filtering = {
+            'id': ALL,
+            'treemenu': ALL_WITH_RELATIONS,
+        }
+
+
 class ItemResource(ModelResource):
-    '''
+    """
     API resource for accessing inventory items.
-    '''
+    """
     class Meta:
         queryset = Item.objects.all()
-        resource_name = 'item'
         allowed_methods = ['get']
         filtering = {
             'id': ALL,
@@ -88,22 +126,20 @@ class ItemResource(ModelResource):
 
                 
 class ItemComboResource(ModelResource):
-    '''
+    """
     API resource for accessing inventory item combos.
-    '''
+    """
     class Meta:
         queryset = ItemCombo.objects.all()
-        resource_name = 'itemcombo'
         allowed_methods = ['get']
         filtering = {
             'id': ALL,
         }
 
 
-class DefaultResponseResource(ModelResource):
+class DefaultActionSetResource(ModelResource):
     class Meta:
-        queryset = DefaultResponse.objects.all()
-        resource_name = 'defaultresponse'
+        queryset = DefaultActionSet.objects.all()
         always_return_data = True
         authorization = DjangoAuthorization()
         filtering = {
@@ -112,23 +148,22 @@ class DefaultResponseResource(ModelResource):
 
 
 class ActionTypeResource(ModelResource):
-    '''
+    """
     API resource for accessing action type classifications.
-    '''
+    """
     class Meta:
         queryset = ActionType.objects.all()
-        resource_name = 'action_type'
         allowed_methods = ['get']
                   
 
 class ActionResource(ModelResource):
-    '''
+    """
     API resource for accessing action profiles (script and dialogue).
-    '''
+    """
     action_type = fields.ForeignKey(ActionTypeResource, 'action_type', null=True)
     related_item = fields.ForeignKey(ItemResource, 'related_item', null=True)
     content_object = GenericForeignKeyField({
-        DefaultResponse: DefaultResponseResource,
+        DefaultActionSet: DefaultActionSetResource,
         Item: ItemResource,
         ItemCombo: ItemComboResource,
         Layer: LayerResource,
@@ -148,12 +183,11 @@ class ActionResource(ModelResource):
 
 
 class VoiceResource(ModelResource):
-    '''
+    """
     API resource for accessing voices.
-    '''
+    """
     class Meta:
         queryset = Voice.objects.all()
-        resource_name = 'voice'
         allowed_methods = ['get']
         filtering = {
             'id': ALL,
@@ -161,15 +195,14 @@ class VoiceResource(ModelResource):
                 
                 
 class DialogueResource(ModelResource):
-    '''
+    """
     API resource for accessing dialogue.
-    '''
+    """
     action = fields.ForeignKey(ActionResource, 'action')
     voice = fields.ForeignKey(VoiceResource, 'voice')
 
     class Meta:
         queryset = Dialogue.objects.all()
-        resource_name = 'dialogue'
         always_return_data = True
         authorization = DjangoAuthorization()
         filtering = {
@@ -181,10 +214,9 @@ class DialogueResource(ModelResource):
 # API structure
 
 v1_api = Api(api_name='v1')
-
 v1_api.register(ActionResource())
 v1_api.register(ActionTypeResource())
-v1_api.register(DefaultResponseResource())
+v1_api.register(DefaultActionSetResource())
 v1_api.register(DialogueResource())
 v1_api.register(GridResource())
 v1_api.register(ItemComboResource())
@@ -192,4 +224,7 @@ v1_api.register(ItemResource())
 v1_api.register(LayerResource())
 v1_api.register(MatrixResource())
 v1_api.register(SceneResource())
+v1_api.register(TreeResource())
+v1_api.register(TreeMenuResource())
+v1_api.register(TreeTopicResource())
 v1_api.register(VoiceResource())

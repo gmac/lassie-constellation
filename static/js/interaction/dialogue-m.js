@@ -12,8 +12,8 @@ define([
 			related_target: '',
 			slug: '',
 			sound: '',
-			subtitle: '',
-			tone: 0
+			title: '',
+			tone: ''
 		}
 	});
 	

@@ -19,9 +19,18 @@ define([
 		
 		// Sets the associated API resource that Actions will be assigned to:
 		// Parses out the object's foreign key from the API resource.
-		setResource: function(uri) {
+		load: function(uri) {
+			this.reset();
 			this.resourceId = parseInt(uri.replace(/.*\/(.+?)\/$/g, '$1'), 10);
 			this.resourceURI = uri;
+			this.fetch(this.RESET);
+		},
+		
+		// Enables auto-creation of models when the collection syncs without getting back results.
+		enableAutoCreate: function() {
+			this.on('sync', function() {
+				if (this.length < 1) this.create();
+			}, this);
 		},
 		
 		comparator: function(model) {
@@ -39,10 +48,10 @@ define([
 		// Gets a base fieldset for new models:
 		// may be overridden in sub-classes to extend fields.
 		getNewModelData: function() {
-			var generic = this.types.where({is_generic: true})[0] || this.types.at(0);
+			var defaultType = this.types.where({is_custom: true})[0] || this.types.at(0);
 			return {
 				content_object: this.resourceURI,
-				action_type: generic.get('id')
+				action_type: defaultType.get('id')
 			};
 		},
 		
@@ -62,6 +71,7 @@ define([
 		// HACK: filter out unrelated resources that don't match the resource URI.
 		// Circumvents Tastypie (API) issues with filtering on generic foreign keys.
 		parse: function(response) {
+			this.hasData = true;
 			return _.filter(response.objects, function(model) {
 				return model.content_object === this.resourceURI;
 			}, this);

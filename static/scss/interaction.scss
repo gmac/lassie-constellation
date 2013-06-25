@@ -70,8 +70,10 @@
 	}
 }
 
-#dialogue-manager {
-
+#dialogue-manager,
+#topic-manager {
+	
+	.topic-list,
 	.dialogue-list {
 		background-color: #eee;
 		border: 1px solid #ccc;
@@ -96,6 +98,7 @@
 		}
 	}
 	
+	.topic-edit,
 	.dialogue-edit {
 		float: left;
 		margin-left: 51%;
@@ -165,3 +168,12 @@
 	}
 }
 
+.model-delete {
+	.cancel {
+		display: none;
+	}
+	
+	&.confirm .cancel {
+		@include inline-block;
+	}
+}

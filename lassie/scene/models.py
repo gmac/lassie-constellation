@@ -6,7 +6,7 @@ class Scene(models.Model):
     Describes an individual scene layout within the world.
     """
     slug = models.SlugField(unique=True)
-    title = models.CharField(max_length=255, blank=True)
+    title = models.CharField(max_length=255, blank=True) #I18N
     notes = models.CharField(max_length=255, blank=True)
     image = models.ImageField(upload_to='scene', blank=True)
     music = models.FileField(upload_to='music', blank=True)
@@ -20,14 +20,17 @@ class Layer(models.Model):
     """
     Describes an individual interactive object within a scene.
     """
-    scene = models.ForeignKey('scene.Scene')
-    voice = models.ForeignKey('interaction.Voice', null=True, blank=True)
+    scene = models.ForeignKey('scene.Scene', related_name='parent')
+    #exit_to = models.ForeignKey('scene.Scene', related_name='exit_to', null=True, blank=True)
+    grid = models.SlugField('scene.Grid', null=True, blank=True)
+    voice = models.ForeignKey('core.Voice', null=True, blank=True)
+    
+    # Basic information
     slug = models.SlugField(default='')
-    group = models.SlugField(default='')
-    title = models.CharField(max_length=255, blank=True)
+    title = models.CharField(max_length=255, blank=True) #I18N
     notes = models.CharField(max_length=255, blank=True)
+    group = models.SlugField(default='')
     index = models.SmallIntegerField(default=0)
-    grid = models.SlugField(blank=True)
     opacity = models.PositiveSmallIntegerField(default=100)
     parallax_axis = models.CharField(max_length=10, blank=True)
     visible = models.BooleanField(default=True)
