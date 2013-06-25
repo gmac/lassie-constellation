@@ -97,10 +97,11 @@
 	<script src="{% static 'js/libs/require.js' %}"></script>
 	<script src="{% static 'js/config.js' %}"></script>
 	<script>require(['interaction/main'], function(actionsModel) {
-		actionsModel.types.reset(JSON.parse('{{ types_json|safe }}'));
-		actionsModel.items.reset(JSON.parse('{{ items_json|safe }}'));
-		actionsModel.voices.reset(JSON.parse('{{ voices_json|safe }}'));
-		actionsModel.load("/api/v1/{{ content_type }}/{{ content_id }}/");
+		actionsModel.types.reset({{ types_json|safe }});
+		actionsModel.items.reset({{ items_json|safe }});
+		actionsModel.voices.reset({{ voices_json|safe }});
+		actionsModel.reset({{ actions_json|safe }});
+		//actionsModel.load("/api/v1/{{ content_type }}/{{ content_id }}/");
 	});</script>
 	{% endif %}
 {% endif %}

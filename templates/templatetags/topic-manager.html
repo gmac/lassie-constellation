@@ -25,7 +25,7 @@
 <script src="{% static 'js/libs/require.js' %}"></script>
 <script src="{% static 'js/config.js' %}"></script>
 <script>require(['tree/main'], function(topicsModel) {
-	topicsModel.menus.reset(JSON.parse('{{ menus_json|safe }}'));
+	topicsModel.menus.reset({{ menus_json|safe }});
 	topicsModel.load('/api/v1/tree/{{ content_id }}/');
 });</script>
 {% endif %}
