@@ -106,14 +106,16 @@ def action_manager(model):
     
 
     # ACTIONS
-    all_actions = Action.objects.filter(content_type=content_type.model, object_id=model.id)
+    if (model.actions):
+        
+        all_actions = model.actions.all().values()
     
-    # Forcibly create a new action for singular action records:
-    if (not all_actions.exists() and not context['allow_multiple']):
-        action_type = ActionType.objects.filter(is_custom=True)[:1].get()
-        Action.objects.create(content_type=content_type.model, object_id=model.id, action_type=action_type)
-    
-    context['actions_json'] = json.dumps(list(all_actions))
+        # Forcibly create a new action for singular action records:
+        if (not all_actions.exists() and not context['allow_multiple']):
+            action_type = ActionType.objects.filter(is_custom=True)[:1].get()
+            model.actions.create(action_type=action_type)
+            
+        context['actions_json'] = json.dumps(list(all_actions))
     
     
     return context

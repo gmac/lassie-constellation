@@ -1,4 +1,6 @@
+from django.contrib.contenttypes import generic
 from django.db import models
+from lassie.core.models import Action
 
 
 class Scene(models.Model):
@@ -20,6 +22,7 @@ class Layer(models.Model):
     """
     Describes an individual interactive object within a scene.
     """
+    actions = generic.GenericRelation(Action)
     scene = models.ForeignKey('scene.Scene', related_name='parent')
     #exit_to = models.ForeignKey('scene.Scene', related_name='exit_to', null=True, blank=True)
     grid = models.SlugField('scene.Grid', null=True, blank=True)
