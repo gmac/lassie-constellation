@@ -17,6 +17,13 @@ define([
 		items: new Backbone.Collection(),
 		voices: new Backbone.Collection(),
 		
+		setData: function(data) {
+			this.types.reset(data.actionTypes);
+			this.items.reset(data.items);
+			this.voices.reset(data.voices);
+			this.reset(data.actions);
+		},
+		
 		// Sets the associated API resource that Actions will be assigned to:
 		// Parses out the object's foreign key from the API resource.
 		load: function(uri) {
@@ -24,13 +31,6 @@ define([
 			this.resourceId = parseInt(uri.replace(/.*\/(.+?)\/$/g, '$1'), 10);
 			this.resourceURI = uri;
 			this.fetch(this.RESET);
-		},
-		
-		// Enables auto-creation of models when the collection syncs without getting back results.
-		enableAutoCreate: function() {
-			this.on('sync', function() {
-				if (this.length < 1) this.create();
-			}, this);
 		},
 		
 		comparator: function(model) {

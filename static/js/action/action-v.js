@@ -19,13 +19,6 @@ define([
 			this.$types = this.$('#action-type');
 			this.$items = this.$('#action-item');
 			this.isMultiAction = !!this.$list.length;
-			
-			if (!actionsModel.types.length || !actionsModel.voices.length) {
-				$('#dialogue-manager').hide();
-				this.$el.hide();
-			} else if (!this.isMultiAction) {
-				actionsModel.enableAutoCreate();
-			}
 		},
 		
 		render: function() {

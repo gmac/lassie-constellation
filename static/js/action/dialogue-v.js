@@ -18,17 +18,7 @@ define([
 			this.listenTo(selectedModel, 'change:title change:voice', this.renderOptions);
 		},
 		
-		// Populate voice options selector:
-		// should only need to happen once during startup.
-		renderVoices: function() {
-			if (this.$voices) return;
-			this.$voices = this.$('#dialogue-voice').html(dialogueModel.voices.reduce(function(memo, model) {
-				return memo += '<option value="'+ model.get('id') +'">'+ model.get('label') +'</option>';
-			}, ''));
-		},
-		
 		render: function() {
-			this.renderVoices();
 			this.renderOptions();
 			this.populate();
 			

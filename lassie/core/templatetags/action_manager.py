@@ -42,6 +42,9 @@ def action_manager(model):
         'types_json': '[]',
         'items_json': '[]',
         'voices_json': '[]',
+        'types': None,
+        'items': None,
+        'voices': None,
         'tones': Intonation.objects.all(),
     }
     
@@ -90,6 +93,8 @@ def action_manager(model):
         voice['id'] = '/api/v1/voice/{0}/'.format(voice['id'])
     
     # Define types and voices:
+    context['types'] = all_types
+    context['voices'] = all_voices
     context['types_json'] = json.dumps(all_types)
     context['voices_json'] = json.dumps(all_voices)
     
@@ -101,7 +106,8 @@ def action_manager(model):
         
         for item in all_items:
             item['id'] = '/api/v1/item/{0}/'.format(item['id'])
-            
+        
+        context['items'] = all_items
         context['items_json'] = json.dumps(all_items)
     
 

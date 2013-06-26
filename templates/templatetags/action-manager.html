@@ -1,7 +1,6 @@
 {% load static %}
 {% if enable_manager %}
-	<link rel="stylesheet" href="{% static 'css/interaction.css' %}">
-
+	<link rel="stylesheet" href="{% static 'css/interaction.css' %}">	
 	<div id="actions-manager">
 		{% if not dynamic_install %}
 		<h1>Related Action{% if allow_multiple %}s{% endif %}</h1>
@@ -9,9 +8,6 @@
 		{% if error_message %}
 		<p>{{ error_message }}</p>
 		{% endif %}
-		<!--input id="resource-types" type="hidden" value="{{ types_json }}">
-		<input id="resource-items" type="hidden" value="{{ items_json }}">
-		<input id="resource-voices" type="hidden" value="{{ voices_json }}"-->
 		
 		{% if allow_multiple %}
 		<ul class="actions-list">
@@ -23,14 +19,26 @@
 				<button class="delete" data-op="delete">Delete</button>
 				<button class="delete cancel" data-op="cancel">Cancel</button>
 			</li>
+			{% if types %}
 			<li class="action-type">
 				<label for="action-type">Action type</label><br>
-				<select id="action-type" name="action_type"></select>
+				<select id="action-type" name="action_type">
+					{% for type in types %}
+					<option value="{{ type.id }}">{{ type.label }}</option>
+					{% endfor %}
+				</select>
 			</li>
+			{% endif %}
+			{% if items %}
 			<li class="action-item">
 				<label for="action-item">Related item</label><br>
-				<select id="action-item" name="related_item"></select>
+				<select id="action-item" name="related_item">
+					{% for item in items %}
+					<option value="{{ item.id }}">{{ item.label }}</option>
+					{% endfor %}
+				</select>
 			</li>
+			{% endif %}
 			<li class="action-slug">
 				<label for="action-slug">Action slug</label><br>
 				<input id="action-slug" type="text" name="slug" class="slug-field">
@@ -57,10 +65,16 @@
 		<ul class="dialogue-list"></ul>
 		<div class="dialogue-edit">
 			<ul>
+				{% if voices %}
 				<li>
 					<label for="dialogue-voice">Voice</label>
-					<select id="dialogue-voice" name="voice" class="select-field"></select>
+					<select id="dialogue-voice" name="voice" class="select-field">
+						{% for voice in voices %}
+						<option value="{{ voice.id }}">{{ voice.label }}</option>
+						{% endfor %}
+					</select>
 				</li>
+				{% endif %}
 				<li>
 					<label for="dialogue-tone">Tone</label>
 					<select id="dialogue-tone" name="tone" class="select-field">
@@ -82,9 +96,6 @@
 			<label for="dialogue-title">Subtitle</label>
 			<textarea id="dialogue-title" name="title" class="text-field"></textarea>
 			
-			<!--label for="dialogue-sound">Sound</label>
-			<input id="dialogue-sound" type="text"-->
-	
 			<div class="model-delete">
 				<h3>Delete dialogue</h3>
 				<button class="delete cancel" data-op="cancel">Cancel</button>
@@ -93,14 +104,20 @@
 		</div>
 	</div>
 	
+	<script>
+		var actionsManagerData = {
+			actionTypes: {{ types_json|safe }},
+			actions: {{ actions_json|safe }},
+			items: {{ items_json|safe }},
+			voices: {{ voices_json|safe }}
+		};
+	</script>
+	
 	{% if not dynamic_install %}
 	<script src="{% static 'js/libs/require.js' %}"></script>
 	<script src="{% static 'js/config.js' %}"></script>
-	<script>require(['interaction/main'], function(actionsModel) {
-		actionsModel.types.reset({{ types_json|safe }});
-		actionsModel.items.reset({{ items_json|safe }});
-		actionsModel.voices.reset({{ voices_json|safe }});
-		actionsModel.reset({{ actions_json|safe }});
+	<script>require(['action/main'], function(actionsModel) {
+		actionsModel.setData(actionsManagerData);
 		//actionsModel.load("/api/v1/{{ content_type }}/{{ content_id }}/");
 	});</script>
 	{% endif %}
