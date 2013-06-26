@@ -43,7 +43,7 @@ define([
 			
 			// Set dependent fields visibility & values:
 			// (specifically cast '.length' as boolean for jQuery toggle implementation quirks...)
-			this.$('.action-item').toggle(hasModel && selectedType.get('is_item') && Boolean(actionsModel.items.length));
+			this.$('.action-item').toggle(hasModel && selectedType.get('is_item'));
 			this.$('.action-slug').toggle(hasModel && selectedType.get('is_custom'));
 			this.$('.model-delete').toggle(hasModel);
 			this.$('#action-script').prop('disabled', !hasModel);
@@ -84,17 +84,18 @@ define([
 			var usedTypes = actionsModel.pluck('action_type');
 			this.$types.html(actionsModel.types.reduce(function(memo, model) {
 				var current = (model.id === selectedType.id);
-			
+				var multiItem = model.get('is_item') && actionsModel.items.length;
+				var enabled = current || multiItem || model.get('is_custom')  || !_.contains(usedTypes, model.id);
+				
 				// Add option if:
 				// - type is selected.
 				// - type is generic (allow unlimited).
 				// - type is an item (allow unlimited).
 				// - type is unused.
-				if (current || model.get('is_custom') || model.get('is_item')  || !_.contains(usedTypes, model.id)) {
-					memo += '<option value="'+ model.id +'" data-cid="'+ model.cid +'"';
-					if (current) memo += ' selected="selected"';
-					memo += '>'+ model.get('label') +'</option>';
-				}
+				memo += '<option value="'+ model.id +'" data-cid="'+ model.cid +'"';
+				if (current) memo += ' selected="selected"';
+				if (!enabled) memo += ' disabled="disabled"';
+				memo += '>'+ model.get('label') +'</option>';
 				return memo;
 			}, '')).prop('disabled', false);
 			
@@ -103,15 +104,15 @@ define([
 			var usedItems = actionsModel.pluck('related_item');
 			this.$items.html(actionsModel.items.reduce(function(memo, model) {
 				var current = (model.id === selectedModel.get('related_item'));
+				var enabled = current || !_.contains(usedItems, model.id);
 				
 				// Add option if:
 				// - item is selected (current).
 				// - item is unused.
-				if (current || !_.contains(usedItems, model.id)) {
-					memo += '<option value="'+ model.id +'" data-cid="'+ model.cid +'"';
-					if (current) memo += ' selected="selected"';
-					memo += '>'+ model.get('slug') +'</option>';
-				}
+				memo += '<option value="'+ model.id +'" data-cid="'+ model.cid +'"';
+				if (current) memo += ' selected="selected"';
+				if (!enabled) memo += ' disabled="disabled"';
+				memo += '>'+ model.get('slug') +'</option>';
 				return memo;
 			}, '')).prop('disabled', false);
 		},

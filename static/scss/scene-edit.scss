@@ -1,4 +1,23 @@
 @import "bourbon/bourbon";
+@import "common";
+
+#scene-edit {
+	overflow: hidden;
+	
+	#actions-edit {
+		display: none;
+	}
+}
+
+#actions-edit {
+	width: 900px;
+	padding: 10px 15px;
+	
+	#actions-manager {
+		margin-top: 0;
+		padding-top: 0;
+	}
+}
 
 .toolbar {
 	background-color: #eee;

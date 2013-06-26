@@ -34,7 +34,7 @@
 				<label for="action-item">Related item</label><br>
 				<select id="action-item" name="related_item">
 					{% for item in items %}
-					<option value="{{ item.id }}">{{ item.label }}</option>
+					<option value="{{ item.id }}">{{ item.slug }}</option>
 					{% endfor %}
 				</select>
 			</li>
@@ -45,8 +45,7 @@
 			</li>
 			<li class="action-grammar">
 				<label for="action-grammar">Grammar</label><br>
-				<input id="action-grammar" type="text" name="grammar" class="text-field"> 
-				<span class="tokens">Tokens: #target#, #item#</span>
+				<input id="action-grammar" type="text" name="grammar" class="text-field" placeholder="Use: #target#, #item#">
 			</li>
 		</ul>
 		{% endif %}
@@ -105,10 +104,9 @@
 	</div>
 	
 	<script>
-		var actionsManagerData = {
+		var ActionsManagerData = {
 			resource_uri: "/api/v1/{{ content_type }}/{{ content_id }}/",
 			actionTypes: {{ types_json|safe }},
-			actions: {{ actions_json|safe }},
 			items: {{ items_json|safe }},
 			voices: {{ voices_json|safe }}
 		};
@@ -117,7 +115,7 @@
 	<script src="{% static 'js/libs/require.js' %}"></script>
 	<script src="{% static 'js/config.js' %}"></script>
 	<script>require(['action/main'], function(actionsModel) {
-		actionsModel.load(actionsManagerData.resource_uri, actionsManagerData);
+		actionsModel.load("/api/v1/{{ content_type }}/{{ content_id }}/");
 	});</script>
 	{% endif %}
 {% endif %}

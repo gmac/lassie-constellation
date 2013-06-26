@@ -19,22 +19,23 @@ define([
 		
 		// Sets the associated API resource that Actions will be assigned to:
 		// Parses out the object's foreign key from the API resource.
-		load: function(uri, data) {
+		load: function(uri) {
+			if (!this.types.length) {
+				// Load Actions Manager data from global scope (printed into template):
+				if (typeof ActionsManagerData != 'undefined') {
+					var data = ActionsManagerData;
+					data.actionTypes && this.types.reset(data.actionTypes);
+					data.items && this.items.reset(data.items);
+					data.voices && this.voices.reset(data.voices);
+				} else {
+					throw('ActionsManagerData not available.');
+				}
+			}
+
 			this.resourceId = parseInt(uri.replace(/.*\/(.+?)\/$/g, '$1'), 10);
 			this.resourceURI = uri;
-			
-			if (data) {
-				data.actionTypes && this.types.reset(data.actionTypes);
-				data.items && this.items.reset(data.items);
-				data.voices && this.voices.reset(data.voices);
-			}
-			
-			if (data && data.actions) {
-				this.reset(data.actions);
-			} else {
-				this.reset();
-				this.fetch(this.RESET);
-			}
+			this.reset();
+			this.fetch(this.RESET);
 		},
 		
 		comparator: function(model) {
