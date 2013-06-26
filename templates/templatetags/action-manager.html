@@ -106,19 +106,18 @@
 	
 	<script>
 		var actionsManagerData = {
+			resource_uri: "/api/v1/{{ content_type }}/{{ content_id }}/",
 			actionTypes: {{ types_json|safe }},
 			actions: {{ actions_json|safe }},
 			items: {{ items_json|safe }},
 			voices: {{ voices_json|safe }}
 		};
 	</script>
-	
 	{% if not dynamic_install %}
 	<script src="{% static 'js/libs/require.js' %}"></script>
 	<script src="{% static 'js/config.js' %}"></script>
 	<script>require(['action/main'], function(actionsModel) {
-		actionsModel.setData(actionsManagerData);
-		//actionsModel.load("/api/v1/{{ content_type }}/{{ content_id }}/");
+		actionsModel.load(actionsManagerData.resource_uri, actionsManagerData);
 	});</script>
 	{% endif %}
 {% endif %}

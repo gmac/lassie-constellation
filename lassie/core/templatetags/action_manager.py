@@ -120,8 +120,13 @@ def action_manager(model):
         if (not all_actions.exists() and not context['allow_multiple']):
             action_type = ActionType.objects.filter(is_custom=True)[:1].get()
             model.actions.create(action_type=action_type)
+        
+        all_actions = list(all_actions)
+        
+        for action in all_actions:
+            action['resource_uri'] = '/api/v1/action/{0}/'.format(action['id'])
             
-        context['actions_json'] = json.dumps(list(all_actions))
+        context['actions_json'] = json.dumps(all_actions)
     
     
     return context

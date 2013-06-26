@@ -17,20 +17,24 @@ define([
 		items: new Backbone.Collection(),
 		voices: new Backbone.Collection(),
 		
-		setData: function(data) {
-			this.types.reset(data.actionTypes);
-			this.items.reset(data.items);
-			this.voices.reset(data.voices);
-			this.reset(data.actions);
-		},
-		
 		// Sets the associated API resource that Actions will be assigned to:
 		// Parses out the object's foreign key from the API resource.
-		load: function(uri) {
-			this.reset();
+		load: function(uri, data) {
 			this.resourceId = parseInt(uri.replace(/.*\/(.+?)\/$/g, '$1'), 10);
 			this.resourceURI = uri;
-			this.fetch(this.RESET);
+			
+			if (data) {
+				data.actionTypes && this.types.reset(data.actionTypes);
+				data.items && this.items.reset(data.items);
+				data.voices && this.voices.reset(data.voices);
+			}
+			
+			if (data && data.actions) {
+				this.reset(data.actions);
+			} else {
+				this.reset();
+				this.fetch(this.RESET);
+			}
 		},
 		
 		comparator: function(model) {
