@@ -1,8 +1,13 @@
 @import "bourbon/bourbon";
 @import "common";
 
+body {
+	background: #000 url(../images/tile-dk.png) repeat;
+}
+
 #scene-edit {
 	overflow: hidden;
+	position: relative;
 	
 	#actions-edit {
 		display: none;
@@ -21,8 +26,7 @@
 
 .toolbar {
 	background-color: #eee;
-	border-right: 2px solid #ccc;
-	float: left;
+	border-right: 1px solid #333;
 	height: 100%;
 	overflow: auto;
 	width: 200px;
@@ -127,17 +131,16 @@
 }
 
 .viewport {
-	border: 1px solid #000;
 	height: 600px;
-	margin: auto;
+	left: 206px;
 	overflow: hidden;
-	position: relative;
-	top: 25px;
+	position: absolute;
+	top: 5px;
 	width: 800px;
 }
 
 .scene {
-	background-color: #eee;
+	background-color: #333;
 	height: 600px;
 	left: 0;
 	position: absolute;

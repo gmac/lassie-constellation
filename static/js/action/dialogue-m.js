@@ -62,13 +62,6 @@ define([
 				model.set('index', index);
 			});
 			this.reorder();
-		},
-		
-		reorder: function() {
-			this.sort();
-			this.patch(this.map(function(model) {
-				return model.pick('resource_uri', 'index');
-			}));
 		}
 	});
 	

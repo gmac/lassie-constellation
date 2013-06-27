@@ -25,13 +25,6 @@ define([
 			var data = SceneModelList.prototype.getNewModelData.call(this);
 			data.index = this.length;
 			return data;
-		},
-		
-		reorder: function() {
-			this.sort();
-			this.patch(this.map(function(model) {
-				return model.pick('resource_uri', 'index');
-			}));
 		}
 	});
 	

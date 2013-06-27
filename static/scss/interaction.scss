@@ -67,12 +67,12 @@
 	}
 	
 	.script textarea {
-		height: 200px;
+		height: 125px;
 	}
 }
 
-#dialogue-manager,
-#topic-manager {
+#topic-manager,
+#dialogue-manager {
 	
 	.topic-list,
 	.dialogue-list {
@@ -90,11 +90,20 @@
 		li {
 			background-color: #fff;
 			border-bottom: 1px solid #ccc;
+			cursor: default;
 			list-style: none;
 			padding: 10px 5px;
 			
 			&.selected {
 				background-color: #ccc;
+			}
+			
+			&.dragging {
+				color: #999;
+			}
+			
+			&.hilite {
+				border-top: 1px solid #f00;
 			}
 		}
 	}

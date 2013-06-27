@@ -12,10 +12,11 @@ define([
 		el: '#dialogue-manager',
 		
 		initialize: function() {
-			this.model = dialogueModel.selected;
-			this.listenTo(dialogueModel, 'add remove reset', this.render);
+			this.listenTo(dialogueModel, 'add remove reset sort', this.render);
+			this.listenTo(selectedModel, 'change:title change:voice change:slug', this.renderOptions);
 			this.listenTo(selectedModel, 'select', this.render);
-			this.listenTo(selectedModel, 'change:title change:voice', this.renderOptions);
+			this.makeDragable('.dialogue-list', '.dragable');
+			this.$list = this.$('.dialogue-list');
 		},
 		
 		render: function() {
@@ -29,11 +30,12 @@ define([
 		},
 		
 		renderOptions: function() {
-			this.$('.dialogue-list').html(dialogueModel.reduce(function(memo, model, index) {
+			this.$list.html(dialogueModel.reduce(function(memo, model, index) {
 				var selected = (model.cid === selectedModel.cid);
 				var voice = dialogueModel.voices.get(model.get('voice'));
+				var slug = model.get('slug');
 				memo += '<li class="action'+ (selected ? ' selected' : '') +'" data-cid="'+model.cid+'">';
-				if (model.get('slug')) memo += '['+ model.get('slug') +'] ';
+				memo += '<span class="dragable">['+ index + (slug ? ':'+slug : '') +']</span> ';
 				memo += (voice && voice.get('label') || '') +': '+ (model.get('title') || '') +'</li>';
 				return memo;
 			}, ''));
@@ -55,5 +57,8 @@ define([
 		}
 	});
 	
-	return new DialogueView();
+	return new DialogueView({
+		collection: dialogueModel,
+		model: dialogueModel.selected
+	});
 });

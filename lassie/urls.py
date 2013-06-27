@@ -11,7 +11,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', site_index, name='home'),
     url(r'^api/', include(v1_api.urls)),
-    url(r'^scene/', include('lassie.scene.urls'), name='scene'),
+    url(r'^admin/scene/scene/', include('lassie.scene.urls'), name='scene'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^test/', test_page, name='test_page'),
 )

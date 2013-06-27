@@ -151,6 +151,13 @@ define([
 			model && edit && this.selected.edit();
 		},
 		
+		reorder: function() {
+			this.sort();
+			this.patch(this.map(function(model) {
+				return model.pick('resource_uri', 'index');
+			}));
+		},
+		
 		patch: function(patch) {
 			this.sync('patch', this, {
 				data: JSON.stringify({objects: patch, format: 'json'}),
