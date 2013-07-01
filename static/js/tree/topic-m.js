@@ -10,6 +10,7 @@ define([
 		
 		load: function(treeUri) {
 			this.TREE_URI = treeUri;
+			console.log(treeUri);
 		},
 		
 		

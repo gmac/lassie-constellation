@@ -8,11 +8,11 @@ class Scene(models.Model):
     Describes an individual scene layout within the world.
     """
     slug = models.SlugField(unique=True)
-    title = models.CharField(max_length=255, blank=True) #I18N
     notes = models.CharField(max_length=255, blank=True)
     image = models.ImageField(upload_to='scene', blank=True)
     music = models.FileField(upload_to='music', blank=True)
     soundfx = models.FileField(upload_to='soundfx', blank=True)
+    label = generic.GenericRelation('core.Label')
     
     def __unicode__(self):
         return self.slug
@@ -23,6 +23,7 @@ class Layer(models.Model):
     Describes an individual interactive object within a scene.
     """
     actions = generic.GenericRelation(Action)
+    label = generic.GenericRelation('core.Label')
     scene = models.ForeignKey('scene.Scene', related_name='parent')
     #exit_to = models.ForeignKey('scene.Scene', related_name='exit_to', null=True, blank=True)
     grid = models.SlugField('scene.Grid', null=True, blank=True)
@@ -30,7 +31,6 @@ class Layer(models.Model):
     
     # Basic information
     slug = models.SlugField(default='')
-    title = models.CharField(max_length=255, blank=True) #I18N
     notes = models.CharField(max_length=255, blank=True)
     group = models.SlugField(default='')
     index = models.SmallIntegerField(default=0)

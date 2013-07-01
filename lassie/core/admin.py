@@ -1,9 +1,19 @@
 from django.contrib import admin
-from .models import Action, ActionType, Avatar, DefaultActionSet, Dialogue, Intonation, Inventory, Item, ItemCombo, Voice
+from django.contrib.contenttypes import generic
+from .models import Action, ActionType, Avatar, DefaultActionSet, Dialogue, Label, Intonation, Inventory, Item, ItemCombo, Voice
 
 
 # Package-specific admin/browsing tools:
 
+class LabelInline(generic.GenericStackedInline):
+    model = Label
+    fields = ('label',)
+    max_num = 1
+    min_num = 1
+    can_delete = False
+    verbose_name_plural = 'Localized label'
+    
+    
 class ActionAdmin(admin.ModelAdmin):
     """
     Configures the admin for browsing Action stores.
@@ -29,6 +39,7 @@ class ActionTypeAdmin(admin.ModelAdmin):
 
 class AvatarAdmin(admin.ModelAdmin):
     list_display = ('slug', 'notes',)
+    inlines = [LabelInline,]
 
 
 class DialogueAdmin(admin.ModelAdmin):
@@ -49,7 +60,7 @@ class DialogueAdmin(admin.ModelAdmin):
 
 class DefaultActionSetAdmin(admin.ModelAdmin):
     list_display = ('slug', 'notes',)
-            
+
 
 class IntonationAdmin(admin.ModelAdmin):
     list_display = ('label', 'notes',)
@@ -57,6 +68,7 @@ class IntonationAdmin(admin.ModelAdmin):
 
 class ItemAdmin(admin.ModelAdmin):
     list_display = ('slug', 'notes',)
+    inlines = [LabelInline,]
 
 
 class ItemComboAdmin(admin.ModelAdmin):

@@ -7,27 +7,33 @@ register = template.Library()
 
 @register.inclusion_tag('templatetags/topic-manager.html')
 def topic_manager(model):
-    content_id = model.id
-    enable_topics = False
-    tree_menus = list()
+    
+    context = {
+        'content_id': 0,
+        'enable_manager': False,
+        'menus_json': '[]',
+    }
     
     # Enable topics for Tree models:
     if (model):
-        enable_topics = (ContentType.objects.get_for_model(model).model == 'tree')
-        tree_menus = list(TreeMenu.objects.filter(tree=model.id).values())
-        
-        # Create a root menu topic, if none exists.
-        if (not tree_menus):
-            menu = TreeMenu(tree=model)
-            menu.save()
-            #tree_menus.push(menu)
+        context['enable_manager'] = (ContentType.objects.get_for_model(model).model == 'tree')
+    
+    if (not context['enable_manager']):
+        return;
+    
+    context['content_id'] = model.id
+    tree_menus = TreeMenu.objects.filter(tree=model.id, path='0')
+    
+    # Create a root menu topic, if none exists.
+    if (not tree_menus.count()):
+        tree_menus.create(tree=model, path='0')
+    
+    tree_menus = list(tree_menus)
     
     # Format reference ids as API URIs:
     for menu in tree_menus:
         menu['id'] = '/api/v1/treemenu/{0}/'.format(menu['id'])
     
-    return {
-        'content_id': content_id,
-        'enable_topics': enable_topics,
-        'menus_json': json.dumps(tree_menus)
-    }
+    context['menus_json'] = json.dumps(tree_menus)
+    
+    return context

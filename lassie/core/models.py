@@ -45,6 +45,21 @@ class Voice(models.Model):
 
 # Fixtures:        
 
+class Label(models.Model):
+    slug = models.SlugField(blank=True)
+    label = models.CharField(max_length=255, blank=True)  #I18N
+    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType)
+    content_object = generic.GenericForeignKey()
+    
+    class Meta:
+        verbose_name = 'Localized label'
+        verbose_name_plural = verbose_name
+        
+    def __unicode__(self):
+        return self.label
+
+
 class Action(models.Model):
     """
     Defines an actionable trigger.
@@ -52,14 +67,14 @@ class Action(models.Model):
     """
     slug = models.SlugField(blank=True)
     notes = models.CharField(max_length=255, blank=True)
-    grammar = models.CharField(max_length=255, blank=True)  #I18N
     script = models.TextField(blank=True)
     object_id = models.PositiveIntegerField()
     content_type = models.ForeignKey(ContentType)
     content_object = generic.GenericForeignKey()
     related_item = models.ForeignKey('core.Item', blank=True, null=True)
     action_type = models.ForeignKey('core.ActionType')
-
+    label = generic.GenericRelation('core.Label')
+    
     def __unicode__(self):
         return '{0}'.format(self.action_type.id)
 
@@ -70,7 +85,7 @@ class Avatar(models.Model):
     """
     slug = models.SlugField(unique=True)
     notes = models.CharField(max_length=255, blank=True)
-    title = models.CharField(max_length=255, blank=True) #I18N
+    label = generic.GenericRelation('core.Label')
     inventory_collection = models.ForeignKey('core.Inventory')
     default_behavior = models.ForeignKey('core.DefaultActionSet')
     voice = models.ForeignKey('core.Voice')
@@ -132,8 +147,8 @@ class Inventory(models.Model):
 class Item(models.Model):
     slug = models.SlugField(unique=True)
     notes = models.CharField(max_length=255, blank=True)
-    title = models.CharField(max_length=255, blank=True) #I18N
-    actions = generic.GenericRelation(Action)
+    label = generic.GenericRelation('core.Label')
+    actions = generic.GenericRelation('core.Action')
     
     def __unicode__(self):
         return self.slug
@@ -143,7 +158,7 @@ class ItemCombo(models.Model):
     slug = models.SlugField(unique=True)
     notes = models.CharField(max_length=255, blank=True)
     items = models.ManyToManyField('core.Item')
-    actions = generic.GenericRelation(Action)
+    actions = generic.GenericRelation('core.Action')
     
     def __unicode__(self):
         return self.slug
