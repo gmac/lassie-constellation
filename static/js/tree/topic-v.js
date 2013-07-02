@@ -17,6 +17,18 @@ define([
 				memo += '<li>'+ model.id +'</li>';
 				return memo;
 			}, ''));
+			
+			this.populate();
+		},
+		
+		events: function() {
+			return {
+				'click .add-model': 'onAdd'
+			};
+		},
+		
+		onAdd: function() {
+			topicsModel.create();
 		}
 	});
 	

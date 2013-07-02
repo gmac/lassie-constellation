@@ -5,8 +5,14 @@
 	
 	<div class="add-header">
 		<button class="add-model">+</button>
-		<h2>Topics</h2>
+		<h2>Menu Topics</h2>
 	</div>
+	
+	<div id="menu-manager">
+		<label for="menu-path">Path</label>
+		<input id="menu-path" type="text" name="path" readonly="readonly">
+	</div>
+	
 	<ul class="topic-list"></ul>
 	<div class="topic-edit">
 		<label>Topic Action</label>
@@ -24,8 +30,7 @@
 
 <script src="{% static 'js/libs/require.js' %}"></script>
 <script src="{% static 'js/config.js' %}"></script>
-<script>require(['tree/main'], function(topicsModel) {
-	topicsModel.menus.reset({{ menus_json|safe }});
-	topicsModel.load('/api/v1/tree/{{ content_id }}/');
+<script>require(['tree/main'], function(menusModel) {
+	menusModel.load('/api/v1/tree/{{ content_id }}/', {{ menus_json|safe }});
 });</script>
 {% endif %}

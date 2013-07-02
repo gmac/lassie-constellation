@@ -127,8 +127,9 @@ define([
 		},
 		
 		// Creates a new model with the base fieldset, then selects it:
-		create: function() {
-			var model = Backbone.Collection.prototype.create.call(this, this.getNewModelData());
+		create: function(attr, opts) {
+			attr = _.extend(this.getNewModelData(), attr || {});
+			var model = Backbone.Collection.prototype.create.call(this, attr, opts);
 			this.select(model);
 		},
 		

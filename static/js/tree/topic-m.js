@@ -4,16 +4,11 @@ define([
 ], function(Backbone, ResourceModel) {
 	
 	var TopicsModel = ResourceModel.extend({
-		api: 'topic',
-		menu: '',
-		menus: new Backbone.Collection(),
+		api: 'treetopic',
 		
 		load: function(treeUri) {
 			this.TREE_URI = treeUri;
-			console.log(treeUri);
 		},
-		
-		
 		
 		getMenuUri: function() {
 			return '/api/v1/treemenu/'+ this.MENU_ID +'/';
@@ -22,7 +17,7 @@ define([
 		getNewModelData: function() {
 			return {
 				index: this.length,
-				treemenu: this.getSceneUri()
+				treemenu: this.getMenuUri()
 			};
 		},
 		

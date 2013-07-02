@@ -1,6 +1,8 @@
 define([
+	'./menu-m',
+	'./menu-v',
 	'./topic-m',
 	'./topic-v'
-], function(topicsModel) {
-	return topicsModel;
+], function(menusModel) {
+	return menusModel;
 });
