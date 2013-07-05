@@ -34,8 +34,8 @@ class LayerResource(ModelResource):
         always_return_data = True
         authorization = DjangoAuthorization()
         filtering = {
-            'scene': ALL_WITH_RELATIONS,
             'id': ALL,
+            'scene': ALL_WITH_RELATIONS,
         }
 
             
@@ -50,6 +50,7 @@ class GridResource(ModelResource):
         always_return_data = True
         authorization = DjangoAuthorization()
         filtering = {
+            'id': ALL,
             'scene': ALL_WITH_RELATIONS,
         }
 
@@ -65,6 +66,7 @@ class MatrixResource(ModelResource):
         always_return_data = True
         authorization = DjangoAuthorization()
         filtering = {
+            'id': ALL,
             'scene': ALL_WITH_RELATIONS,
         }
 
@@ -146,6 +148,7 @@ class DefaultActionSetResource(ModelResource):
         always_return_data = True
         authorization = DjangoAuthorization()
         filtering = {
+            'id': ALL,
             'action': ALL_WITH_RELATIONS,
         }
 
@@ -209,6 +212,7 @@ class DialogueResource(ModelResource):
         always_return_data = True
         authorization = DjangoAuthorization()
         filtering = {
+            'id': ALL,
             'action': ALL_WITH_RELATIONS,
             'voice': ALL_WITH_RELATIONS,
         }

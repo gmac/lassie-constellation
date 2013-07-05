@@ -1,4 +1,5 @@
 from django.db import models
+from lassie.core.models import Action
 
 class TreeTopic(models.Model):
     """

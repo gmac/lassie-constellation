@@ -5,18 +5,12 @@ define([
 	'./topic-v'
 ], function(menusModel, topicsModel) {
 	return {
-		setTree: function(id) {
-			menusModel.TREE_ID = id;
-			topicsModel.TREE_ID = id;
-			return this;
-		},
-		setMenus: function(data) {
-			menusModel.reset(data);
-			return this;
-		},
-		setTopics: function(data) {
-			topicsModel.reset(data);
-			return this;
+		load: function(treeId, menus, topics) {
+			menusModel.TREE_ID = topicsModel.TREE_ID = treeId;
+			
+			// Reset topics FIRST so they'll be ready when a topic is selected:
+			menusModel.reset(menus);
+			topicsModel.reset(topics);
 		}
 	};
 });

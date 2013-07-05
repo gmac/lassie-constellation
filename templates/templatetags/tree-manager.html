@@ -31,9 +31,6 @@
 <script src="{% static 'js/libs/require.js' %}"></script>
 <script src="{% static 'js/config.js' %}"></script>
 <script>require(['tree/main'], function(treeManager) {
-	treeManager
-		.setTree( {{ tree_id }} )
-		.setMenus( {{ menus_json|safe }} )
-		.setTopics( {{ topics_json|safe }} );
+	treeManager.load( {{ tree_id }}, {{ menus_json|safe }}, {{ topics_json|safe }} );
 });</script>
 {% endif %}

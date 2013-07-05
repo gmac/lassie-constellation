@@ -92,7 +92,7 @@ define([
 		
 		// Automatically select first model when the collection resets:
 		onReset: function() {
-			this.select(0);
+			this.selectAt(0);
 		},
 		
 		url: function() {
@@ -148,10 +148,14 @@ define([
 			return data.objects;
 		},
 		
+		selectAt: function(model, edit) {
+			model = this.at(model);
+			this.selected.load(model);
+			model && edit && this.selected.edit();
+		},
+		
 		select: function(model, edit) {
-			if (_.isString(model)) model = this.get(model);
-			else if (_.isNumber(model)) model = this.at(model);
-			
+			model = this.get(model);
 			this.selected.load(model);
 			model && edit && this.selected.edit();
 		},

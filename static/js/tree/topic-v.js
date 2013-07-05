@@ -14,12 +14,16 @@ define([
 		},
 		
 		render: function() {
-			var topics = topicsModel.currentMenu;
+			var topics = topicsModel.currentMenu.sort(function(a, b) {
+				return b.get('index') < a.get('index');
+			});
+			
 			var selected = topicsModel.selected.cid;
 			
 			this.$('.topic-list').html(_.reduce(topics, function(memo, model) {
-				memo += '<li data-cid="'+ model.cid +'">'+ model.get('id') +'</li>';
-				return memo;
+				memo += '<li data-cid="'+ model.cid +'"';
+				if (selected === model.cid) memo += ' class="selected"'
+				return memo += '>'+ model.get('id') +'</li>';
 			}, ''));
 		},
 		
