@@ -13,7 +13,7 @@ define([
 		api: '',
 		model: null,
 
-		load: function(model) {
+		load: function(model, options) {
 			if (model === this.model) return;
 			
 			// Clear previous model:
@@ -30,7 +30,7 @@ define([
 			this.model = model;
 			this.id = model ? model.id : '';
 			this.cid = model ? model.cid : '';
-			this.trigger('select');
+			if (!options || !options.silent) this.trigger('select');
 		},
 		
 		unload: function() {
@@ -98,7 +98,11 @@ define([
 		url: function() {
 			return '/api/v1/'+ this.api +'/';
 		},
-
+		
+		formatUri: function(api, id) {
+			return '/api/v1/'+ api +'/'+ id +'/';
+		},
+		
 		// Selects a new default slug name (ie: "apiname0"):
 		// searches the collection for existing defaults, and auto-increments.
 		getNewSlug: function() {

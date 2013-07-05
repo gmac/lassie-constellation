@@ -4,25 +4,17 @@ define([
 	
 	var TreeMenuModel = ResourceModel.extend({
 		api: 'treemenu',
-		treeUri: '',
-		menuPath: '',
-		
-		load: function(treeUri, data) {
-			this.treeUri = treeUri;
-			this.menuPath = '0';
-			this.reset(data);
-		},
+		TREE_ID: 0,
 		
 		getNewModelData: function() {
 			return {
-				path: this.menuPath,
-				tree: this.treeUri
+				tree: this.formatUri('tree', this.TREE_ID)
 			};
 		},
 		
 		getRequestData: function() {
 			return {
-				tree__id: this.MENU_ID,
+				tree: this.formatUri('tree', this.TREE_ID),
 				format: 'json'
 			};
 		}

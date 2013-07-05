@@ -7,8 +7,10 @@ class TreeTopic(models.Model):
     """
     index = models.IntegerField(default=0)
     slug = models.SlugField(default='', blank=True)
-    title = models.CharField(max_length=255, blank=True) #I18N
-    treemenu = models.ForeignKey('dialoguetree.TreeMenu')
+    directive = models.SlugField(default='', blank=True)
+    label = models.ForeignKey('core.Label', blank=True, null=True)
+    menu = models.ForeignKey('dialoguetree.TreeMenu')
+    tree = models.ForeignKey('dialoguetree.Tree')
     
     def __unicode__(self):
         return self.slug
@@ -19,7 +21,7 @@ class TreeMenu(models.Model):
     Describes a collection of Topics composing a single menu within a dialogue tree.
     """
     slug = models.SlugField(default='', blank=True)
-    path = models.CharField(max_length=255, blank=True)
+    topic = models.ForeignKey('dialoguetree.TreeTopic', blank=True, null=True)
     tree = models.ForeignKey('dialoguetree.Tree')
     
     def __unicode__(self):

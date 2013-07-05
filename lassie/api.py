@@ -86,6 +86,7 @@ class TreeMenuResource(ModelResource):
     API resource for accessing tree menu lists.
     """
     tree = fields.ForeignKey(TreeResource, 'tree')
+    topic = fields.ForeignKey('lassie.api.TreeTopicResource', 'topic', null=True)
     
     class Meta:
         queryset = TreeMenu.objects.all()
@@ -94,6 +95,7 @@ class TreeMenuResource(ModelResource):
         filtering = {
             'id': ALL,
             'tree': ALL_WITH_RELATIONS,
+            'topic': ALL_WITH_RELATIONS,
         }
 
 
@@ -101,7 +103,8 @@ class TreeTopicResource(ModelResource):
     """
     API resource for accessing tree topic items.
     """
-    treemenu = fields.ForeignKey(TreeMenuResource, 'treemenu')
+    tree = fields.ForeignKey(TreeResource, 'tree')
+    menu = fields.ForeignKey('lassie.api.TreeMenuResource', 'menu')
     
     class Meta:
         queryset = TreeTopic.objects.all()
@@ -109,7 +112,7 @@ class TreeTopicResource(ModelResource):
         always_return_data = True
         filtering = {
             'id': ALL,
-            'treemenu': ALL_WITH_RELATIONS,
+            'menu': ALL_WITH_RELATIONS,
         }
 
 

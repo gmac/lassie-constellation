@@ -1,36 +1,46 @@
 define([
 	'jquery',
+	'underscore',
 	'../common/base-edit-v',
+	'./menu-m',
 	'./topic-m'
-], function($, BaseEditView, topicsModel) {
+], function($, _, BaseEditView, menusModel, topicsModel) {
 	
 	var TopicsView = BaseEditView.extend({
 		el: '#topic-manager',
 		
 		initialize: function() {
-			this.model = topicsModel.selected;
-			this.listenTo(this.model, 'reset', this.render);
+			this.listenTo(topicsModel.selected, 'select', this.render);
 		},
 		
 		render: function() {
-			this.$('.topic-list').html(topicsModel.reduce(function(memo, model) {
-				memo += '<li>'+ model.id +'</li>';
+			var topics = topicsModel.currentMenu;
+			var selected = topicsModel.selected.cid;
+			
+			this.$('.topic-list').html(_.reduce(topics, function(memo, model) {
+				memo += '<li data-cid="'+ model.cid +'">'+ model.get('id') +'</li>';
 				return memo;
 			}, ''));
-			
-			this.populate();
 		},
 		
 		events: function() {
 			return {
-				'click .add-model': 'onAdd'
+				'click .add-model': 'onAdd',
+				'click .topic-list li': 'onSelect'
 			};
 		},
 		
 		onAdd: function() {
 			topicsModel.create();
+		},
+		
+		onSelect: function(evt) {
+			topicsModel.select($(evt.currentTarget).attr('data-cid'));
 		}
 	});
 	
-	return new TopicsView();
+	return new TopicsView({
+		collection: topicsModel,
+		model: topicsModel.selected
+	});
 });

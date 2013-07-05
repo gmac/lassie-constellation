@@ -23,7 +23,6 @@ define([
 		voices: actionResource.voices,
 		
 		initialize: function() {
-			ResourceModelList.prototype.initialize.apply(this, arguments);
 			this.listenTo(actionResource.selected, 'select', this.reload);
 			this.listenTo(this, 'destroy', this.resetOrder);
 		},
