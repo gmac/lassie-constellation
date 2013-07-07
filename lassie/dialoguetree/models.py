@@ -1,5 +1,7 @@
+from django.contrib.contenttypes import generic
 from django.db import models
-from lassie.core.models import Action
+from django.db.models.signals import post_save
+from lassie.core.models import Action, ActionType
 
 class TreeTopic(models.Model):
     """
@@ -12,9 +14,19 @@ class TreeTopic(models.Model):
     label = models.ForeignKey('core.Label', blank=True, null=True)
     menu = models.ForeignKey('dialoguetree.TreeMenu')
     tree = models.ForeignKey('dialoguetree.Tree')
+    action = generic.GenericRelation(Action)
+    
+    @staticmethod
+    def save_treetopic(sender, instance, created, **kwargs):
+        if (created):
+            instance.action.create(action_type=ActionType.get_default())
     
     def __unicode__(self):
         return self.slug
+
+
+# Create a new action in response to creating a new tree topic:
+post_save.connect(TreeTopic.save_treetopic, sender=TreeTopic, dispatch_uid="save_treetopic")
 
 
 class TreeMenu(models.Model):

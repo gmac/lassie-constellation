@@ -28,10 +28,10 @@ define([
 		},
 		
 		events: function() {
-			return {
+			return _.extend({
 				'click .add-model': 'onAdd',
 				'click .topic-list li': 'onSelect'
-			};
+			}, BaseEditView.prototype.events);
 		},
 		
 		onAdd: function() {

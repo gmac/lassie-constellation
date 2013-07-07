@@ -42,7 +42,7 @@ define([
 			return model.get('action_type');
 		},
 		
-		// Finds the first available item that is not already in use:
+		// Finds the first available inventory item option that is not already in use:
 		getDefaultItem: function() {
 			var selectedItems = this.pluck('related_item');
 			return this.items.find(function(item) {

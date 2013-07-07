@@ -25,12 +25,18 @@
 		
 		<label>Topic Title</label>
 		<input type="text" value="" placeholder="--first dialogue line--">
+		
+		<div class="model-delete">
+			<h3>Delete topic</h3>
+			<button class="delete cancel" data-op="cancel">Cancel</button>
+			<button class="delete" data-op="delete">Delete</button>
+		</div>
 	</div>
 </div>
 
 <script src="{% static 'js/libs/require.js' %}"></script>
 <script src="{% static 'js/config.js' %}"></script>
-<script>require(['tree/main'], function(treeManager) {
+<script>require(['tree/main', 'action/main'], function(treeManager) {
 	treeManager.load( {{ tree_id }}, {{ menus_json|safe }}, {{ topics_json|safe }} );
 });</script>
 {% endif %}

@@ -13,7 +13,19 @@ class ActionType(models.Model):
     notes = models.CharField(max_length=255, blank=True)
     is_custom = models.BooleanField('Custom action type', default=False)
     is_item = models.BooleanField('Relates to items', default=False)
+    
+    @staticmethod
+    def get_default():
+        custom_types = ActionType.objects.filter(is_custom=True)
         
+        # Make sure there's at least one custom action type:
+        if (not custom_types.exists()):
+            return ActionType.objects.create(label='Default Action', is_custom=True)
+        
+        # Get first custom action type:
+        return custom_types[:1].get()
+
+
     def __unicode__(self):
         return self.label
                 
@@ -74,7 +86,7 @@ class Action(models.Model):
     related_item = models.ForeignKey('core.Item', blank=True, null=True)
     action_type = models.ForeignKey('core.ActionType')
     label = generic.GenericRelation('core.Label')
-    
+
     def __unicode__(self):
         return '{0}'.format(self.action_type.id)
 

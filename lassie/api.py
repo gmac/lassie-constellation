@@ -173,6 +173,7 @@ class ActionResource(ModelResource):
         Item: ItemResource,
         ItemCombo: ItemComboResource,
         Layer: LayerResource,
+        TreeTopic: TreeTopicResource,
     }, 'content_object')
         
     class Meta:
