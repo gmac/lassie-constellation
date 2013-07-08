@@ -1,11 +1,11 @@
 define([
 	'../common/base-edit-v',
-	'./menu-m'
-], function(BaseEditView, menusModel) {
+	'./tree-m'
+], function(BaseEditView, treeModel) {
 	
 	return new BaseEditView({
 		el: '#menu-manager',
-		collection: menusModel,
-		model: menusModel.selected
+		collection: treeModel.menus,
+		model: treeModel.menus.selected
 	});
 });

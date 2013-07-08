@@ -2,9 +2,11 @@ define([
 	'jquery',
 	'underscore',
 	'../common/base-edit-v',
-	'./menu-m',
-	'./topic-m'
-], function($, _, BaseEditView, menusModel, topicsModel) {
+	'./tree-m'
+], function($, _, BaseEditView, treeModel) {
+	
+	var topicsModel = treeModel.topics;
+	var menusModel = treeModel.menus;
 	
 	var TopicsView = BaseEditView.extend({
 		el: '#topic-manager',
@@ -30,7 +32,9 @@ define([
 		events: function() {
 			return _.extend({
 				'click .add-model': 'onAdd',
-				'click .topic-list li': 'onSelect'
+				'click .topic-list li': 'onSelect',
+				'click .expand': 'onExpand',
+				'click .retract': 'onRetract'
 			}, BaseEditView.prototype.events);
 		},
 		
@@ -40,6 +44,14 @@ define([
 		
 		onSelect: function(evt) {
 			topicsModel.select($(evt.currentTarget).attr('data-cid'));
+		},
+		
+		onExpand: function() {
+			treeModel.expandTopic();
+		},
+		
+		onRetract: function() {
+			treeModel.retractMenu();
 		}
 	});
 	
