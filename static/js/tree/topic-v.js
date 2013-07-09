@@ -16,10 +16,7 @@ define([
 		},
 		
 		render: function() {
-			var topics = topicsModel.currentMenu.sort(function(a, b) {
-				return b.get('index') < a.get('index');
-			});
-			
+			var topics = topicsModel.getCurrentMenu();
 			var selected = topicsModel.selected.cid;
 			
 			this.$('.topic-list').html(_.reduce(topics, function(memo, model) {

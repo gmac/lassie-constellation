@@ -9,27 +9,54 @@
 	</div>
 	
 	<div id="menu-manager">
-		<label for="menu-path">Path</label>
-		<input id="menu-path" type="text" name="path" readonly="readonly">
+		<button class="retract">&laquo; Retract</button> | 
+		<button class="expand">Expand &raquo;</button>
 	</div>
 	
 	<ul class="topic-list"></ul>
+	
 	<div class="topic-edit">
-		<label>Topic Directive</label>
-		<select>
-			<option value="">Expand</option>
-			<option value="">Retract</option>
-			<option value="">Hide</option>
-			<option value="">Exit</option>
-		</select>
-		
 		<p>
-		<button class="retract">&laquo; Retract</button> | 
-		<button class="expand">Expand &raquo;</button>
+			<label>Topic Slug</label>
+			<input type="text" name="slug" value="">
+		</p>
+		<p>
+			<label>Topic Title</label>
+			<input type="text" value="" placeholder="--first dialogue line--">
+		</p>
+		<p>
+			<label for="topic-enabled">Enabled</label>
+			<input type="checkbox" name="enabled">
 		</p>
 		
-		<label>Topic Title</label>
-		<input type="text" value="" placeholder="--first dialogue line--">
+		<ul>
+			<li>
+				<label for="topic-enable">Enable after playing:</label>
+				<select id="topic-enable" multiple="multiple"></select>
+			</li>
+			<li>
+				<label for="topic-disable">Disable after playing:</label>
+				<select id="topic-disable" multiple="multiple"></select>
+			</li>
+		</ul>
+		<p>(Hold SHIFT and click to select multiples)</p>
+		
+		<ul>
+			<li>
+				<label for="topic-menu">Menu Trigger</label>
+				<select id="topic-menu">
+					<option value="_static">No change</option>
+					<option value="_down">Expand</option>
+					<option value="_up">Retract</option>
+					<option value="_exit">Exit</option>
+					<option value="">Jump to...</option>
+				</select>
+			</li>
+			<li>
+				<label for="topic-menu-pick">Next Menu:</label>
+				<select id="topic-menu-pick"></select>
+			</li>
+		</ul>
 		
 		<div class="model-delete">
 			<h3>Delete topic</h3>

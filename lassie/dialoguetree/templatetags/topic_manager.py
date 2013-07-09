@@ -46,7 +46,6 @@ def topic_manager(model):
             'id': topic.id,
             'tree': '/api/v1/tree/{0}/'.format(topic.tree_id),
             'menu': '/api/v1/treemenu/{0}/'.format(topic.menu_id),
-            'label': '/api/v1/label/{0}/'.format(topic.label_id) if topic.label_id else None,
             'resource_uri': '/api/v1/treetopic/{0}/'.format(topic.id),
         });
 

@@ -10,11 +10,14 @@ class TreeTopic(models.Model):
     """
     index = models.IntegerField(default=0)
     slug = models.SlugField(default='', blank=True)
-    directive = models.SlugField(default='', blank=True)
-    label = models.ForeignKey('core.Label', blank=True, null=True)
+    enabled = models.BooleanField(default=True)
+    auto_hide = models.BooleanField(default=False)
+    topic_action = models.SlugField(default='', blank=True)
+    menu_action = models.SlugField(default='', blank=True)
     menu = models.ForeignKey('dialoguetree.TreeMenu')
     tree = models.ForeignKey('dialoguetree.Tree')
-    action = generic.GenericRelation(Action)
+    label = generic.GenericRelation('core.Label')
+    action = generic.GenericRelation('core.Action')
     
     @staticmethod
     def save_treetopic(sender, instance, created, **kwargs):
